@@ -27,9 +27,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **Assurance qualité :** `docs/TESTING.md`, `docs/ROADMAP.md`.
 - [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (13 User Stories avec messages de commit conventionnels).
 - [x] **US-001 (P1-T1) :** Squelette Laravel minimal initialisé, `config/cms.php` configuré, `CoreServiceProvider` enregistré dans `bootstrap/app.php`, tests unitaires au vert.
+- [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`) et tests d'architecture de pureté au vert.
 
 ### 3.2. Prochaine Étape (Phase 1 — MVP du Noyau)
-- [ ] **US-002 (P1-T2) :** Contrats publics stricts (`app/Core/Contracts/`).
 - [ ] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`) avec protection anti-traversal.
 - [ ] **US-004 (P1-T4) :** Découvreur de plugins locaux (`PluginDiscovery`) avec autoloading PSR-4 dynamique.
 - [ ] **US-005 (P1-T5) :** Registre persistant (`PluginRegistry`) et machine à 5 états (`PluginManager`).

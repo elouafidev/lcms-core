@@ -23,7 +23,7 @@
 | **P0-T11** | Consolidation et rapport de validation de la Phase 0 | Phase 0 | P0-T10 | **Terminé** |
 |---|---|---|---|---|
 | **P1-T1** | Initialisation de la structure du noyau (`app/Core/`) et configuration | Phase 1 (US-001) | P0-T11 | **Terminé** |
-| **P1-T2** | Implémentation des contrats publics (`app/Core/Contracts/`) | Phase 1 (US-002) | P1-T1 | **À faire** |
+| **P1-T2** | Implémentation des contrats publics (`app/Core/Contracts/`) | Phase 1 (US-002) | P1-T1 | **Terminé** |
 | **P1-T3** | Validateur de manifeste JSON (`ManifestValidator`) et schéma | Phase 1 (US-003) | P1-T2 | **À faire** |
 | **P1-T4** | Découvreur de plugins locaux (`PluginDiscovery`) | Phase 1 (US-004) | P1-T3 | **À faire** |
 | **P1-T5** | Registre et orchestrateur du cycle de vie (`PluginRegistry`, `PluginManager`) | Phase 1 (US-005) | P1-T4 | **À faire** |
