@@ -12,23 +12,23 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 0 TERMINÉE — PRÊTE POUR LE DÉMARRAGE DE LA PHASE 1 (MVP DU NOYAU)**
-- **Objectif de phase :** Initialiser le socle Laravel 11/12 et implémenter les User Stories US-001 à US-009 (1 Story = 1 Commit) pour disposer d'un CMS minimal capable de découvrir, installer, activer et désactiver le plugin `acme.demo-hello` sous isolation stricte.
-- **Statut :** Spécifications complètes, User Stories et commits associés formalisés dans `docs/USER_STORIES.md`.
+- **Phase active :** **PHASE 1 EN COURS (MVP DU NOYAU — US-001 TERMINÉE)**
+- **Objectif de phase :** Initialiser le socle Laravel 11/12/13 et implémenter les User Stories US-001 à US-009 (1 Story = 1 Commit) pour disposer d'un CMS minimal capable de découvrir, installer, activer et désactiver le plugin `acme.demo-hello` sous isolation stricte.
+- **Statut :** US-001 validée avec tests au vert, analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
 ## 3. Statut d'Avancement des Fonctionnalités
 
-### 3.1. Fonctionnalités Terminées (Phase 0)
+### 3.1. Fonctionnalités Terminées (Phase 0 & Début Phase 1)
 - [x] **Cadre architectural & Directives :** `AGENTS.md`, ADR-0001 (Monolithe modulaire), ADR-0002 (Manifestes & Contrats).
 - [x] **Spécifications techniques :** `docs/ARCHITECTURE.md`, `docs/PLUGIN_SYSTEM.md`.
 - [x] **Sécurité & Menaces :** `docs/SECURITY.md`, `docs/THREAT_MODEL.md` (STRIDE).
 - [x] **Assurance qualité :** `docs/TESTING.md`, `docs/ROADMAP.md`.
 - [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (13 User Stories avec messages de commit conventionnels).
+- [x] **US-001 (P1-T1) :** Squelette Laravel minimal initialisé, `config/cms.php` configuré, `CoreServiceProvider` enregistré dans `bootstrap/app.php`, tests unitaires au vert.
 
-### 3.2. Prochaine Phase (Phase 1 — MVP du Noyau par User Stories)
-- [ ] **US-001 (P1-T1) :** Initialisation du squelette minimal Laravel et configuration du Core (`app/Core`).
+### 3.2. Prochaine Étape (Phase 1 — MVP du Noyau)
 - [ ] **US-002 (P1-T2) :** Contrats publics stricts (`app/Core/Contracts/`).
 - [ ] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`) avec protection anti-traversal.
 - [ ] **US-004 (P1-T4) :** Découvreur de plugins locaux (`PluginDiscovery`) avec autoloading PSR-4 dynamique.
