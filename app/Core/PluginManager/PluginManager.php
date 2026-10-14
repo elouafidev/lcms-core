@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\PluginManager;
 
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
+use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\Lifecycle\PluginState;
 use App\Core\PluginRegistry\Models\PluginRecord;
 use App\Core\PluginRegistry\PluginRegistry;
@@ -18,21 +19,26 @@ class PluginManager
 {
     public function __construct(
         private PluginRegistry $registry,
+        private PluginMigrationManager $migrationManager,
         private Application $app,
         private ?LoggerInterface $logger = null
     ) {}
 
     /**
-     * Install a discovered plugin.
+     * Install a discovered plugin and execute its isolated database migrations.
      */
     public function install(string $pluginId): PluginRecord
     {
         $existing = $this->registry->find($pluginId);
+        $discovered = $this->registry->getDiscovered($pluginId);
+
         if ($existing !== null) {
+            $path = $discovered !== null ? $discovered->getPath() : $existing->getPath();
+            $this->migrationManager->migrate($pluginId, $path);
+
             return $existing;
         }
 
-        $discovered = $this->registry->getDiscovered($pluginId);
         if ($discovered === null) {
             throw new RuntimeException("Cannot install plugin '{$pluginId}': Not found on disk.");
         }
@@ -49,7 +55,12 @@ class PluginManager
             'error_message' => null,
         ]);
 
-        return $this->registry->save($record);
+        $saved = $this->registry->save($record);
+
+        // Execute plugin migrations
+        $this->migrationManager->migrate($pluginId, $discovered->getPath());
+
+        return $saved;
     }
 
     /**
@@ -146,5 +157,28 @@ class PluginManager
                 break;
             }
         }
+    }
+
+    /**
+     * Uninstall a plugin, optionally purging its database tables.
+     */
+    public function uninstall(string $pluginId, bool $purgeData = false): void
+    {
+        $record = $this->registry->find($pluginId);
+        if ($record === null) {
+            return;
+        }
+
+        if ($record->is_active) {
+            $this->deactivate($pluginId);
+        }
+
+        if ($purgeData) {
+            $discovered = $this->registry->getDiscovered($pluginId);
+            $path = $discovered !== null ? $discovered->getPath() : $record->getPath();
+            $this->migrationManager->rollback($pluginId, $path);
+        }
+
+        $record->delete();
     }
 }
