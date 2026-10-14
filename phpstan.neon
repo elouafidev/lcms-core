@@ -4,5 +4,6 @@ parameters:
         - bootstrap
         - config
         - platform/core
+        - platform/plugins
     level: 8
 

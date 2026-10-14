@@ -33,10 +33,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-005 (P1-T5) :** Table `cms_plugins`, Enum `PluginState` (5 états), modèle `PluginRecord`, `PluginRegistry` et `PluginManager` avec isolation et Safe Mode.
 - [x] **US-006 (P1-T6) :** Gestionnaire de migrations isolées (`PluginMigrationManager`, table `cms_plugin_migrations`), exécution transactionnelle à l'installation, préservation des données à la désactivation, rollback sélectif à la désinstallation complète.
 - [x] **US-007 (P1-T7) :** Panneau d'administration minimal Blade (`/admin/plugins`), validation CSRF, et commandes CLI (`cms:plugin:list`, `cms:plugin:enable`, `cms:plugin:disable`, `cms:recovery:safe-mode`).
+- [x] **US-008 (P1-T8) :** Plugin de référence `platform/plugins/demo-hello/` avec table `plugin_demo_messages`, contrôleur, vue Blade et route `/demo/hello` isolée montée uniquement à l'état `ACTIVE`.
 
 ### 3.2. Prochaine Étape (Phase 1 — MVP du Noyau)
-- [ ] **US-008 (P1-T8) :** Plugin de démonstration minimal `platform/plugins/demo-hello/` avec route `/demo/hello` et migration isolée.
-- [ ] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (Pest Arch) et validation intégrale des critères du MVP.
+- [ ] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (Pest Arch / tests d'isolation étanche) et validation intégrale des critères d'acceptation du MVP.
 
 ---
 

@@ -17,6 +17,11 @@ class PluginRegistry
         private PluginDiscovery $discovery
     ) {}
 
+    public function getDiscovery(): PluginDiscovery
+    {
+        return $this->discovery;
+    }
+
     /**
      * Get all plugins known to the CMS, combining filesystem discovery and database state.
      *
