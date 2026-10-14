@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Core\Console\Commands\PluginDisableCommand;
+use App\Core\Console\Commands\PluginEnableCommand;
+use App\Core\Console\Commands\PluginListCommand;
+use App\Core\Console\Commands\SafeModeCommand;
 use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
@@ -38,6 +42,25 @@ class CoreServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(dirname(__DIR__, 2).'/database/migrations');
+
+        $viewsPath = dirname(__DIR__, 2).'/platform/core/resources/views';
+        if (is_dir($viewsPath)) {
+            $this->loadViewsFrom($viewsPath, 'core');
+        }
+
+        $adminRoutes = dirname(__DIR__, 2).'/platform/core/routes/admin.php';
+        if (file_exists($adminRoutes)) {
+            $this->loadRoutesFrom($adminRoutes);
+        }
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PluginListCommand::class,
+                PluginEnableCommand::class,
+                PluginDisableCommand::class,
+                SafeModeCommand::class,
+            ]);
+        }
 
         $this->app->make(PluginManager::class)->boot();
     }

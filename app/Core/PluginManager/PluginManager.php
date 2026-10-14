@@ -109,12 +109,26 @@ class PluginManager
     }
 
     /**
+     * Check whether Emergency Safe Mode is active (via file flag or configuration).
+     */
+    public function isSafeMode(): bool
+    {
+        return file_exists(storage_path('framework/cms_safe_mode'))
+            || (bool) config('cms.safe_mode.enabled', false);
+    }
+
+    public function getRegistry(): PluginRegistry
+    {
+        return $this->registry;
+    }
+
+    /**
      * Boot all active plugins at application startup.
      */
     public function boot(): void
     {
         // Emergency Safe Mode bypasses all plugins
-        if ((bool) config('cms.safe_mode.enabled', false)) {
+        if ($this->isSafeMode()) {
             $this->logger?->info('Emergency Safe Mode active: Skipping third-party plugin boot.');
 
             return;
