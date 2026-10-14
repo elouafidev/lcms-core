@@ -12,15 +12,15 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 1 EN COURS (MVP DU NOYAU — US-001 TERMINÉE)**
-- **Objectif de phase :** Initialiser le socle Laravel 11/12/13 et implémenter les User Stories US-001 à US-009 (1 Story = 1 Commit) pour disposer d'un CMS minimal capable de découvrir, installer, activer et désactiver le plugin `acme.demo-hello` sous isolation stricte.
-- **Statut :** US-001 validée avec tests au vert, analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 1 TERMINÉE À 100% (MVP DU NOYAU VALIDÉ) — PRÊT POUR LA PHASE 2**
+- **Objectif de phase :** Initialiser le socle Laravel et implémenter les User Stories US-001 à US-009 (1 Story = 1 Commit) pour disposer d'un CMS minimal capable de découvrir, installer, activer et désactiver le plugin `acme.demo-hello` sous isolation stricte.
+- **Statut :** Phase 1 validée avec 55 tests unitaires, fonctionnels et d'architecture au vert (405 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
 ## 3. Statut d'Avancement des Fonctionnalités
 
-### 3.1. Fonctionnalités Terminées (Phase 0 & Début Phase 1)
+### 3.1. Fonctionnalités Terminées (Phase 0 & Phase 1 — MVP)
 - [x] **Cadre architectural & Directives :** `AGENTS.md`, ADR-0001 (Monolithe modulaire), ADR-0002 (Manifestes & Contrats).
 - [x] **Spécifications techniques :** `docs/ARCHITECTURE.md`, `docs/PLUGIN_SYSTEM.md`.
 - [x] **Sécurité & Menaces :** `docs/SECURITY.md`, `docs/THREAT_MODEL.md` (STRIDE).
@@ -34,9 +34,13 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-006 (P1-T6) :** Gestionnaire de migrations isolées (`PluginMigrationManager`, table `cms_plugin_migrations`), exécution transactionnelle à l'installation, préservation des données à la désactivation, rollback sélectif à la désinstallation complète.
 - [x] **US-007 (P1-T7) :** Panneau d'administration minimal Blade (`/admin/plugins`), validation CSRF, et commandes CLI (`cms:plugin:list`, `cms:plugin:enable`, `cms:plugin:disable`, `cms:recovery:safe-mode`).
 - [x] **US-008 (P1-T8) :** Plugin de référence `platform/plugins/demo-hello/` avec table `plugin_demo_messages`, contrôleur, vue Blade et route `/demo/hello` isolée montée uniquement à l'état `ACTIVE`.
+- [x] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (`CoreBoundariesTest`), test d'intégration end-to-end du cycle de vie complet (`CompleteMvpLifecycleTest`), configuration `pint.json` et `phpstan.neon` au niveau 8 sans avertissement.
 
-### 3.2. Prochaine Étape (Phase 1 — MVP du Noyau)
-- [ ] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (Pest Arch / tests d'isolation étanche) et validation intégrale des critères d'acceptation du MVP.
+### 3.2. Prochaine Étape (Phase 2 — Stabilisation, Dépendances & Résilience)
+- [ ] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`).
+- [ ] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres).
+- [ ] **US-012 (P2-T3) :** Système d'actifs statiques et publication d'assets sans compilation racine (`PluginAssetManager`).
+- [ ] **US-013 (P2-T4) :** Tolérance aux pannes et quarantaine automatique (`PluginHealthMonitor`, audit log).
 
 ---
 
