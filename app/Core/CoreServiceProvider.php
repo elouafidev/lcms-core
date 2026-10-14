@@ -7,6 +7,8 @@ namespace App\Core;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
 use App\Core\PluginDiscovery\PluginDiscovery;
+use App\Core\PluginManager\PluginManager;
+use App\Core\PluginRegistry\PluginRegistry;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -24,6 +26,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(ManifestValidator::class);
         $this->app->singleton(PluginClassLoader::class);
         $this->app->singleton(PluginDiscovery::class);
+        $this->app->singleton(PluginRegistry::class);
+        $this->app->singleton(PluginManager::class);
     }
 
     /**
@@ -31,6 +35,8 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Core infrastructure boot sequence initialized in US-001
+        $this->loadMigrationsFrom(dirname(__DIR__, 2).'/database/migrations');
+
+        $this->app->make(PluginManager::class)->boot();
     }
 }

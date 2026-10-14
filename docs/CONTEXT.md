@@ -30,9 +30,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`) et tests d'architecture de pureté au vert.
 - [x] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`), DTO immuable `PluginManifest`, protection anti-traversal et 9 tests unitaires au vert.
 - [x] **US-004 (P1-T4) :** Découvreur de plugins locaux (`PluginDiscovery`), DTO `DiscoveredPlugin`, `PluginClassLoader` avec injection dynamique PSR-4 dans Composer.
+- [x] **US-005 (P1-T5) :** Table `cms_plugins`, Enum `PluginState` (5 états), modèle `PluginRecord`, `PluginRegistry` et `PluginManager` avec isolation et Safe Mode.
 
 ### 3.2. Prochaine Étape (Phase 1 — MVP du Noyau)
-- [ ] **US-005 (P1-T5) :** Registre persistant (`PluginRegistry`) et machine à 5 états (`PluginManager`).
 - [ ] **US-006 (P1-T6) :** Gestionnaire de migrations isolées (`PluginMigrationManager`, table `cms_plugin_migrations`).
 - [ ] **US-007 (P1-T7) :** Panneau d'administration minimal Blade (`/admin`) et commandes CLI (`cms:plugin:*`).
 - [ ] **US-008 (P1-T8) :** Plugin de démonstration minimal `platform/plugins/demo-hello/`.
