@@ -3,5 +3,6 @@ parameters:
         - app
         - bootstrap
         - config
+        - platform/core
     level: 8
 
