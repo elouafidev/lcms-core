@@ -82,6 +82,7 @@ class PluginManager
         $record->error_message = null;
         $record->save();
 
+        $this->registry->getDiscovery()->discover();
         $this->bootPlugin($record);
 
         return $record;
@@ -138,6 +139,8 @@ class PluginManager
             if (! Schema::hasTable('cms_plugins')) {
                 return;
             }
+
+            $this->registry->getDiscovery()->discover();
 
             $activePlugins = $this->registry->getActive();
 
