@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
+use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\Lifecycle\PluginState;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
@@ -56,9 +57,10 @@ class PluginManagerLifecycleTest extends TestCase
 
         $classLoader = new PluginClassLoader;
         $validator = new ManifestValidator;
+        $migrationManager = new PluginMigrationManager;
         $this->discovery = new PluginDiscovery($validator, $classLoader);
         $this->registry = new PluginRegistry($this->discovery);
-        $this->manager = new PluginManager($this->registry, $this->app);
+        $this->manager = new PluginManager($this->registry, $migrationManager, $this->app);
 
         // Override CMS plugins path config for testing
         config(['cms.plugins.path' => $this->tempPluginsDir]);
