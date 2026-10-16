@@ -19,6 +19,10 @@ return [
         'autoload' => env('CMS_PLUGINS_AUTOLOAD', true),
     ],
 
+    'themes' => [
+        'path' => env('CMS_THEMES_PATH', base_path('platform/themes')),
+    ],
+
     'safe_mode' => [
         'enabled' => env('CMS_SAFE_MODE', false),
     ],

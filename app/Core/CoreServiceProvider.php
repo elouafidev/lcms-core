@@ -22,6 +22,7 @@ use App\Core\PluginManager\PluginManager;
 use App\Core\PluginRegistry\PluginRegistry;
 use App\Core\Recovery\PluginQuarantineHandler;
 use App\Core\Recovery\SafeModeManager;
+use App\Core\Themes\ThemeDiscovery;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -49,6 +50,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(PluginQuarantineHandler::class);
         $this->app->singleton(PluginAssetManager::class);
         $this->app->singleton(PluginManager::class);
+        $this->app->singleton(ThemeDiscovery::class);
     }
 
     /**

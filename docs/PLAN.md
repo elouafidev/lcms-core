@@ -172,6 +172,7 @@
 - **Fichiers :** `app/Core/Contracts/ThemeInterface.php`, `app/Core/Contracts/ThemeManifestInterface.php`, `app/Core/Themes/DTO/ThemeManifest.php`, `app/Core/Themes/ThemeDiscovery.php`, `tests/Unit/Themes/ThemeDiscoveryTest.php`.
 - **Dépendances :** P3-T5.
 - **Critère d'acceptation :** Découverte récursive sécurisée de `platform/themes/` avec contrôle anti-traversal.
+- **Statut :** **Terminé**.
 
 ### Tâche P4-T2 : Gestionnaire de Thèmes et Surcharge de Vues (US-020)
 - **Objectif :** Service `ThemeManager`, persistance de l'activation via table `cms_themes` et hiérarchie de surcharge des templates Blade de plugins.

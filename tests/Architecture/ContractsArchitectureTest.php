@@ -10,6 +10,8 @@ use App\Core\Contracts\NavigationItemContract;
 use App\Core\Contracts\PluginInterface;
 use App\Core\Contracts\PluginLifecycleListenerInterface;
 use App\Core\Contracts\PluginManifestInterface;
+use App\Core\Contracts\ThemeInterface;
+use App\Core\Contracts\ThemeManifestInterface;
 use DirectoryIterator;
 use ReflectionClass;
 use ReflectionMethod;
@@ -27,6 +29,8 @@ class ContractsArchitectureTest extends TestCase
         HookSubscriberInterface::class,
         NavigationItemContract::class,
         MediaStorageInterface::class,
+        ThemeInterface::class,
+        ThemeManifestInterface::class,
     ];
 
     public function test_all_contract_types_are_interfaces(): void
