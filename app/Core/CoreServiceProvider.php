@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Core\Admin\NavigationRegistry;
+use App\Core\Assets\PluginAssetManager;
 use App\Core\Console\Commands\PluginDisableCommand;
 use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
+use App\Core\Console\Commands\PluginPublishAssetsCommand;
 use App\Core\Console\Commands\SafeModeCommand;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Hooks\HookManager;
@@ -45,6 +47,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(NavigationRegistry::class);
         $this->app->singleton(SafeModeManager::class);
         $this->app->singleton(PluginQuarantineHandler::class);
+        $this->app->singleton(PluginAssetManager::class);
         $this->app->singleton(PluginManager::class);
     }
 
@@ -71,6 +74,7 @@ class CoreServiceProvider extends ServiceProvider
                 PluginEnableCommand::class,
                 PluginDisableCommand::class,
                 SafeModeCommand::class,
+                PluginPublishAssetsCommand::class,
             ]);
         }
 
