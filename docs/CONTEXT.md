@@ -12,15 +12,15 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 1 TERMINÉE À 100% (MVP DU NOYAU VALIDÉ) — PRÊT POUR LA PHASE 2**
-- **Objectif de phase :** Initialiser le socle Laravel et implémenter les User Stories US-001 à US-009 (1 Story = 1 Commit) pour disposer d'un CMS minimal capable de découvrir, installer, activer et désactiver le plugin `acme.demo-hello` sous isolation stricte.
-- **Statut :** Phase 1 validée avec 55 tests unitaires, fonctionnels et d'architecture au vert (405 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-010 TERMINÉE)**
+- **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), gestion des assets et monitoring de santé.
+- **Statut :** US-010 validée avec 65 tests au vert (444 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
 ## 3. Statut d'Avancement des Fonctionnalités
 
-### 3.1. Fonctionnalités Terminées (Phase 0 & Phase 1 — MVP)
+### 3.1. Fonctionnalités Terminées (Phase 0, Phase 1 & Début Phase 2)
 - [x] **Cadre architectural & Directives :** `AGENTS.md`, ADR-0001 (Monolithe modulaire), ADR-0002 (Manifestes & Contrats).
 - [x] **Spécifications techniques :** `docs/ARCHITECTURE.md`, `docs/PLUGIN_SYSTEM.md`.
 - [x] **Sécurité & Menaces :** `docs/SECURITY.md`, `docs/THREAT_MODEL.md` (STRIDE).
@@ -35,10 +35,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-007 (P1-T7) :** Panneau d'administration minimal Blade (`/admin/plugins`), validation CSRF, et commandes CLI (`cms:plugin:list`, `cms:plugin:enable`, `cms:plugin:disable`, `cms:recovery:safe-mode`).
 - [x] **US-008 (P1-T8) :** Plugin de référence `platform/plugins/demo-hello/` avec table `plugin_demo_messages`, contrôleur, vue Blade et route `/demo/hello` isolée montée uniquement à l'état `ACTIVE`.
 - [x] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (`CoreBoundariesTest`), test d'intégration end-to-end du cycle de vie complet (`CompleteMvpLifecycleTest`), configuration `pint.json` et `phpstan.neon` au niveau 8 sans avertissement.
+- [x] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`, `CircularDependencyException`, `MissingDependencyException`), ordonnancement déterministe au boot et contrôle préventif à l'activation.
 
 ### 3.2. Prochaine Étape (Phase 2 — Stabilisation, Dépendances & Résilience)
-- [ ] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`).
-- [ ] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres).
+- [ ] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés).
 - [ ] **US-012 (P2-T3) :** Système d'actifs statiques et publication d'assets sans compilation racine (`PluginAssetManager`).
 - [ ] **US-013 (P2-T4) :** Tolérance aux pannes et quarantaine automatique (`PluginHealthMonitor`, audit log).
 

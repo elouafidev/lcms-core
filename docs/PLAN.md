@@ -32,6 +32,11 @@
 | **P1-T8** | Création du plugin de démonstration (`platform/plugins/demo-hello`) | Phase 1 (US-008) | P1-T7 | **Terminé** |
 | **P1-T9** | Suite de tests automatisés du MVP (Unit, Feature, Architecture) | Phase 1 (US-009) | P1-T8 | **Terminé** |
 | **P1-T10** | Validation des critères d'acceptation du MVP | Phase 1 (US-009) | P1-T9 | **Terminé** |
+|---|---|---|---|---|
+| **P2-T1** | Tri topologique et détection des cycles (`DependencyResolver`) | Phase 2 (US-010) | P1-T10 | **Terminé** |
+| **P2-T2** | Bus de hooks extensible (`HookManager`, actions & filtres) | Phase 2 (US-011) | P2-T1 | **À faire** |
+| **P2-T3** | Gestionnaire d'actifs statiques (`PluginAssetManager`) | Phase 2 (US-012) | P2-T2 | **À faire** |
+| **P2-T4** | Tolérance aux pannes et quarantaine (`PluginHealthMonitor`) | Phase 2 (US-013) | P2-T3 | **À faire** |
 
 ---
 

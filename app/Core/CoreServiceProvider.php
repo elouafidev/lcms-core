@@ -8,6 +8,7 @@ use App\Core\Console\Commands\PluginDisableCommand;
 use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
 use App\Core\Console\Commands\SafeModeCommand;
+use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
@@ -31,6 +32,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(ManifestValidator::class);
         $this->app->singleton(PluginClassLoader::class);
         $this->app->singleton(PluginDiscovery::class);
+        $this->app->singleton(DependencyResolver::class);
         $this->app->singleton(PluginMigrationManager::class);
         $this->app->singleton(PluginRegistry::class);
         $this->app->singleton(PluginManager::class);
