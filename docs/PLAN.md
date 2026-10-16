@@ -36,7 +36,7 @@
 | **P2-T1** | Tri topologique et détection des cycles (`DependencyResolver`) | Phase 2 (US-010) | P1-T10 | **Terminé** |
 | **P2-T2** | Bus de hooks extensible (`HookManager`, actions & filtres) | Phase 2 (US-011) | P2-T1 | **Terminé** |
 | **P2-T3** | Tolérance aux crashs et Safe Mode (`SafeModeManager`, `PluginQuarantineHandler`) | Phase 2 (US-012) | P2-T2 | **Terminé** |
-| **P2-T4** | Navigation dynamique et registre de permissions (`NavigationRegistry`, `PermissionRegistry`) | Phase 2 (US-013) | P2-T3 | **À faire** |
+| **P2-T4** | Navigation dynamique et registre de permissions (`NavigationRegistry`, `PermissionRegistry`) | Phase 2 (US-013) | P2-T3 | **Terminé** |
 
 ---
 

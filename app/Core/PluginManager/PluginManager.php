@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Core\PluginManager;
 
+use App\Core\Admin\NavigationRegistry;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
 use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\Lifecycle\PluginState;
+use App\Core\Permissions\PermissionRegistry;
 use App\Core\PluginRegistry\Models\PluginRecord;
 use App\Core\PluginRegistry\PluginRegistry;
 use App\Core\Recovery\PluginQuarantineHandler;
@@ -26,6 +28,10 @@ class PluginManager
 
     private PluginQuarantineHandler $quarantineHandler;
 
+    private NavigationRegistry $navigationRegistry;
+
+    private PermissionRegistry $permissionRegistry;
+
     public function __construct(
         private PluginRegistry $registry,
         private PluginMigrationManager $migrationManager,
@@ -33,11 +39,15 @@ class PluginManager
         private ?LoggerInterface $logger = null,
         ?DependencyResolver $dependencyResolver = null,
         ?SafeModeManager $safeModeManager = null,
-        ?PluginQuarantineHandler $quarantineHandler = null
+        ?PluginQuarantineHandler $quarantineHandler = null,
+        ?NavigationRegistry $navigationRegistry = null,
+        ?PermissionRegistry $permissionRegistry = null
     ) {
         $this->dependencyResolver = $dependencyResolver ?? new DependencyResolver;
         $this->safeModeManager = $safeModeManager ?? new SafeModeManager;
         $this->quarantineHandler = $quarantineHandler ?? new PluginQuarantineHandler($this->registry, $this->logger);
+        $this->navigationRegistry = $navigationRegistry ?? new NavigationRegistry($this->registry);
+        $this->permissionRegistry = $permissionRegistry ?? new PermissionRegistry;
     }
 
     /**
@@ -125,6 +135,8 @@ class PluginManager
         $record->error_message = null;
         $record->save();
 
+        $this->permissionRegistry->registerFromManifest($record->getManifest());
+
         $this->registry->getDiscovery()->discover();
         $this->bootPlugin($record);
 
@@ -149,6 +161,9 @@ class PluginManager
         $record->is_active = false;
         $record->save();
 
+        $this->navigationRegistry->unregisterByPlugin($pluginId);
+        $this->permissionRegistry->unregisterByPlugin($pluginId);
+
         return $record;
     }
 
@@ -168,6 +183,16 @@ class PluginManager
     public function getQuarantineHandler(): PluginQuarantineHandler
     {
         return $this->quarantineHandler;
+    }
+
+    public function getNavigationRegistry(): NavigationRegistry
+    {
+        return $this->navigationRegistry;
+    }
+
+    public function getPermissionRegistry(): PermissionRegistry
+    {
+        return $this->permissionRegistry;
     }
 
     public function getRegistry(): PluginRegistry
@@ -204,6 +229,7 @@ class PluginManager
 
             foreach ($orderedPlugins as $plugin) {
                 if ($plugin instanceof PluginRecord) {
+                    $this->permissionRegistry->registerFromManifest($plugin->getManifest());
                     $this->bootPlugin($plugin);
                 }
             }
@@ -245,6 +271,9 @@ class PluginManager
         if ($record->is_active) {
             $this->deactivate($pluginId);
         }
+
+        $this->navigationRegistry->unregisterByPlugin($pluginId);
+        $this->permissionRegistry->unregisterByPlugin($pluginId);
 
         if ($purgeData) {
             $discovered = $this->registry->getDiscovered($pluginId);

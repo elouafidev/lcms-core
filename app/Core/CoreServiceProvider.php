@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Core\Admin\NavigationRegistry;
 use App\Core\Console\Commands\PluginDisableCommand;
 use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
@@ -11,6 +12,7 @@ use App\Core\Console\Commands\SafeModeCommand;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Hooks\HookManager;
 use App\Core\Lifecycle\PluginMigrationManager;
+use App\Core\Permissions\PermissionRegistry;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
 use App\Core\PluginDiscovery\PluginDiscovery;
@@ -39,6 +41,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(HookManager::class);
         $this->app->singleton(PluginMigrationManager::class);
         $this->app->singleton(PluginRegistry::class);
+        $this->app->singleton(PermissionRegistry::class);
+        $this->app->singleton(NavigationRegistry::class);
         $this->app->singleton(SafeModeManager::class);
         $this->app->singleton(PluginQuarantineHandler::class);
         $this->app->singleton(PluginManager::class);

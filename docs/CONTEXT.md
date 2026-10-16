@@ -12,22 +12,22 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-012 TERMINÉE)**
+- **Phase active :** **PHASE 2 TERMINÉE (100% DES 4 STORIES DE PHASE 2 LIVRÉES ET VALIDÉES)**
 - **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), tolérance aux crashs avec Safe Mode & quarantaine, registre de navigation dynamique et permissions.
-- **Statut :** US-012 validée avec 82 tests au vert (554 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 2 intégralement validée avec 87 tests au vert (624 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
 ## 3. Statut d'Avancement des Fonctionnalités
 
-### 3.1. Fonctionnalités Terminées (Phase 0, Phase 1 & Début Phase 2)
+### 3.1. Fonctionnalités Terminées (Phase 0, Phase 1 & Phase 2)
 - [x] **Cadre architectural & Directives :** `AGENTS.md`, ADR-0001 (Monolithe modulaire), ADR-0002 (Manifestes & Contrats).
 - [x] **Spécifications techniques :** `docs/ARCHITECTURE.md`, `docs/PLUGIN_SYSTEM.md`.
 - [x] **Sécurité & Menaces :** `docs/SECURITY.md`, `docs/THREAT_MODEL.md` (STRIDE).
 - [x] **Assurance qualité :** `docs/TESTING.md`, `docs/ROADMAP.md`.
 - [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (13 User Stories avec messages de commit conventionnels).
 - [x] **US-001 (P1-T1) :** Squelette Laravel minimal initialisé, `config/cms.php` configuré, `CoreServiceProvider` enregistré dans `bootstrap/app.php`, tests unitaires au vert.
-- [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`, `HookSubscriberInterface`) et tests d'architecture de pureté au vert.
+- [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`, `HookSubscriberInterface`, `NavigationItemContract`) et tests d'architecture de pureté au vert.
 - [x] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`), DTO immuable `PluginManifest`, protection anti-traversal et 9 tests unitaires au vert.
 - [x] **US-004 (P1-T4) :** Découvreur de plugins locaux (`PluginDiscovery`), DTO `DiscoveredPlugin`, `PluginClassLoader` avec injection dynamique PSR-4 dans Composer.
 - [x] **US-005 (P1-T5) :** Table `cms_plugins`, Enum `PluginState` (5 états), modèle `PluginRecord`, `PluginRegistry` et `PluginManager` avec isolation et Safe Mode.
@@ -38,9 +38,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`, `CircularDependencyException`, `MissingDependencyException`), ordonnancement déterministe au boot et contrôle préventif à l'activation.
 - [x] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés, `HookSubscriberInterface`, façade `Hook`).
 - [x] **US-012 (P2-T3) :** Tolérance aux crashs, mode de secours (*Emergency Safe Mode*) et mise en quarantaine (`SafeModeManager`, `PluginQuarantineHandler`, table `cms_plugin_errors`).
+- [x] **US-013 (P2-T4) :** Registre dynamique des permissions et entrées de menu admin (`NavigationRegistry`, `PermissionRegistry`, `NavigationItemContract`, barre latérale Blade `sidebar.blade.php`).
 
-### 3.2. Prochaine Étape (Phase 2 — Stabilisation, Dépendances & Résilience)
-- [ ] **US-013 (P2-T4) :** Registre dynamique des permissions et entrées de menu admin (`NavigationRegistry`, `PermissionRegistry`, `NavigationItemContract`).
+### 3.2. Prochaine Étape (Phase 3 — Moteur de Contenu & Thèmes / Assets)
+- [ ] **Phase 3 :** Gestionnaire d'actifs statiques (`PluginAssetManager`), système de thèmes interchangeables et contrat de publication d'assets.
 
 ---
 
@@ -75,13 +76,11 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 7. Prochaine Tâche Recommandée
-1. Présenter le bilan de validation de la **PHASE 1 (MVP du Noyau)** à l'utilisateur.
-2. Engager la **PHASE 2 (Stabilisation du Système de Plugins)** :
-   - Gestionnaire de dépendances avec contraintes SemVer strictes et résolution récursive.
-   - Système de hooks (Actions et Filtres) avec priorités d'exécution.
-   - Enregistrement des éléments de menu d'administration par plugin (`NavigationItemContract`).
-   - Registre de permissions par plugin (`PermissionRegistry`).
-   - Diagnostics avancés et rapports d'incident.
+1. Présenter le bilan de validation de la **PHASE 2 (Stabilisation, Dépendances & Résilience)** à l'utilisateur (100% complétée).
+2. Engager la **PHASE 3 (Médiathèque, Thèmes & Gestionnaire d'Assets)** :
+   - Publication d'assets statiques isolés par extension (`PluginAssetManager`).
+   - Contrat de stockage de médias (`MediaStorageInterface`).
+   - Moteur de thèmes interchangeables sans couplage noyau.
 
 ---
 
