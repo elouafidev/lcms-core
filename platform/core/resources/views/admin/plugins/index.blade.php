@@ -188,6 +188,16 @@
             </div>
         @endif
 
+        @php
+            $quarantinedPlugins = $plugins->filter(fn ($p) => strtoupper($p->getState()) === 'ERROR');
+        @endphp
+
+        @if($quarantinedPlugins->isNotEmpty())
+            <div class="alert alert-error">
+                <strong>Attention critique :</strong> Des extensions défaillantes ont été isolées en quarantaine ({{ $quarantinedPlugins->map(fn ($p) => $p->getManifest()->getName())->join(', ') }}). Consultez les détails ou désactivez-les pour restaurer la pleine conformité.
+            </div>
+        @endif
+
         <div class="card">
             @if($plugins->isEmpty())
                 <div class="empty-state">
@@ -208,14 +218,14 @@
                         @foreach($plugins as $plugin)
                             @php
                                 $manifest = $plugin->getManifest();
-                                $state = $plugin->getState();
+                                $state = strtoupper($plugin->getState());
                                 $pluginId = $manifest->getId();
                                 $badgeClass = match($state) {
-                                    'available' => 'badge-available',
-                                    'installed' => 'badge-installed',
-                                    'active' => 'badge-active',
-                                    'disabled' => 'badge-disabled',
-                                    'error' => 'badge-error',
+                                    'AVAILABLE' => 'badge-available',
+                                    'INSTALLED' => 'badge-installed',
+                                    'ACTIVE' => 'badge-active',
+                                    'DISABLED' => 'badge-disabled',
+                                    'ERROR' => 'badge-error',
                                     default => 'badge-available',
                                 };
                             @endphp
@@ -223,35 +233,40 @@
                                 <td>
                                     <div class="plugin-name">{{ $manifest->getName() }}</div>
                                     <div class="plugin-id">{{ $pluginId }}</div>
+                                    @if($state === 'ERROR' && $plugin instanceof \App\Core\PluginRegistry\Models\PluginRecord && $plugin->error_message)
+                                        <div style="color: var(--danger); font-size: 0.8rem; margin-top: 0.35rem; font-family: monospace;">
+                                            {{ $plugin->error_message }}
+                                        </div>
+                                    @endif
                                 </td>
                                 <td>{{ $manifest->getVersion() }}</td>
                                 <td>
                                     <span class="badge {{ $badgeClass }}">{{ $state }}</span>
                                 </td>
                                 <td>
-                                    @if($state === 'available')
+                                    @if($state === 'AVAILABLE')
                                         <form method="POST" action="{{ route('admin.plugins.enable', $pluginId) }}" class="actions-form">
                                             @csrf
                                             <button type="submit" class="btn btn-primary">Installer et Activer</button>
                                         </form>
-                                    @elseif($state === 'installed' || $state === 'disabled')
+                                    @elseif($state === 'INSTALLED' || $state === 'DISABLED')
                                         <form method="POST" action="{{ route('admin.plugins.enable', $pluginId) }}" class="actions-form">
                                             @csrf
                                             <button type="submit" class="btn btn-primary">Activer</button>
                                         </form>
-                                    @elseif($state === 'active')
+                                    @elseif($state === 'ACTIVE')
                                         <form method="POST" action="{{ route('admin.plugins.disable', $pluginId) }}" class="actions-form">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary">Désactiver</button>
                                         </form>
-                                    @elseif($state === 'error')
+                                    @elseif($state === 'ERROR')
                                         <form method="POST" action="{{ route('admin.plugins.disable', $pluginId) }}" class="actions-form">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary">Mettre en quarantaine</button>
                                         </form>
                                     @endif
 
-                                    @if($state !== 'available')
+                                    @if($state !== 'AVAILABLE')
                                         <form method="POST" action="{{ route('admin.plugins.uninstall', $pluginId) }}" class="actions-form" onsubmit="return confirm('Confirmer la désinstallation ?');">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">Désinstaller</button>

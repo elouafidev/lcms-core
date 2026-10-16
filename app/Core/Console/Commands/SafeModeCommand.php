@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Console\Commands;
 
-use App\Core\PluginManager\PluginManager;
+use App\Core\Recovery\SafeModeManager;
 use Illuminate\Console\Command;
 
 class SafeModeCommand extends Command
@@ -23,35 +23,23 @@ class SafeModeCommand extends Command
      */
     protected $description = 'Manage emergency safe mode to bypass all third-party plugins';
 
-    public function handle(PluginManager $pluginManager): int
+    public function handle(SafeModeManager $safeModeManager): int
     {
-        $sentinelFile = storage_path('framework/cms_safe_mode');
-
         if ($this->option('on')) {
-            $dir = dirname($sentinelFile);
-            if (! is_dir($dir)) {
-                mkdir($dir, 0755, true);
-            }
-
-            file_put_contents($sentinelFile, (string) now());
+            $safeModeManager->enable();
             $this->warn('Emergency Safe Mode is now ENABLED. All third-party plugins will be bypassed at boot.');
 
             return self::SUCCESS;
         }
 
         if ($this->option('off')) {
-            if (file_exists($sentinelFile)) {
-                unlink($sentinelFile);
-            }
-
+            $safeModeManager->disable();
             $this->info('Emergency Safe Mode is now DISABLED. Plugins will load normally.');
 
             return self::SUCCESS;
         }
 
-        $isActive = $pluginManager->isSafeMode();
-
-        if ($isActive) {
+        if ($safeModeManager->isEnabled()) {
             $this->warn('Emergency Safe Mode is currently ACTIVE.');
         } else {
             $this->info('Emergency Safe Mode is currently INACTIVE.');

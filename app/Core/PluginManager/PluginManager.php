@@ -10,6 +10,8 @@ use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\Lifecycle\PluginState;
 use App\Core\PluginRegistry\Models\PluginRecord;
 use App\Core\PluginRegistry\PluginRegistry;
+use App\Core\Recovery\PluginQuarantineHandler;
+use App\Core\Recovery\SafeModeManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
 use Psr\Log\LoggerInterface;
@@ -20,14 +22,22 @@ class PluginManager
 {
     private DependencyResolver $dependencyResolver;
 
+    private SafeModeManager $safeModeManager;
+
+    private PluginQuarantineHandler $quarantineHandler;
+
     public function __construct(
         private PluginRegistry $registry,
         private PluginMigrationManager $migrationManager,
         private Application $app,
         private ?LoggerInterface $logger = null,
-        ?DependencyResolver $dependencyResolver = null
+        ?DependencyResolver $dependencyResolver = null,
+        ?SafeModeManager $safeModeManager = null,
+        ?PluginQuarantineHandler $quarantineHandler = null
     ) {
         $this->dependencyResolver = $dependencyResolver ?? new DependencyResolver;
+        $this->safeModeManager = $safeModeManager ?? new SafeModeManager;
+        $this->quarantineHandler = $quarantineHandler ?? new PluginQuarantineHandler($this->registry, $this->logger);
     }
 
     /**
@@ -147,8 +157,17 @@ class PluginManager
      */
     public function isSafeMode(): bool
     {
-        return file_exists(storage_path('framework/cms_safe_mode'))
-            || (bool) config('cms.safe_mode.enabled', false);
+        return $this->safeModeManager->isEnabled();
+    }
+
+    public function getSafeModeManager(): SafeModeManager
+    {
+        return $this->safeModeManager;
+    }
+
+    public function getQuarantineHandler(): PluginQuarantineHandler
+    {
+        return $this->quarantineHandler;
     }
 
     public function getRegistry(): PluginRegistry
@@ -167,7 +186,7 @@ class PluginManager
     public function boot(): void
     {
         // Emergency Safe Mode bypasses all plugins
-        if ($this->isSafeMode()) {
+        if ($this->safeModeManager->isEnabled()) {
             $this->logger?->info('Emergency Safe Mode active: Skipping third-party plugin boot.');
 
             return;
@@ -206,11 +225,7 @@ class PluginManager
                     $this->app->register($providerClass);
                 }
             } catch (Throwable $e) {
-                $errorMessage = "Unhandled exception during boot of [{$providerClass}]: {$e->getMessage()}";
-                $this->registry->recordError($plugin->id, $errorMessage);
-                $this->logger?->critical("Plugin [{$plugin->id}] quarantined: {$errorMessage}", [
-                    'exception' => $e,
-                ]);
+                $this->quarantineHandler->quarantine($plugin, $e, $providerClass);
 
                 break;
             }
