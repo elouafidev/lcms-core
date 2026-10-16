@@ -147,6 +147,7 @@
 - **Fichiers :** `platform/plugins/acme.pages/*`.
 - **Dépendances :** P3-T2.
 - **Critère d'acceptation :** Route `/page/{slug}` active uniquement si la page est publiée et le plugin actif.
+- **Statut :** **Terminé**.
 
 ### Tâche P3-T4 : Plugin de Menus Arborescents (US-017)
 - **Objectif :** Gestion de menus hiérarchiques et helper de rendu HTML.
