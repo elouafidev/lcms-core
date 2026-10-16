@@ -12,20 +12,20 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 2 TERMINÉE (100% DES 4 STORIES DE PHASE 2 LIVRÉES ET VALIDÉES)**
-- **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), tolérance aux crashs avec Safe Mode & quarantaine, registre de navigation dynamique et permissions.
-- **Statut :** Phase 2 intégralement validée avec 87 tests au vert (624 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 3 EN COURS (US-014 VALIDÉE)**
+- **Objectif de phase :** Plugins fondamentaux autonomes, contrat de stockage de médias, pages statiques, menus hiérarchiques, métadonnées SEO et gestionnaire d'actifs statiques isolés.
+- **Statut :** Phase 3 initiée avec succès. US-014 validée avec 99 tests au vert (670 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
 ## 3. Statut d'Avancement des Fonctionnalités
 
-### 3.1. Fonctionnalités Terminées (Phase 0, Phase 1 & Phase 2)
+### 3.1. Fonctionnalités Terminées (Phase 0, Phase 1, Phase 2 & Phase 3)
 - [x] **Cadre architectural & Directives :** `AGENTS.md`, ADR-0001 (Monolithe modulaire), ADR-0002 (Manifestes & Contrats).
 - [x] **Spécifications techniques :** `docs/ARCHITECTURE.md`, `docs/PLUGIN_SYSTEM.md`.
 - [x] **Sécurité & Menaces :** `docs/SECURITY.md`, `docs/THREAT_MODEL.md` (STRIDE).
 - [x] **Assurance qualité :** `docs/TESTING.md`, `docs/ROADMAP.md`.
-- [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (13 User Stories avec messages de commit conventionnels).
+- [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (18 User Stories avec messages de commit conventionnels).
 - [x] **US-001 (P1-T1) :** Squelette Laravel minimal initialisé, `config/cms.php` configuré, `CoreServiceProvider` enregistré dans `bootstrap/app.php`, tests unitaires au vert.
 - [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`, `HookSubscriberInterface`, `NavigationItemContract`) et tests d'architecture de pureté au vert.
 - [x] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`), DTO immuable `PluginManifest`, protection anti-traversal et 9 tests unitaires au vert.
@@ -39,9 +39,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés, `HookSubscriberInterface`, façade `Hook`).
 - [x] **US-012 (P2-T3) :** Tolérance aux crashs, mode de secours (*Emergency Safe Mode*) et mise en quarantaine (`SafeModeManager`, `PluginQuarantineHandler`, table `cms_plugin_errors`).
 - [x] **US-013 (P2-T4) :** Registre dynamique des permissions et entrées de menu admin (`NavigationRegistry`, `PermissionRegistry`, `NavigationItemContract`, barre latérale Blade `sidebar.blade.php`).
+- [x] **US-014 (P3-T1) :** Gestionnaire d'actifs statiques isolés (`PluginAssetManager`), commande CLI `cms:plugin:publish-assets`, publication automatique à l'activation et nettoyage à la désinstallation purgée.
 
-### 3.2. Prochaine Étape (Phase 3 — Moteur de Contenu & Thèmes / Assets)
-- [ ] **Phase 3 :** Gestionnaire d'actifs statiques (`PluginAssetManager`), système de thèmes interchangeables et contrat de publication d'assets.
+### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T2 / US-015)
+- [ ] **US-015 (P3-T2) :** Contrat public `MediaStorageInterface` et plugin autonome de médiathèque (`acme.media-library`).
 
 ---
 

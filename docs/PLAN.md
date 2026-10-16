@@ -130,9 +130,10 @@
 
 ### Tâche P3-T1 : Gestionnaire d'Actifs Statiques Isolés (US-014)
 - **Objectif :** Servir et publier les assets statiques sans compilation globale.
-- **Fichiers :** `app/Core/Assets/PluginAssetManager.php`, `app/Core/Console/Commands/PluginPublishAssetsCommand.php`.
+- **Fichiers :** `app/Core/Assets/PluginAssetManager.php`, `app/Core/Console/Commands/PluginPublishAssetsCommand.php`, `tests/Feature/PluginAssetManagerTest.php`.
 - **Dépendances :** P2-T4.
 - **Critère d'acceptation :** Commande de publication fonctionnelle et suppression propre à la désinstallation.
+- **Statut :** **Terminé**.
 
 ### Tâche P3-T2 : Contrat de Stockage et Plugin Médiathèque (US-015)
 - **Objectif :** Bibliothèque de médias autonome avec contrat `MediaStorageInterface`.

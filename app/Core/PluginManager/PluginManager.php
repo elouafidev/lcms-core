@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\PluginManager;
 
 use App\Core\Admin\NavigationRegistry;
+use App\Core\Assets\PluginAssetManager;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
 use App\Core\Lifecycle\PluginMigrationManager;
@@ -32,6 +33,8 @@ class PluginManager
 
     private PermissionRegistry $permissionRegistry;
 
+    private PluginAssetManager $assetManager;
+
     public function __construct(
         private PluginRegistry $registry,
         private PluginMigrationManager $migrationManager,
@@ -41,13 +44,15 @@ class PluginManager
         ?SafeModeManager $safeModeManager = null,
         ?PluginQuarantineHandler $quarantineHandler = null,
         ?NavigationRegistry $navigationRegistry = null,
-        ?PermissionRegistry $permissionRegistry = null
+        ?PermissionRegistry $permissionRegistry = null,
+        ?PluginAssetManager $assetManager = null
     ) {
         $this->dependencyResolver = $dependencyResolver ?? new DependencyResolver;
         $this->safeModeManager = $safeModeManager ?? new SafeModeManager;
         $this->quarantineHandler = $quarantineHandler ?? new PluginQuarantineHandler($this->registry, $this->logger);
         $this->navigationRegistry = $navigationRegistry ?? new NavigationRegistry($this->registry);
         $this->permissionRegistry = $permissionRegistry ?? new PermissionRegistry;
+        $this->assetManager = $assetManager ?? new PluginAssetManager;
     }
 
     /**
@@ -137,6 +142,10 @@ class PluginManager
 
         $this->permissionRegistry->registerFromManifest($record->getManifest());
 
+        $discovered = $this->registry->getDiscovered($pluginId);
+        $pluginPath = $discovered !== null ? $discovered->getPath() : $record->getPath();
+        $this->assetManager->publish($pluginId, $pluginPath);
+
         $this->registry->getDiscovery()->discover();
         $this->bootPlugin($record);
 
@@ -203,6 +212,11 @@ class PluginManager
     public function getDependencyResolver(): DependencyResolver
     {
         return $this->dependencyResolver;
+    }
+
+    public function getAssetManager(): PluginAssetManager
+    {
+        return $this->assetManager;
     }
 
     /**
@@ -279,6 +293,7 @@ class PluginManager
             $discovered = $this->registry->getDiscovered($pluginId);
             $path = $discovered !== null ? $discovered->getPath() : $record->getPath();
             $this->migrationManager->rollback($pluginId, $path);
+            $this->assetManager->clean($pluginId);
         }
 
         $record->delete();
