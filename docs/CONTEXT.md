@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 3 EN COURS (US-014, US-015, US-016 & US-017 VALIDÉES — 4/5)**
+- **Phase active :** **PHASE 3 ENTIÈREMENT VALIDÉE (5/5) — PRÊT POUR PHASE 4**
 - **Objectif de phase :** Plugins fondamentaux autonomes, contrat de stockage de médias, pages statiques, menus hiérarchiques, métadonnées SEO et gestionnaire d'actifs statiques isolés.
-- **Statut :** Phase 3 en excellente progression. US-014, US-015, US-016 et US-017 validées avec 134 tests au vert (827 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 3 achevée à 100%. Les 5 User Stories (US-014 à US-018) sont validées avec 144 tests au vert (873 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -43,9 +43,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-015 (P3-T2) :** Contrat public `MediaStorageInterface` et plugin autonome de médiathèque (`acme.media-library`) avec upload sécurisé, table `plugin_media_items` et menu admin.
 - [x] **US-016 (P3-T3) :** Plugin fondamental de pages statiques (`acme.pages`) avec modèle `Page`, table `plugin_pages`, routage dynamique `/page/{slug}` (200 si publié, 404 si brouillon/inactif), contrôleur d'administration et vue Blade front.
 - [x] **US-017 (P3-T4) :** Plugin fondamental de menus de navigation (`acme.menus`) avec modèles `Menu` et `MenuItem`, tables isolées `plugin_menus` et `plugin_menu_items`, service de rendu récursif `MenuRenderer::render('main-nav')`, filtre Hook `cms.menu` et directive Blade `@menu`.
+- [x] **US-018 (P3-T5) :** Plugin SEO et métadonnées via bus de filtres Hook (`acme.seo`) avec filtre `cms.head` (titre, méta-description, liens canoniques, balises OpenGraph, configuration par défaut persistée via `plugin_seo_settings` et écran d'administration).
 
-### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T5 / US-018)
-- [ ] **US-018 (P3-T5) :** Plugin SEO et métadonnées via bus de filtres Hook (`acme.seo`) avec filtre `cms.head` (titre, meta description, liens canoniques et balises OpenGraph).
+### 3.2. Prochaine Étape (Phase 4 — Moteur de Thèmes & Rendu Dynamique)
+- [ ] **Phase 4 :** Formalisation des spécifications et implémentation du système de thèmes interchangeables sans couplage noyau.
 
 ---
 

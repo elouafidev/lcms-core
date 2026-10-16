@@ -161,4 +161,5 @@
 - **Fichiers :** `platform/plugins/acme.seo/*`.
 - **Dépendances :** P3-T4.
 - **Critère d'acceptation :** Métadonnées injectées dynamiquement sans couplage dur.
+- **Statut :** **Terminé**.
 
