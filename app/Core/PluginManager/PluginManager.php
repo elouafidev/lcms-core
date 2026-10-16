@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\PluginManager;
 
+use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
 use App\Core\Lifecycle\PluginMigrationManager;
 use App\Core\Lifecycle\PluginState;
@@ -17,12 +18,17 @@ use Throwable;
 
 class PluginManager
 {
+    private DependencyResolver $dependencyResolver;
+
     public function __construct(
         private PluginRegistry $registry,
         private PluginMigrationManager $migrationManager,
         private Application $app,
-        private ?LoggerInterface $logger = null
-    ) {}
+        private ?LoggerInterface $logger = null,
+        ?DependencyResolver $dependencyResolver = null
+    ) {
+        $this->dependencyResolver = $dependencyResolver ?? new DependencyResolver;
+    }
 
     /**
      * Install a discovered plugin and execute its isolated database migrations.
@@ -77,6 +83,33 @@ class PluginManager
             throw InvalidStateTransitionException::forbidden($pluginId, $record->state->value, PluginState::ACTIVE->value);
         }
 
+        // Validate dependencies and verify absence of circular dependency loops
+        $candidates = $this->registry->getActive()->all();
+        $candidates[$pluginId] = $record;
+
+        $toProcess = [$pluginId];
+        $visited = [];
+
+        while (! empty($toProcess)) {
+            $currentId = array_shift($toProcess);
+            if (isset($visited[$currentId])) {
+                continue;
+            }
+            $visited[$currentId] = true;
+
+            $currentPlugin = $candidates[$currentId] ?? $this->registry->find($currentId) ?? $this->registry->getDiscovered($currentId);
+            if ($currentPlugin !== null) {
+                $candidates[$currentId] = $currentPlugin;
+                foreach (array_keys($currentPlugin->getManifest()->getDependencies()) as $depId) {
+                    if (! isset($visited[$depId])) {
+                        $toProcess[] = $depId;
+                    }
+                }
+            }
+        }
+
+        $this->dependencyResolver->resolve($candidates, checkMissing: true);
+
         $record->state = PluginState::ACTIVE;
         $record->is_active = true;
         $record->error_message = null;
@@ -123,6 +156,11 @@ class PluginManager
         return $this->registry;
     }
 
+    public function getDependencyResolver(): DependencyResolver
+    {
+        return $this->dependencyResolver;
+    }
+
     /**
      * Boot all active plugins at application startup.
      */
@@ -143,9 +181,12 @@ class PluginManager
             $this->registry->getDiscovery()->discover();
 
             $activePlugins = $this->registry->getActive();
+            $orderedPlugins = $this->dependencyResolver->resolve($activePlugins, checkMissing: false);
 
-            foreach ($activePlugins as $plugin) {
-                $this->bootPlugin($plugin);
+            foreach ($orderedPlugins as $plugin) {
+                if ($plugin instanceof PluginRecord) {
+                    $this->bootPlugin($plugin);
+                }
             }
         } catch (Throwable $e) {
             $this->logger?->warning('PluginManager boot skipped: Database not ready or unreachable ('.$e->getMessage().').');
