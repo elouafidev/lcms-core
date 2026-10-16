@@ -154,8 +154,9 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<body style="margin: 0; padding: 0; display: flex; min-height: 100vh; background-color: var(--bg-color);">
+    @include('core::admin.layouts.sidebar')
+    <div class="container" style="flex: 1; padding: 2rem;">
         <header>
             <div>
                 <h1>Gestion des Extensions CMS</h1>

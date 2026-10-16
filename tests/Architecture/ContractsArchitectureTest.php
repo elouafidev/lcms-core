@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Architecture;
 
 use App\Core\Contracts\HookSubscriberInterface;
+use App\Core\Contracts\NavigationItemContract;
 use App\Core\Contracts\PluginInterface;
 use App\Core\Contracts\PluginLifecycleListenerInterface;
 use App\Core\Contracts\PluginManifestInterface;
@@ -23,6 +24,7 @@ class ContractsArchitectureTest extends TestCase
         PluginManifestInterface::class,
         PluginLifecycleListenerInterface::class,
         HookSubscriberInterface::class,
+        NavigationItemContract::class,
     ];
 
     public function test_all_contract_types_are_interfaces(): void
