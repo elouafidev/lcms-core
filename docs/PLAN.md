@@ -154,6 +154,7 @@
 - **Fichiers :** `platform/plugins/acme.menus/*`.
 - **Dépendances :** P3-T3.
 - **Critère d'acceptation :** Rendu HTML propre de navigation hiérarchique.
+- **Statut :** **Terminé**.
 
 ### Tâche P3-T5 : Plugin SEO et Métadonnées via Hooks (US-018)
 - **Objectif :** Injection de balises OpenGraph et canonical via le filtre `cms.head`.

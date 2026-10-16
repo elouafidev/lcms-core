@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 3 EN COURS (US-014, US-015 & US-016 VALIDÉES — 3/5)**
+- **Phase active :** **PHASE 3 EN COURS (US-014, US-015, US-016 & US-017 VALIDÉES — 4/5)**
 - **Objectif de phase :** Plugins fondamentaux autonomes, contrat de stockage de médias, pages statiques, menus hiérarchiques, métadonnées SEO et gestionnaire d'actifs statiques isolés.
-- **Statut :** Phase 3 en excellente progression. US-014, US-015 et US-016 validées avec 120 tests au vert (770 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 3 en excellente progression. US-014, US-015, US-016 et US-017 validées avec 134 tests au vert (827 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -42,9 +42,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-014 (P3-T1) :** Gestionnaire d'actifs statiques isolés (`PluginAssetManager`), commande CLI `cms:plugin:publish-assets`, publication automatique à l'activation et nettoyage à la désinstallation purgée.
 - [x] **US-015 (P3-T2) :** Contrat public `MediaStorageInterface` et plugin autonome de médiathèque (`acme.media-library`) avec upload sécurisé, table `plugin_media_items` et menu admin.
 - [x] **US-016 (P3-T3) :** Plugin fondamental de pages statiques (`acme.pages`) avec modèle `Page`, table `plugin_pages`, routage dynamique `/page/{slug}` (200 si publié, 404 si brouillon/inactif), contrôleur d'administration et vue Blade front.
+- [x] **US-017 (P3-T4) :** Plugin fondamental de menus de navigation (`acme.menus`) avec modèles `Menu` et `MenuItem`, tables isolées `plugin_menus` et `plugin_menu_items`, service de rendu récursif `MenuRenderer::render('main-nav')`, filtre Hook `cms.menu` et directive Blade `@menu`.
 
-### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T4 / US-017)
-- [ ] **US-017 (P3-T4) :** Plugin fondamental de menus de navigation (`acme.menus`) avec modèles `Menu` et `MenuItem`, tables isolées `plugin_menus` et `plugin_menu_items`, et service de rendu `MenuRenderer::render('main-nav')`.
+### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T5 / US-018)
+- [ ] **US-018 (P3-T5) :** Plugin SEO et métadonnées via bus de filtres Hook (`acme.seo`) avec filtre `cms.head` (titre, meta description, liens canoniques et balises OpenGraph).
 
 ---
 
