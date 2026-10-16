@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-010 TERMINÉE)**
+- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-011 TERMINÉE)**
 - **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), gestion des assets et monitoring de santé.
-- **Statut :** US-010 validée avec 65 tests au vert (444 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** US-011 validée avec 76 tests au vert (493 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -27,7 +27,7 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **Assurance qualité :** `docs/TESTING.md`, `docs/ROADMAP.md`.
 - [x] **Spécification des User Stories :** `docs/USER_STORIES.md` (13 User Stories avec messages de commit conventionnels).
 - [x] **US-001 (P1-T1) :** Squelette Laravel minimal initialisé, `config/cms.php` configuré, `CoreServiceProvider` enregistré dans `bootstrap/app.php`, tests unitaires au vert.
-- [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`) et tests d'architecture de pureté au vert.
+- [x] **US-002 (P1-T2) :** Contrats publics stricts (`PluginInterface`, `PluginManifestInterface`, `PluginLifecycleListenerInterface`, `HookSubscriberInterface`) et tests d'architecture de pureté au vert.
 - [x] **US-003 (P1-T3) :** Validateur de manifeste JSON (`ManifestValidator`), DTO immuable `PluginManifest`, protection anti-traversal et 9 tests unitaires au vert.
 - [x] **US-004 (P1-T4) :** Découvreur de plugins locaux (`PluginDiscovery`), DTO `DiscoveredPlugin`, `PluginClassLoader` avec injection dynamique PSR-4 dans Composer.
 - [x] **US-005 (P1-T5) :** Table `cms_plugins`, Enum `PluginState` (5 états), modèle `PluginRecord`, `PluginRegistry` et `PluginManager` avec isolation et Safe Mode.
@@ -36,9 +36,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-008 (P1-T8) :** Plugin de référence `platform/plugins/demo-hello/` avec table `plugin_demo_messages`, contrôleur, vue Blade et route `/demo/hello` isolée montée uniquement à l'état `ACTIVE`.
 - [x] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (`CoreBoundariesTest`), test d'intégration end-to-end du cycle de vie complet (`CompleteMvpLifecycleTest`), configuration `pint.json` et `phpstan.neon` au niveau 8 sans avertissement.
 - [x] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`, `CircularDependencyException`, `MissingDependencyException`), ordonnancement déterministe au boot et contrôle préventif à l'activation.
+- [x] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés, `HookSubscriberInterface`, façade `Hook`).
 
 ### 3.2. Prochaine Étape (Phase 2 — Stabilisation, Dépendances & Résilience)
-- [ ] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés).
 - [ ] **US-012 (P2-T3) :** Système d'actifs statiques et publication d'assets sans compilation racine (`PluginAssetManager`).
 - [ ] **US-013 (P2-T4) :** Tolérance aux pannes et quarantaine automatique (`PluginHealthMonitor`, audit log).
 
