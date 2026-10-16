@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-011 TERMINÉE)**
-- **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), gestion des assets et monitoring de santé.
-- **Statut :** US-011 validée avec 76 tests au vert (493 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 2 EN COURS (STABILISATION, DÉPENDANCES & RÉSILIENCE — US-012 TERMINÉE)**
+- **Objectif de phase :** Résilience logicielle, ordonnancement déterministe des dépendances (Kahn), extensibilité via bus de hooks (actions & filtres), tolérance aux crashs avec Safe Mode & quarantaine, registre de navigation dynamique et permissions.
+- **Statut :** US-012 validée avec 82 tests au vert (554 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -37,10 +37,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-009 (P1-T9/T10) :** Garde-fous d'architecture (`CoreBoundariesTest`), test d'intégration end-to-end du cycle de vie complet (`CompleteMvpLifecycleTest`), configuration `pint.json` et `phpstan.neon` au niveau 8 sans avertissement.
 - [x] **US-010 (P2-T1) :** Tri topologique et détection des dépendances circulaires (Algorithme de Kahn, `DependencyResolver`, `CircularDependencyException`, `MissingDependencyException`), ordonnancement déterministe au boot et contrôle préventif à l'activation.
 - [x] **US-011 (P2-T2) :** Bus de hooks et système d'interception (`HookManager`, actions & filtres priorisés, `HookSubscriberInterface`, façade `Hook`).
+- [x] **US-012 (P2-T3) :** Tolérance aux crashs, mode de secours (*Emergency Safe Mode*) et mise en quarantaine (`SafeModeManager`, `PluginQuarantineHandler`, table `cms_plugin_errors`).
 
 ### 3.2. Prochaine Étape (Phase 2 — Stabilisation, Dépendances & Résilience)
-- [ ] **US-012 (P2-T3) :** Système d'actifs statiques et publication d'assets sans compilation racine (`PluginAssetManager`).
-- [ ] **US-013 (P2-T4) :** Tolérance aux pannes et quarantaine automatique (`PluginHealthMonitor`, audit log).
+- [ ] **US-013 (P2-T4) :** Registre dynamique des permissions et entrées de menu admin (`NavigationRegistry`, `PermissionRegistry`, `NavigationItemContract`).
 
 ---
 

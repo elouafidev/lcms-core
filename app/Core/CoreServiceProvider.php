@@ -16,6 +16,8 @@ use App\Core\PluginDiscovery\ManifestValidator;
 use App\Core\PluginDiscovery\PluginDiscovery;
 use App\Core\PluginManager\PluginManager;
 use App\Core\PluginRegistry\PluginRegistry;
+use App\Core\Recovery\PluginQuarantineHandler;
+use App\Core\Recovery\SafeModeManager;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -37,6 +39,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(HookManager::class);
         $this->app->singleton(PluginMigrationManager::class);
         $this->app->singleton(PluginRegistry::class);
+        $this->app->singleton(SafeModeManager::class);
+        $this->app->singleton(PluginQuarantineHandler::class);
         $this->app->singleton(PluginManager::class);
     }
 
@@ -66,6 +70,8 @@ class CoreServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->app->make(PluginManager::class)->boot();
+        $this->app->booted(function (): void {
+            $this->app->make(PluginManager::class)->boot();
+        });
     }
 }
