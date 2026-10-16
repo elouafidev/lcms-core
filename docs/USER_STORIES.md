@@ -817,6 +817,213 @@ Refs: US-013
 
 ---
 
+## 4. Spécification Détaillée des User Stories — Phase 3 (Plugins Fondamentaux & Assets)
+
+### US-014 : Gestionnaire d'Actifs Statiques de Plugins (`PluginAssetManager`)
+
+- **Identifiant :** `US-014` (Plan : `P3-T1`)
+- **Persona :** `PluginDev` / `SysAdmin`
+- **Énoncé :**
+  > En tant que **développeur de plugin**,  
+  > Je souhaite **publier ou servir des assets statiques (CSS, JS, SVG, images) depuis le répertoire de mon plugin vers `public/vendor/plugins/{plugin_id}` de manière isolée**,  
+  > Afin que **mon extension fournisse ses propres styles et scripts sans nécessiter de compilation globale Node/Vite dans le noyau**.
+
+#### Critères d'Acceptation
+```gherkin
+Given un plugin avec un dossier resources/assets/ contenant du CSS ou JS
+When la commande cms:plugin:publish-assets {plugin_id} ou le cycle d'activation est exécuté
+Then les assets sont copiés ou liés dans public/vendor/plugins/{plugin_id}
+And le helper PluginAssetManager::url($pluginId, $path) génère l'URL publique absolue valide
+And lors de la désinstallation avec purge, le dossier d'assets publié est automatiquement nettoyé
+```
+
+#### Fichiers Impactés
+- `app/Core/Assets/PluginAssetManager.php`
+- `app/Core/Console/Commands/PluginPublishAssetsCommand.php`
+- `app/Core/CoreServiceProvider.php`
+- `tests/Feature/PluginAssetManagerTest.php`
+
+#### Commit de Code Associé
+```text
+feat(assets): implement isolated PluginAssetManager and asset publishing command
+
+- Add PluginAssetManager copying plugin assets to public/vendor/plugins/{id}
+- Provide cms:plugin:publish-assets console command with symlink and copy support
+- Clean up published assets automatically upon plugin uninstallation
+
+Refs: US-014
+```
+
+---
+
+### US-015 : Contrat MediaStorageInterface et Plugin Médiathèque (`acme.media-library`)
+
+- **Identifiant :** `US-015` (Plan : `P3-T2`)
+- **Persona :** `PluginDev` / `ContentEditor`
+- **Énoncé :**
+  > En tant que **développeur ou éditeur de contenu**,  
+  > Je souhaite **téléverser, inspecter et référencer des fichiers multimédias via un contrat abstrait `MediaStorageInterface` et le plugin autonome `acme.media-library`**,  
+  > Afin de **gérer une bibliothèque de médias centralisée sans qu'aucun code média ne soit codé en dur dans le noyau**.
+
+#### Critères d'Acceptation
+```gherkin
+Given le contrat App\Core\Contracts\MediaStorageInterface
+When le plugin acme.media-library est activé
+Then sa migration crée la table isolée plugin_media_items
+And le contrôleur permet d'uploader un fichier sous contrainte MIME sécurisée
+And les métadonnées (nom, type MIME, taille, URL) sont persistées et accessibles
+And une entrée de navigation "Médiathèque" est visible dans le panneau d'administration
+```
+
+#### Fichiers Impactés
+- `app/Core/Contracts/MediaStorageInterface.php`
+- `platform/plugins/acme.media-library/plugin.json`
+- `platform/plugins/acme.media-library/src/Providers/MediaLibraryServiceProvider.php`
+- `platform/plugins/acme.media-library/src/Models/MediaItem.php`
+- `platform/plugins/acme.media-library/src/Services/MediaStorageService.php`
+- `platform/plugins/acme.media-library/src/Http/Controllers/MediaController.php`
+- `platform/plugins/acme.media-library/database/migrations/2026_10_14_000001_create_plugin_media_items_table.php`
+- `platform/plugins/acme.media-library/routes/web.php`
+- `tests/Feature/Plugins/MediaLibraryPluginTest.php`
+
+#### Commit de Code Associé
+```text
+feat(media): implement MediaStorageInterface and acme.media-library plugin
+
+- Introduce MediaStorageInterface contract in core contracts
+- Implement acme.media-library with isolated plugin_media_items table
+- Provide secure upload, metadata inspection, and admin media gallery
+
+Refs: US-015
+```
+
+---
+
+### US-016 : Plugin Fondamental de Pages Statiques (`acme.pages`)
+
+- **Identifiant :** `US-016` (Plan : `P3-T3`)
+- **Persona :** `ContentEditor` / `SiteVisitor`
+- **Énoncé :**
+  > En tant qu'**éditeur de contenu**,  
+  > Je souhaite **créer et publier des pages web avec un titre, un slug, un contenu HTML/Markdown et un statut (brouillon/publié)**,  
+  > Afin d'**afficher des pages publiques sur le CMS via des URLs personnalisées**.
+
+#### Critères d'Acceptation
+```gherkin
+Given le plugin acme.pages actif
+When une page est créée avec le slug about-us et le statut published
+Then la requête HTTP GET /page/about-us renvoie 200 avec le contenu de la page
+When une page est en état draft
+Then la requête publique renvoie 404
+When le plugin acme.pages est désactivé
+Then les routes de pages renvoient 404 sans perte de données dans la table plugin_pages
+```
+
+#### Fichiers Impactés
+- `platform/plugins/acme.pages/plugin.json`
+- `platform/plugins/acme.pages/src/Providers/PagesServiceProvider.php`
+- `platform/plugins/acme.pages/src/Models/Page.php`
+- `platform/plugins/acme.pages/src/Http/Controllers/PageController.php`
+- `platform/plugins/acme.pages/src/Http/Controllers/AdminPageController.php`
+- `platform/plugins/acme.pages/database/migrations/2026_10_14_000002_create_plugin_pages_table.php`
+- `platform/plugins/acme.pages/resources/views/page.blade.php`
+- `platform/plugins/acme.pages/routes/web.php`
+- `tests/Feature/Plugins/PagesPluginTest.php`
+
+#### Commit de Code Associé
+```text
+feat(pages): implement acme.pages plugin with dynamic routing and front template
+
+- Add Page model with slug, published status, and content
+- Provide front /page/{slug} controller and Blade template
+- Integrate admin management routes and preserve data upon deactivation
+
+Refs: US-016
+```
+
+---
+
+### US-017 : Plugin Fondamental de Menus de Navigation (`acme.menus`)
+
+- **Identifiant :** `US-017` (Plan : `P3-T4`)
+- **Persona :** `SiteVisitor` / `ContentEditor`
+- **Énoncé :**
+  > En tant qu'**administrateur et visiteur du site**,  
+  > Je souhaite **configurer des menus de navigation personnalisés et les injecter dans les vues via un helper ou hook de rendu**,  
+  > Afin d'**organiser la navigation du site de manière dynamique et hiérarchique**.
+
+#### Critères d'Acceptation
+```gherkin
+Given le plugin acme.menus actif
+When un menu main-nav est créé avec des liens ordonnés
+Then le service MenuRenderer::render('main-nav') génère le markup HTML du menu
+And les entrées sont stockées dans les tables isolées plugin_menus et plugin_menu_items
+And les menus sont automatiquement masqués si le plugin est désactivé
+```
+
+#### Fichiers Impactés
+- `platform/plugins/acme.menus/plugin.json`
+- `platform/plugins/acme.menus/src/Providers/MenusServiceProvider.php`
+- `platform/plugins/acme.menus/src/Models/Menu.php`
+- `platform/plugins/acme.menus/src/Models/MenuItem.php`
+- `platform/plugins/acme.menus/src/Services/MenuRenderer.php`
+- `platform/plugins/acme.menus/database/migrations/2026_10_14_000003_create_plugin_menus_table.php`
+- `platform/plugins/acme.menus/routes/web.php`
+- `tests/Feature/Plugins/MenusPluginTest.php`
+
+#### Commit de Code Associé
+```text
+feat(menus): implement acme.menus hierarchical navigation plugin and render hook
+
+- Provide Menu and MenuItem models with ordering and nesting
+- Implement MenuRenderer service generating clean HTML navigation markup
+- Register admin menu editor and ensure route isolation
+
+Refs: US-017
+```
+
+---
+
+### US-018 : Plugin SEO et Métadonnées via Bus de Filtres Hook (`acme.seo`)
+
+- **Identifiant :** `US-018` (Plan : `P3-T5`)
+- **Persona :** `PluginDev` / `ContentEditor`
+- **Énoncé :**
+  > En tant qu'**expert SEO**,  
+  > Je souhaite **injecter automatiquement des balises meta (title, description, canonical, OpenGraph) dans le `<head>` des pages via le filtre Hook `cms.head`**,  
+  > Afin d'**optimiser le référencement naturel du CMS sans jamais modifier les vues du noyau ni forcer une dépendance dure sur les autres plugins**.
+
+#### Critères d'Acceptation
+```gherkin
+Given le plugin acme.seo actif s'abonnant au filtre cms.head
+When une page publique est rendue
+Then le bus de hooks injecte meta description, og:title et canonical link
+And les paramètres par défaut du site sont configurables
+When le plugin acme.seo est désactivé
+Then le filtre est retiré et le <head> est rendu sans les balises SEO injectées
+```
+
+#### Fichiers Impactés
+- `platform/plugins/acme.seo/plugin.json`
+- `platform/plugins/acme.seo/src/Providers/SeoServiceProvider.php`
+- `platform/plugins/acme.seo/src/Subscribers/SeoHookSubscriber.php`
+- `platform/plugins/acme.seo/src/Services/SeoMetaManager.php`
+- `platform/plugins/acme.seo/database/migrations/2026_10_14_000004_create_plugin_seo_settings_table.php`
+- `tests/Feature/Plugins/SeoPluginTest.php`
+
+#### Commit de Code Associé
+```text
+feat(seo): implement acme.seo plugin leveraging hook filter bus for head metadata
+
+- Provide SeoMetaManager generating meta tags, canonical, and OpenGraph markup
+- Register SeoHookSubscriber filtering cms.head hook dynamically
+- Maintain zero hard dependency between SEO and other content plugins
+
+Refs: US-018
+```
+
+---
+
 ## 5. Matrice de Traçabilité Synthétique
 
 | Identifiant | Intitulé | Phase | Dépendances | Message Commit Associé |
@@ -843,4 +1050,10 @@ Refs: US-013
 | **US-011** | Bus de Hooks (Actions & Filtres) | Phase 2 | US-010 | `feat(hooks): implement prioritized Action and Filter HookManager` |
 | **US-012** | Tolérance aux Crashs & Safe Mode | Phase 2 | US-010 | `feat(recovery): introduce crash tolerance quarantine and emergency safe mode` |
 | **US-013** | Navigation Dynamique & Registre Permissions | Phase 2 | US-011 | `feat(navigation): add dynamic admin navigation and permission registry` |
+|---|---|---|---|---|
+| **US-014** | Gestionnaire d'Assets Statiques Isolés | Phase 3 | US-013 | `feat(assets): implement isolated PluginAssetManager and asset publishing command` |
+| **US-015** | Contrat MediaStorage & Plugin Médiathèque | Phase 3 | US-014 | `feat(media): implement MediaStorageInterface and acme.media-library plugin` |
+| **US-016** | Plugin de Pages Statiques Dynamiques | Phase 3 | US-015 | `feat(pages): implement acme.pages plugin with dynamic routing and front template` |
+| **US-017** | Plugin de Menus Hiérarchiques | Phase 3 | US-016 | `feat(menus): implement acme.menus hierarchical navigation plugin and render hook` |
+| **US-018** | Plugin SEO & Métadonnées via Hooks | Phase 3 | US-011, US-016 | `feat(seo): implement acme.seo plugin leveraging hook filter bus for head metadata` |
 

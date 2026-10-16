@@ -37,6 +37,12 @@
 | **P2-T2** | Bus de hooks extensible (`HookManager`, actions & filtres) | Phase 2 (US-011) | P2-T1 | **Terminé** |
 | **P2-T3** | Tolérance aux crashs et Safe Mode (`SafeModeManager`, `PluginQuarantineHandler`) | Phase 2 (US-012) | P2-T2 | **Terminé** |
 | **P2-T4** | Navigation dynamique et registre de permissions (`NavigationRegistry`, `PermissionRegistry`) | Phase 2 (US-013) | P2-T3 | **Terminé** |
+|---|---|---|---|---|
+| **P3-T1** | Gestionnaire d'actifs statiques isolés (`PluginAssetManager`) | Phase 3 (US-014) | P2-T4 | **À faire** |
+| **P3-T2** | Contrat de stockage et plugin médiathèque (`acme.media-library`) | Phase 3 (US-015) | P3-T1 | **À faire** |
+| **P3-T3** | Plugin de gestion des pages statiques (`acme.pages`) | Phase 3 (US-016) | P3-T2 | **À faire** |
+| **P3-T4** | Plugin de menus arborescents et hook de rendu (`acme.menus`) | Phase 3 (US-017) | P3-T3 | **À faire** |
+| **P3-T5** | Plugin SEO et métadonnées via bus de hooks (`acme.seo`) | Phase 3 (US-018) | P3-T4 | **À faire** |
 
 ---
 
@@ -93,3 +99,62 @@
 - **Dépendances :** P1-T6.
 - **Tests nécessaires :** Test HTTP GET `/demo/hello` (200 si actif, 404 si inactif).
 - **Critère d'acceptation :** La route n'existe que lorsque le plugin est dans l'état `ACTIVE`.
+
+---
+
+## 3. Fiches Détail des Tâches de la Phase 2 (Stabilisation & Résilience)
+
+### Tâche P2-T1 : Tri Topologique et Détection de Cycles (US-010)
+- **Objectif :** Déterminer un ordre de boot déterministe via l'algorithme de Kahn et rejeter les cycles.
+- **Fichiers :** `app/Core/DependencyResolver/DependencyResolver.php`.
+- **Statut :** **Terminé**.
+
+### Tâche P2-T2 : Bus de Hooks Extensible (US-011)
+- **Objectif :** Mécanique d'actions et de filtres priorisés et interface `HookSubscriberInterface`.
+- **Fichiers :** `app/Core/Hooks/HookManager.php`, `app/Core/Hooks/Facades/Hook.php`.
+- **Statut :** **Terminé**.
+
+### Tâche P2-T3 : Tolérance aux Crashs et Safe Mode (US-012)
+- **Objectif :** Quarantaine automatique en cas d'exception et contournement d'urgence.
+- **Fichiers :** `app/Core/Recovery/SafeModeManager.php`, `app/Core/Recovery/PluginQuarantineHandler.php`.
+- **Statut :** **Terminé**.
+
+### Tâche P2-T4 : Navigation Dynamique et Permissions (US-013)
+- **Objectif :** Menus d'administration injectés et gestion des permissions déclarées.
+- **Fichiers :** `app/Core/Admin/NavigationRegistry.php`, `app/Core/Permissions/PermissionRegistry.php`.
+- **Statut :** **Terminé**.
+
+---
+
+## 4. Fiches Détail des Tâches de la Phase 3 (Plugins Fondamentaux & Assets)
+
+### Tâche P3-T1 : Gestionnaire d'Actifs Statiques Isolés (US-014)
+- **Objectif :** Servir et publier les assets statiques sans compilation globale.
+- **Fichiers :** `app/Core/Assets/PluginAssetManager.php`, `app/Core/Console/Commands/PluginPublishAssetsCommand.php`.
+- **Dépendances :** P2-T4.
+- **Critère d'acceptation :** Commande de publication fonctionnelle et suppression propre à la désinstallation.
+
+### Tâche P3-T2 : Contrat de Stockage et Plugin Médiathèque (US-015)
+- **Objectif :** Bibliothèque de médias autonome avec contrat `MediaStorageInterface`.
+- **Fichiers :** `app/Core/Contracts/MediaStorageInterface.php`, `platform/plugins/acme.media-library/*`.
+- **Dépendances :** P3-T1.
+- **Critère d'acceptation :** Upload sécurisé de fichiers et persistance des métadonnées.
+
+### Tâche P3-T3 : Plugin de Pages Statiques (US-016)
+- **Objectif :** Création et affichage de pages web avec URLs personnalisées.
+- **Fichiers :** `platform/plugins/acme.pages/*`.
+- **Dépendances :** P3-T2.
+- **Critère d'acceptation :** Route `/page/{slug}` active uniquement si la page est publiée et le plugin actif.
+
+### Tâche P3-T4 : Plugin de Menus Arborescents (US-017)
+- **Objectif :** Gestion de menus hiérarchiques et helper de rendu HTML.
+- **Fichiers :** `platform/plugins/acme.menus/*`.
+- **Dépendances :** P3-T3.
+- **Critère d'acceptation :** Rendu HTML propre de navigation hiérarchique.
+
+### Tâche P3-T5 : Plugin SEO et Métadonnées via Hooks (US-018)
+- **Objectif :** Injection de balises OpenGraph et canonical via le filtre `cms.head`.
+- **Fichiers :** `platform/plugins/acme.seo/*`.
+- **Dépendances :** P3-T4.
+- **Critère d'acceptation :** Métadonnées injectées dynamiquement sans couplage dur.
+
