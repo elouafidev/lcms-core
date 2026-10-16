@@ -137,9 +137,10 @@
 
 ### Tâche P3-T2 : Contrat de Stockage et Plugin Médiathèque (US-015)
 - **Objectif :** Bibliothèque de médias autonome avec contrat `MediaStorageInterface`.
-- **Fichiers :** `app/Core/Contracts/MediaStorageInterface.php`, `platform/plugins/acme.media-library/*`.
+- **Fichiers :** `app/Core/Contracts/MediaStorageInterface.php`, `platform/plugins/acme.media-library/*`, `tests/Feature/Plugins/MediaLibraryPluginTest.php`.
 - **Dépendances :** P3-T1.
 - **Critère d'acceptation :** Upload sécurisé de fichiers et persistance des métadonnées.
+- **Statut :** **Terminé**.
 
 ### Tâche P3-T3 : Plugin de Pages Statiques (US-016)
 - **Objectif :** Création et affichage de pages web avec URLs personnalisées.

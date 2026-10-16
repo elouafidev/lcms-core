@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 3 EN COURS (US-014 VALIDÉE)**
+- **Phase active :** **PHASE 3 EN COURS (US-014 & US-015 VALIDÉES — 2/5)**
 - **Objectif de phase :** Plugins fondamentaux autonomes, contrat de stockage de médias, pages statiques, menus hiérarchiques, métadonnées SEO et gestionnaire d'actifs statiques isolés.
-- **Statut :** Phase 3 initiée avec succès. US-014 validée avec 99 tests au vert (670 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 3 en excellente progression. US-014 et US-015 validées avec 109 tests au vert (732 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -40,9 +40,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-012 (P2-T3) :** Tolérance aux crashs, mode de secours (*Emergency Safe Mode*) et mise en quarantaine (`SafeModeManager`, `PluginQuarantineHandler`, table `cms_plugin_errors`).
 - [x] **US-013 (P2-T4) :** Registre dynamique des permissions et entrées de menu admin (`NavigationRegistry`, `PermissionRegistry`, `NavigationItemContract`, barre latérale Blade `sidebar.blade.php`).
 - [x] **US-014 (P3-T1) :** Gestionnaire d'actifs statiques isolés (`PluginAssetManager`), commande CLI `cms:plugin:publish-assets`, publication automatique à l'activation et nettoyage à la désinstallation purgée.
+- [x] **US-015 (P3-T2) :** Contrat public `MediaStorageInterface` et plugin autonome de médiathèque (`acme.media-library`) avec upload sécurisé, table `plugin_media_items` et menu admin.
 
-### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T2 / US-015)
-- [ ] **US-015 (P3-T2) :** Contrat public `MediaStorageInterface` et plugin autonome de médiathèque (`acme.media-library`).
+### 3.2. Prochaine Étape (Phase 3 — Tâche P3-T3 / US-016)
+- [ ] **US-016 (P3-T3) :** Plugin fondamental de pages statiques (`acme.pages`) avec routage dynamique `/page/{slug}` et template Blade.
 
 ---
 
