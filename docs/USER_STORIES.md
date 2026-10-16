@@ -1024,7 +1024,203 @@ Refs: US-018
 
 ---
 
-## 5. Matrice de Traçabilité Synthétique
+## 5. Epic 4 : Phase 4 — Moteur de Thèmes & Rendu Découplé
+
+---
+
+### US-019 : Contrats Publics de Thèmes, Manifeste `theme.json` et Découverte
+
+- **Identifiant :** `US-019` (Plan : `P4-T1`)
+- **Persona :** `ThemeDev` / `SysAdmin`
+- **Énoncé :**
+  > En tant que **développeur de thème**,  
+  > Je souhaite **déclarer un thème via un manifeste strict `theme.json` et des contrats d'interface publics (`ThemeInterface`, `ThemeManifestInterface`)**,  
+  > Afin que **le CMS découvre automatiquement les thèmes installés dans `platform/themes/` avec validation de schéma et protection anti-traversal**.
+
+#### Critères d'Acceptation
+```gherkin
+Given un dossier de thème dans platform/themes/{theme_id} avec theme.json
+When le service ThemeDiscovery analyse le répertoire des thèmes
+Then le manifeste est validé contre toute tentative de traversée de répertoire (path traversal)
+And une instance de ThemeManifest est instanciée avec nom, version, description et auteur
+And les thèmes découverts sont accessibles via ThemeManager
+```
+
+#### Fichiers Impactés
+- `app/Core/Contracts/ThemeInterface.php`
+- `app/Core/Contracts/ThemeManifestInterface.php`
+- `app/Core/Themes/DTO/ThemeManifest.php`
+- `app/Core/Themes/ThemeDiscovery.php`
+- `tests/Unit/Themes/ThemeDiscoveryTest.php`
+
+#### Commit de Code Associé
+```text
+feat(themes): implement ThemeInterface, ThemeManifest DTO, and ThemeDiscovery service
+
+- Define ThemeInterface and ThemeManifestInterface in Core contracts
+- Introduce immutable ThemeManifest DTO with strict path traversal checks
+- Implement ThemeDiscovery scanning platform/themes/ directory safely
+
+Refs: US-019
+```
+
+---
+
+### US-020 : Gestionnaire de Thèmes, Persistance d'Activation et Surcharge de Vues (View Overriding)
+
+- **Identifiant :** `US-020` (Plan : `P4-T2`)
+- **Persona :** `SuperAdmin` / `ThemeDev`
+- **Énoncé :**
+  > En tant qu'**administrateur et développeur de thème**,  
+  > Je souhaite **activer un thème unique enregistré dans la table `cms_themes` qui surcharge prioritairement les vues Blade des plugins sans jamais altérer leurs fichiers sources**,  
+  > Afin de **personnaliser le rendu visuel du CMS de manière totalement modulaire et réversible**.
+
+#### Critères d'Acceptation
+```gherkin
+Given un thème actif et un plugin acme.pages actif
+When le thème fournit un template views/plugins/pages/page.blade.php
+Then l'appel view('pages::page') rend la vue personnalisée du thème prioritaire
+When aucun template de surcharge n'est fourni par le thème
+Then le moteur de vue bascule automatiquement (fallback) sur la vue d'origine du plugin
+When le thème est désactivé
+Then le rendu standard du plugin est immédiatement restauré
+```
+
+#### Fichiers Impactés
+- `database/migrations/2026_10_15_000001_create_cms_themes_table.php`
+- `app/Core/Themes/ThemeManager.php`
+- `tests/Feature/Themes/ThemeManagerTest.php`
+
+#### Commit de Code Associé
+```text
+feat(themes): implement ThemeManager with view overriding hierarchy and persistence
+
+- Add cms_themes migration tracking active theme state
+- Implement ThemeManager with unique active theme constraint
+- Register view override path prepending theme templates over plugin views
+
+Refs: US-020
+```
+
+---
+
+### US-021 : Gestionnaire d'Assets de Thème et Commande de Publication
+
+- **Identifiant :** `US-021` (Plan : `P4-T3`)
+- **Persona :** `SysAdmin` / `ThemeDev`
+- **Énoncé :**
+  > En tant que **développeur de thème et administrateur système**,  
+  > Je souhaite **publier les ressources statiques (CSS, JS, images, polices) du thème actif vers le dossier public sans compilation globale**,  
+  > Afin de **servir les fichiers statiques de présentation de manière performante**.
+
+#### Critères d'Acceptation
+```gherkin
+Given un thème avec un dossier resources/assets/ contenant des styles ou scripts
+When la commande cms:theme:publish-assets {theme_id?} ou l'activation d'un thème est exécutée
+Then les assets sont copiés ou liés dans public/vendor/themes/{theme_id}
+And le helper ThemeAssetManager::url($themeId, $path) génère l'URL publique absolue valide
+And lors du changement de thème, les anciens assets peuvent être nettoyés
+```
+
+#### Fichiers Impactés
+- `app/Core/Themes/ThemeAssetManager.php`
+- `app/Core/Console/Commands/ThemePublishAssetsCommand.php`
+- `tests/Feature/Themes/ThemeAssetManagerTest.php`
+
+#### Commit de Code Associé
+```text
+feat(themes): introduce ThemeAssetManager and theme assets publishing command
+
+- Implement ThemeAssetManager publishing assets to public/vendor/themes/{id}
+- Add cms:theme:publish-assets console command with symlink and force support
+- Provide asset url resolution helper for active theme
+
+Refs: US-021
+```
+
+---
+
+### US-022 : Thème de Référence Découplé `platform/themes/default-modern`
+
+- **Identifiant :** `US-022` (Plan : `P4-T4`)
+- **Persona :** `SiteVisitor` / `ContentEditor`
+- **Énoncé :**
+  > En tant que **visiteur et éditeur du site**,  
+  > Je souhaite **bénéficier d'un thème par défaut moderne, responsive et accessible intégrant la navigation hiérarchique, le rendu des pages et les métadonnées SEO**,  
+  > Afin de **disposer immédiatement d'un front-office complet et élégant sans configuration complexe**.
+
+#### Critères d'Acceptation
+```gherkin
+Given le thème default-modern actif ainsi que les plugins pages, menus et seo
+When un utilisateur visite une page publique /page/{slug}
+Then le layout principal du thème est rendu avec header, footer et navigation
+And le bus de hooks injecte les métadonnées SEO dans le <head>
+And le menu de navigation est généré dynamiquement
+And les styles CSS du thème default-modern sont appliqués
+```
+
+#### Fichiers Impactés
+- `platform/themes/default-modern/theme.json`
+- `platform/themes/default-modern/resources/views/layouts/app.blade.php`
+- `platform/themes/default-modern/resources/views/plugins/pages/page.blade.php`
+- `platform/themes/default-modern/resources/assets/css/theme.css`
+- `tests/Feature/Themes/DefaultModernThemeTest.php`
+
+#### Commit de Code Associé
+```text
+feat(themes): provide default-modern reference theme with responsive layout and plugin overrides
+
+- Create default-modern theme with theme.json manifest and css assets
+- Add clean Blade app layout integrating cms.head and dynamic menus
+- Provide page template override with modern responsive styling
+
+Refs: US-022
+```
+
+---
+
+### US-023 : Commandes CLI et Interface d'Administration des Thèmes
+
+- **Identifiant :** `US-023` (Plan : `P4-T5`)
+- **Persona :** `SuperAdmin` / `SysAdmin`
+- **Énoncé :**
+  > En tant qu'**administrateur du CMS**,  
+  > Je souhaite **lister, prévisualiser et activer les thèmes via des commandes Artisan et un écran d'administration dédié `/admin/themes`**,  
+  > Afin de **contrôler l'apparence du site en toute sécurité avec validation CSRF et contrôle d'accès**.
+
+#### Critères d'Acceptation
+```gherkin
+Given un compte administrateur authentifié
+When l'administrateur accède à /admin/themes
+Then la liste des thèmes disponibles et actifs est affichée avec leurs métadonnées
+And un bouton permet d'activer un thème instantanément
+When la commande cms:theme:list est exécutée en CLI
+Then la table des thèmes s'affiche avec le statut Actif/Disponible
+When la commande cms:theme:activate {id} est exécutée
+Then le thème est activé et ses assets sont publiés automatiquement
+```
+
+#### Fichiers Impactés
+- `app/Core/Console/Commands/ThemeListCommand.php`
+- `app/Core/Console/Commands/ThemeActivateCommand.php`
+- `app/Core/Themes/Http/Controllers/AdminThemeController.php`
+- `platform/core/resources/views/themes/index.blade.php`
+- `tests/Feature/Themes/AdminThemeTest.php`
+
+#### Commit de Code Associé
+```text
+feat(themes): provide artisan theme management commands and admin themes panel
+
+- Add cms:theme:list and cms:theme:activate CLI commands
+- Provide admin themes controller, route, and Blade management panel
+- Register themes-management entry in administration navigation registry
+
+Refs: US-023
+```
+
+---
+
+## 6. Matrice de Traçabilité Synthétique
 
 | Identifiant | Intitulé | Phase | Dépendances | Message Commit Associé |
 |---|---|---|---|---|
@@ -1056,4 +1252,10 @@ Refs: US-018
 | **US-016** | Plugin de Pages Statiques Dynamiques | Phase 3 | US-015 | `feat(pages): implement acme.pages plugin with dynamic routing and front template` |
 | **US-017** | Plugin de Menus Hiérarchiques | Phase 3 | US-016 | `feat(menus): implement acme.menus hierarchical navigation plugin and render hook` |
 | **US-018** | Plugin SEO & Métadonnées via Hooks | Phase 3 | US-011, US-016 | `feat(seo): implement acme.seo plugin leveraging hook filter bus for head metadata` |
+|---|---|---|---|---|
+| **US-019** | Contrats Publics de Thèmes & Découverte | Phase 4 | US-018 | `feat(themes): implement ThemeInterface, ThemeManifest DTO, and ThemeDiscovery service` |
+| **US-020** | Gestionnaire de Thèmes & Surcharge de Vues | Phase 4 | US-019 | `feat(themes): implement ThemeManager with view overriding hierarchy and persistence` |
+| **US-021** | Gestionnaire d'Assets de Thème & Publication | Phase 4 | US-020 | `feat(themes): introduce ThemeAssetManager and theme assets publishing command` |
+| **US-022** | Thème de Référence Découplé `default-modern` | Phase 4 | US-021 | `feat(themes): provide default-modern reference theme with responsive layout and plugin overrides` |
+| **US-023** | Commandes CLI & Panneau Admin des Thèmes | Phase 4 | US-022 | `feat(themes): provide artisan theme management commands and admin themes panel` |
 

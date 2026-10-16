@@ -163,3 +163,37 @@
 - **Critère d'acceptation :** Métadonnées injectées dynamiquement sans couplage dur.
 - **Statut :** **Terminé**.
 
+---
+
+## 5. Fiches Détail des Tâches de la Phase 4 (Moteur de Thèmes & Rendu Découplé)
+
+### Tâche P4-T1 : Contrats Publics de Thèmes et Découverte (US-019)
+- **Objectif :** Contrats `ThemeInterface` et `ThemeManifestInterface`, DTO `ThemeManifest`, validation de `theme.json` et service `ThemeDiscovery`.
+- **Fichiers :** `app/Core/Contracts/ThemeInterface.php`, `app/Core/Contracts/ThemeManifestInterface.php`, `app/Core/Themes/DTO/ThemeManifest.php`, `app/Core/Themes/ThemeDiscovery.php`, `tests/Unit/Themes/ThemeDiscoveryTest.php`.
+- **Dépendances :** P3-T5.
+- **Critère d'acceptation :** Découverte récursive sécurisée de `platform/themes/` avec contrôle anti-traversal.
+
+### Tâche P4-T2 : Gestionnaire de Thèmes et Surcharge de Vues (US-020)
+- **Objectif :** Service `ThemeManager`, persistance de l'activation via table `cms_themes` et hiérarchie de surcharge des templates Blade de plugins.
+- **Fichiers :** `database/migrations/2026_10_15_000001_create_cms_themes_table.php`, `app/Core/Themes/ThemeManager.php`, `tests/Feature/Themes/ThemeManagerTest.php`.
+- **Dépendances :** P4-T1.
+- **Critère d'acceptation :** Surcharge dynamique des vues de plugins sans altérer les sources originales.
+
+### Tâche P4-T3 : Gestionnaire d'Assets de Thème (US-021)
+- **Objectif :** Publication isolée des ressources statiques des thèmes et commande CLI.
+- **Fichiers :** `app/Core/Themes/ThemeAssetManager.php`, `app/Core/Console/Commands/ThemePublishAssetsCommand.php`, `tests/Feature/Themes/ThemeAssetManagerTest.php`.
+- **Dépendances :** P4-T2.
+- **Critère d'acceptation :** Assets publiés dans `public/vendor/themes/{id}` avec support symlink et nettoyage.
+
+### Tâche P4-T4 : Thème de Référence Découplé default-modern (US-022)
+- **Objectif :** Thème responsive complet intégrant layouts, navigation, slot content et hooks.
+- **Fichiers :** `platform/themes/default-modern/*`, `tests/Feature/Themes/DefaultModernThemeTest.php`.
+- **Dépendances :** P4-T3.
+- **Critère d'acceptation :** Rendu front fluide combinant pages, menus et SEO.
+
+### Tâche P4-T5 : Commandes CLI et Interface d'Administration des Thèmes (US-023)
+- **Objectif :** Écran d'administration `/admin/themes` et commandes `cms:theme:list`, `cms:theme:activate`.
+- **Fichiers :** `app/Core/Console/Commands/ThemeListCommand.php`, `app/Core/Console/Commands/ThemeActivateCommand.php`, `app/Http/Controllers/Admin/AdminThemeController.php`, `resources/views/admin/themes/index.blade.php`, `tests/Feature/Themes/AdminThemeTest.php`.
+- **Dépendances :** P4-T4.
+- **Critère d'acceptation :** Changement de thème instantané depuis l'admin et en CLI.
+
