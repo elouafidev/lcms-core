@@ -381,7 +381,8 @@ class ThemeManagerTest extends TestCase
         // Fresh ThemeManager instance simulating reboot
         $freshManager = new ThemeManager(
             discovery: $this->themeManager->getDiscovery(),
-            viewFactory: $this->app->make(\Illuminate\View\Factory::class)
+            viewFactory: $this->app->make(\Illuminate\View\Factory::class),
+            assetManager: $this->themeManager->getAssetManager()
         );
 
         $this->assertFalse($freshManager->hasActiveTheme());

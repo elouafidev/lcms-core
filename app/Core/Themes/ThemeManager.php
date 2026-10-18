@@ -26,6 +26,7 @@ class ThemeManager
     public function __construct(
         private readonly ThemeDiscovery $discovery,
         private readonly ViewFactory $viewFactory,
+        private readonly ThemeAssetManager $assetManager,
         private readonly ?LoggerInterface $logger = null
     ) {}
 
@@ -95,7 +96,7 @@ class ThemeManager
     /**
      * Activate a theme by ID. Only ONE theme can be active at a time.
      */
-    public function activate(string $themeId): ThemeInterface
+    public function activate(string $themeId, bool $cleanPreviousAssets = false): ThemeInterface
     {
         // Re-discover to make sure newly created themes are recognized
         $this->discovery->discover();
@@ -108,6 +109,10 @@ class ThemeManager
 
         // Deactivate previous active theme if any
         if ($this->activeTheme !== null) {
+            if ($cleanPreviousAssets) {
+                $this->assetManager->clean($this->activeTheme->getId());
+            }
+
             $this->removeThemeViews($this->activeTheme);
             if ($this->activeTheme instanceof DiscoveredTheme) {
                 $this->activeTheme->setActive(false);
@@ -132,6 +137,7 @@ class ThemeManager
 
         $this->activeTheme = $theme;
         $this->applyThemeViews($theme);
+        $this->assetManager->publish($theme->getId(), $theme->getPath());
 
         return $theme;
     }
@@ -342,6 +348,11 @@ class ThemeManager
         $record->save();
 
         return $record;
+    }
+
+    public function getAssetManager(): ThemeAssetManager
+    {
+        return $this->assetManager;
     }
 
     public function getDiscovery(): ThemeDiscovery
