@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 4 EN COURS (US-019 VALIDÉE — 1/5)**
+- **Phase active :** **PHASE 4 EN COURS (US-020 VALIDÉE — 2/5)**
 - **Objectif de phase :** Moteur de thèmes découplés, contrats publics `ThemeInterface`, découverte dans `platform/themes/`, surcharge dynamique de templates Blade de plugins (View Overriding), gestionnaire d'assets de thèmes et thème de référence `default-modern`.
-- **Statut :** Phase 4 engagée avec succès. US-019 validée avec 152 tests au vert (960 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 4 en progression soutenue. US-020 validée avec 165 tests au vert (1029 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -45,9 +45,10 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-017 (P3-T4) :** Plugin fondamental de menus de navigation (`acme.menus`) avec modèles `Menu` et `MenuItem`, tables isolées `plugin_menus` et `plugin_menu_items`, service de rendu récursif `MenuRenderer::render('main-nav')`, filtre Hook `cms.menu` et directive Blade `@menu`.
 - [x] **US-018 (P3-T5) :** Plugin SEO et métadonnées via bus de filtres Hook (`acme.seo`) avec filtre `cms.head` (titre, méta-description, liens canoniques, balises OpenGraph, configuration par défaut persistée via `plugin_seo_settings` et écran d'administration).
 - [x] **US-019 (P4-T1) :** Contrats publics de thèmes (`ThemeInterface`, `ThemeManifestInterface`), DTO `ThemeManifest` avec protection anti-traversal et service `ThemeDiscovery` pour `platform/themes/`.
+- [x] **US-020 (P4-T2) :** Gestionnaire de thèmes `ThemeManager`, persistance de l'activation via table `cms_themes` et hiérarchie de surcharge des templates Blade de plugins (View Overriding).
 
-### 3.2. Prochaine Étape (Phase 4 — Tâche P4-T2 / US-020)
-- [ ] **US-020 (P4-T2) :** Gestionnaire de thèmes `ThemeManager`, persistance de l'activation via table `cms_themes` et hiérarchie de surcharge des templates Blade de plugins (View Overriding).
+### 3.2. Prochaine Étape (Phase 4 — Tâche P4-T3 / US-021)
+- [ ] **US-021 (P4-T3) :** Gestionnaire d'assets de thème `ThemeAssetManager` et commande CLI de publication `cms:theme:publish-assets`.
 
 ---
 

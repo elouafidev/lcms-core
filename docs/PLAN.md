@@ -179,6 +179,7 @@
 - **Fichiers :** `database/migrations/2026_10_15_000001_create_cms_themes_table.php`, `app/Core/Themes/ThemeManager.php`, `tests/Feature/Themes/ThemeManagerTest.php`.
 - **Dépendances :** P4-T1.
 - **Critère d'acceptation :** Surcharge dynamique des vues de plugins sans altérer les sources originales.
+- **Statut :** **Terminé**.
 
 ### Tâche P4-T3 : Gestionnaire d'Assets de Thème (US-021)
 - **Objectif :** Publication isolée des ressources statiques des thèmes et commande CLI.
