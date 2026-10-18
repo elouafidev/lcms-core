@@ -49,11 +49,19 @@ class DiscoveredTheme implements ThemeInterface
 
     public function getViewPath(): string
     {
+        if (is_dir($this->path.'/views')) {
+            return $this->path.'/views';
+        }
+
         return $this->path.'/resources/views';
     }
 
     public function getAssetPath(): string
     {
+        if (is_dir($this->path.'/assets')) {
+            return $this->path.'/assets';
+        }
+
         return $this->path.'/resources/assets';
     }
 }
