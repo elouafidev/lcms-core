@@ -186,6 +186,7 @@
 - **Fichiers :** `app/Core/Themes/ThemeAssetManager.php`, `app/Core/Console/Commands/ThemePublishAssetsCommand.php`, `tests/Feature/Themes/ThemeAssetManagerTest.php`.
 - **Dépendances :** P4-T2.
 - **Critère d'acceptation :** Assets publiés dans `public/vendor/themes/{id}` avec support symlink et nettoyage.
+- **Statut :** **Terminé**.
 
 ### Tâche P4-T4 : Thème de Référence Découplé default-modern (US-022)
 - **Objectif :** Thème responsive complet intégrant layouts, navigation, slot content et hooks.
