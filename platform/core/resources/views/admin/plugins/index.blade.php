@@ -33,6 +33,28 @@
         </div>
     @endif
 
+    <!-- Card Upload ZIP Plugin -->
+    <div class="card" style="margin-bottom: 1.5rem; background-color: #f8fafc;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 style="margin: 0 0 0.25rem 0; font-size: 1.1rem;">Importer une extension (.zip)</h3>
+                <p style="margin: 0; color: var(--muted-color); font-size: 0.85rem;">
+                    Sélectionnez une archive ZIP contenant un plugin LCMS conforme avec son manifeste <code>plugin.json</code>.
+                </p>
+            </div>
+            <form method="POST" action="{{ route('admin.plugins.upload') }}" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                @csrf
+                <input type="file" name="plugin_archive" accept=".zip,application/zip" required style="font-size: 0.85rem; border: 1px solid var(--border-color); border-radius: 0.375rem; padding: 0.35rem 0.5rem; background: #fff;">
+                <label style="font-size: 0.8rem; color: var(--muted-color); display: flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+                    <input type="checkbox" name="overwrite" value="1"> Écraser si existant
+                </label>
+                <button type="submit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+                    Installer le ZIP
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="card" style="padding: 0;">
         @if($plugins->isEmpty())
             <div style="padding: 3rem; text-align: center; color: var(--muted-color);">
