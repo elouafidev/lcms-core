@@ -1,53 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration SEO — Administration</title>
-    <style>
-        body { font-family: system-ui, sans-serif; line-height: 1.5; padding: 2rem; background: #f8fafc; color: #1e293b; }
-        .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 600px; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
-        .form-group input, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
-        .btn { display: inline-block; padding: 0.5rem 1rem; background: #3b82f6; color: white; border-radius: 4px; text-decoration: none; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <h1>Configuration SEO</h1>
+@extends('core::admin.layouts.app')
 
-    @if(session('success'))
-        <div style="background: #dcfce7; color: #166534; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-width: 600px;">
-            {{ session('success') }}
+@section('title', 'Configuration SEO — Administration')
+
+@section('content')
+    <header class="admin-header">
+        <div>
+            <h1 class="admin-title">Configuration SEO</h1>
+            <p style="margin: 0.25rem 0 0 0; color: var(--muted-color); font-size: 0.9rem;">
+                Paramètres par défaut des métadonnées, balises OpenGraph et robots
+            </p>
         </div>
-    @endif
+    </header>
 
-    <div class="card">
-        <h2>Paramètres par défaut</h2>
+    <div class="card" style="max-width: 650px;">
+        <h2 style="font-size: 1.25rem; margin-top: 0; margin-bottom: 1.25rem;">Paramètres par défaut</h2>
         <form action="/admin/seo" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="site_name">Nom du site</label>
-                <input type="text" id="site_name" name="site_name" value="{{ $settings['site_name'] ?? '' }}" placeholder="ex: Mon Super CMS">
+            <div style="margin-bottom: 1.25rem;">
+                <label for="site_name" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">Nom du site</label>
+                <input type="text" id="site_name" name="site_name" value="{{ $settings['site_name'] ?? '' }}" placeholder="ex: Mon Super CMS" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem; box-sizing: border-box;">
             </div>
-            <div class="form-group">
-                <label for="default_title">Titre par défaut (meta title / og:title)</label>
-                <input type="text" id="default_title" name="default_title" value="{{ $settings['default_title'] ?? '' }}" placeholder="ex: Accueil - Mon Super CMS">
+            <div style="margin-bottom: 1.25rem;">
+                <label for="default_title" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">Titre par défaut (meta title / og:title)</label>
+                <input type="text" id="default_title" name="default_title" value="{{ $settings['default_title'] ?? '' }}" placeholder="ex: Accueil - Mon Super CMS" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem; box-sizing: border-box;">
             </div>
-            <div class="form-group">
-                <label for="default_description">Méta-description par défaut</label>
-                <textarea id="default_description" name="default_description" rows="3" placeholder="Description générale du site web">{{ $settings['default_description'] ?? '' }}</textarea>
+            <div style="margin-bottom: 1.25rem;">
+                <label for="default_description" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">Méta-description par défaut</label>
+                <textarea id="default_description" name="default_description" rows="3" placeholder="Description générale du site web" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem; box-sizing: border-box;">{{ $settings['default_description'] ?? '' }}</textarea>
             </div>
-            <div class="form-group">
-                <label for="default_canonical">URL Canonique par défaut</label>
-                <input type="text" id="default_canonical" name="default_canonical" value="{{ $settings['default_canonical'] ?? '' }}" placeholder="ex: https://monsite.fr">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="canonical_base" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">URL de base canonique (optionnel)</label>
+                <input type="url" id="canonical_base" name="canonical_base" value="{{ $settings['canonical_base'] ?? '' }}" placeholder="https://example.com" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.375rem; box-sizing: border-box;">
             </div>
-            <div class="form-group">
-                <label for="default_og_image">Image OpenGraph par défaut</label>
-                <input type="text" id="default_og_image" name="default_og_image" value="{{ $settings['default_og_image'] ?? '' }}" placeholder="ex: /assets/og-cover.png">
-            </div>
-            <button type="submit" class="btn">Enregistrer les paramètres</button>
+            <button type="submit" class="btn btn-primary">Enregistrer la configuration SEO</button>
         </form>
     </div>
-</body>
-</html>
+@endsection
