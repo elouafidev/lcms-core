@@ -1,123 +1,311 @@
-# Laravel Plugin-First CMS
+# LCMS Core — Laravel Plugin-First CMS
 
-> Système de gestion de contenu extensible, modulaire et hautement sécurisé, fondé sur un noyau minimaliste Laravel et une architecture orientée plugins et contrats stricts.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="320" alt="LCMS Core Logo">
+</p>
 
----
+<p align="center">
+  <strong>Système de gestion de contenu modulaire, extensible et résilient, fondé sur un noyau minimaliste Laravel et une architecture découplée pilotée par des contrats publics.</strong>
+</p>
 
-## 1. Vision et Spécificités
-
-Contrairement aux CMS traditionnels qui intègrent nativement des collections rigides de pages, de blogs, de formulaires ou de boutiques, **Laravel Plugin-First CMS** dissocie entièrement le moteur de plateforme de la logique éditoriale.
-
-Le noyau fournit exclusivement les mécanismes d'infrastructure indispensables :
-- Authentification et gestion du compte administrateur racine.
-- Registre central et découverte dynamique des extensions (`platform/plugins/`).
-- Validation rigoureuse des manifestes (`plugin.json`) avec schéma strict.
-- Machine à états du cycle de vie des plugins (`available`, `installed`, `active`, `disabled`, `error`).
-- Moteur de résolution de dépendances et détection préventive de conflits/cycles.
-- Enregistrement contextualisé des routes, vues, migrations et permissions.
-- Mécanisme de tolérance aux pannes et mode de secours (*Emergency Safe Mode*).
-
----
-
-## 2. État Actuel du Projet
-
-- **Phase active :** **PHASE 0 — Analyse, Conception et Architecture**
-- **Statut :** Architecture documentée, contrats initiaux rédigés, modèle de menaces formalisé, plan opérationnel établi. En attente de validation architecturale avant démarrage de la Phase 1 (Noyau MVP).
+<p align="center">
+  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
+  <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-213%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
+  <a href="https://github.com/elouafidev/lcms-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
+</p>
 
 ---
 
-## 3. Prérequis et Environnement Technique
+## 📖 À Propos de LCMS Core
 
-- **Langage :** PHP 8.2+ (strict types).
-- **Framework :** Laravel 11.x ou 12.x.
-- **Gestionnaire de dépendances :** Composer 2.x.
-- **Base de données principale :** SQLite (développement/tests rapides) ou PostgreSQL / MySQL (production).
-- **Moteur de templates :** Blade pour le panneau d'administration minimal.
-- **Outils qualité :** PHPUnit / Pest, PHPStan (niveau 8), Laravel Pint.
-- **Console & Frontend d'orchestration :** Vite + React 19 pour le tableau de bord d'architecture interactif.
+Contrairement aux CMS traditionnels qui intègrent nativement des modèles de données rigides (pages, articles, médiathèque, formulaires ou commerce électronique en dur dans le noyau), **LCMS Core** implémente une séparation architecturale radicale :
+
+1. **Noyau Minimal (*Lean Core*) :** Le noyau (`app/Core/`) ne contient **aucune logique métier**. Il assure exclusivement les services d'infrastructure : authentification racine, découverte d'extensions, validation de manifestes, résolution topologique des dépendances, bus d'interception (Hooks), tolérance aux crashs et layout d'administration unifié.
+2. **Contrats Publics Stricts (`app/Core/Contracts/`) :** Les extensions ne communiquent jamais directement entre leurs implémentations privées. Tout échange s'opère via des contrats immuables et le conteneur IoC de Laravel.
+3. **Écosystème de Plugins Autonomes (`platform/plugins/`) :** Chaque fonctionnalité métier (pages statiques, arborescences de navigation, médiathèque, méta-tags SEO) est portée par une extension indépendante possédant ses propres routes, contrôleurs, vues Blade, permissions et migrations isolées.
+4. **Moteur de Thèmes Découplé (`platform/themes/`) :** Système de présentation autonome capable de surcharger dynamiquement (*View Overriding*) les templates des plugins sans toucher à leur code source.
 
 ---
 
-## 4. Structure Globale du Projet
+## 🚀 Fonctionnalités Clés
 
-```text
-├── AGENTS.md                   # Instructions permanentes pour agents IA & développeurs
-├── README.md                   # Présentation générale et démarrage
-├── app/
-│   ├── Core/                   # Noyau du CMS (minimal, sans logique métier)
-│   │   ├── Contracts/          # Interfaces publiques stables pour les plugins
-│   │   ├── Exceptions/         # Gestion unifiée des exceptions du noyau
-│   │   ├── PluginManager/      # Orchestrateur du cycle de vie des plugins
-│   │   ├── PluginRegistry/     # Registre en mémoire et persistant des extensions
-│   │   ├── PluginDiscovery/    # Découverte automatique dans le filesystem
-│   │   ├── DependencyResolver/ # Résolveur topologique et détection de cycles
-│   │   ├── Lifecycle/          # Machine à états (Install, Activate, Deactivate, Uninstall)
-│   │   ├── Hooks/              # Système d'actions et filtres extensibles
-│   │   ├── Permissions/        # Registre et contrôle des permissions par plugin
-│   │   └── Recovery/           # Mode sans échec et résilience en cas de crash
-├── platform/
-│   ├── core/                   # Administration système minimale (Blade & Auth)
-│   ├── plugins/                # Répertoire isolé des plugins installés
-│   └── themes/                 # Thèmes de présentation découplés
-├── docs/                       # Spécifications et documentation d'architecture
-│   ├── ARCHITECTURE.md         # Architecture détaillée et flux d'exécution
-│   ├── CONTEXT.md              # État de l'art et suivi inter-sessions
-│   ├── PLAN.md                 # Découpage des tâches et critères d'acceptation
-│   ├── ROADMAP.md              # Feuille de route des phases 0 à 7
-│   ├── SECURITY.md             # Directives de sécurité et mitigations
-│   ├── THREAT_MODEL.md         # Modèle de menaces STRIDE
-│   ├── PLUGIN_SYSTEM.md        # Fonctionnement interne du gestionnaire de plugins
-│   ├── TESTING.md              # Stratégie de tests et assurance qualité
-│   └── decisions/              # Architecture Decision Records (ADR)
+- 🧩 **Architecture 100% Modulaire :** Activez, désactivez ou supprimez des fonctionnalités sans altérer le noyau.
+- 📐 **Résolution Topologique des Dépendances (Algorithme de Kahn) :** Ordonnancement déterministe au démarrage, détection préventive des cycles (`CircularDependencyException`) et gardes de dépendances inverses pour interdire les désactivations en cascade non confirmées.
+- 🧯 **Résilience & Tolérance aux Pannes :**
+  - **Mise en Quarantaine Automatique :** Si une extension déclenche une exception fatale au boot, elle est isolée en base (`cms_plugin_errors`) sans bloquer le reste de l'application.
+  - **Mode de Secours (*Emergency Safe Mode*) :** Bypass immédiat de toutes les extensions tierces via drapeau fichier ou commande CLI (`cms:recovery:safe-mode --on`) pour restaurer l'accès administrateur en cas d'urgence.
+- 📦 **Installation Sécurisée d'Extensions ZIP :** Import direct depuis le tableau de bord avec protection stricte contre le **Zip Slip**, rejet des extensions exécutables interdites (`.exe`, `.sh`, `.phar`, etc.), extraction sandboxée et validation de schéma JSON.
+- 🪝 **Bus de Hooks Extensible :** Système d'actions et de filtres priorisés (`Hook::action()`, `Hook::filter()`) pour personnaliser le comportement du CMS sans modifier le code source.
+- 🎨 **Moteur de Thèmes & Surcharge Blade :** Thème de référence `default-modern` responsive avec surcharge hiérarchique des vues de plugins (`platform/themes/{theme}/views/plugins/{plugin-id}/*`).
+- 🖥️ **Panneau d'Administration Unifié :** Layout canonique (`core::admin.layouts.app`) assurant l'affichage permanent et inaltérable de la barre latérale (`admin-sidebar`) sur l'ensemble des modules d'administration.
+- 💾 **Propriété Stricte des Données :** Migrations isolées par extension avec journalisation dédiée (`cms_plugin_migrations`). La désactivation conserve les tables ; la désinstallation propose une purge optionnelle et explicite.
+
+---
+
+## 🏛️ Architecture du Système
+
+```mermaid
+flowchart TD
+    subgraph Client["Navigateur / Client HTTP"]
+        UI["Interface Front & Panneau d'Administration"]
+    end
+
+    subgraph Core["LCMS Core (app/Core)"]
+        Kernel["Démarrage & Cycle de Vie"]
+        Registry["PluginRegistry & ThemeManager"]
+        Resolver["DependencyResolver (Kahn)"]
+        Hooks["Bus de Hooks (Actions & Filtres)"]
+        SafeMode["Safe Mode & Quarantaine"]
+        AdminLayout["Layout Unifié & NavigationRegistry"]
+    end
+
+    subgraph Contracts["Contrats Publics (app/Core/Contracts)"]
+        PluginContract["PluginInterface"]
+        ManifestContract["PluginManifestInterface"]
+        ThemeContract["ThemeInterface"]
+        StorageContract["MediaStorageInterface"]
+    end
+
+    subgraph Plugins["Extensions Autonomes (platform/plugins)"]
+        Pages["acme.pages (Pages & Routage)"]
+        Menus["acme.menus (Menus & Directive @menu)"]
+        Media["acme.media-library (Médiathèque)"]
+        SEO["acme.seo (Méta-tags & Hook cms.head)"]
+    end
+
+    subgraph Themes["Moteur de Présentation (platform/themes)"]
+        DefaultTheme["default-modern (Layouts & View Overrides)"]
+    end
+
+    UI --> Kernel
+    Kernel --> Registry
+    Registry --> Resolver
+    Resolver --> Hooks
+    Registry --> SafeMode
+    Registry --> AdminLayout
+
+    Core -.-> Contracts
+    Plugins --> Contracts
+    Themes --> Contracts
+    Themes -.->|View Overriding| Plugins
 ```
 
 ---
 
-## 5. Démarrage Rapide
+## 📦 Extensions & Thèmes Fournis
 
-### 5.1. Installation locale
+| Identifiant | Rôle & Fonctionnalités | Contrats & Hooks |
+|---|---|---|
+| [`acme.pages`](platform/plugins/acme.pages) | Gestion des pages statiques avec slugs personnalisés, publication/brouillon et routes dynamiques `/page/{slug}`. | `PluginInterface` |
+| [`acme.menus`](platform/plugins/acme.menus) | Gestion hiérarchique des éléments de navigation, directive Blade `@menu('main-nav')` et filtre `cms.menu`. | `PluginInterface`, `HookSubscriberInterface` |
+| [`acme.media-library`](platform/plugins/acme.media-library) | Stockage et organisation des fichiers médias avec upload sécurisé et gestion des métadonnées. | `MediaStorageInterface` |
+| [`acme.seo`](platform/plugins/acme.seo) | Optimisation pour moteurs de recherche, liens canoniques et métadonnées OpenGraph injectées via le filtre `cms.head`. | `HookSubscriberInterface` |
+| [`default-modern`](platform/themes/default-modern) | Thème responsive moderne avec typographie soignée, intégration fluide des menus, des pages et surcharge de templates de plugins. | `ThemeInterface` |
 
+---
+
+## 🛠️ Installation et Démarrage Rapide
+
+### Prérequis Système
+- **PHP** : `^8.2` ou `^8.3` avec extensions `mbstring`, `xml`, `sqlite3`, `curl`, `zip`.
+- **Composer** : `2.x`.
+- **Base de données** : SQLite (par défaut pour le développement) ou PostgreSQL / MySQL.
+
+### 1. Cloner le Dépôt
 ```bash
-# 1. Cloner le projet
-git clone <repository_url> laravel-cms && cd laravel-cms
+git clone https://github.com/elouafidev/lcms-core.git
+cd lcms-core
+```
 
-# 2. Configurer les variables d'environnement
+### 2. Initialisation Automatique
+Le projet intègre une routine d'initialisation complète via Composer :
+```bash
+composer run setup
+```
+*Cette commande installe les dépendances, génère le fichier `.env` depuis `.env.example`, calcule la clé applicative `APP_KEY`, exécute les migrations du noyau et compile les assets frontend.*
+
+### 3. Alternative : Initialisation Manuelle
+```bash
+# Copier la configuration
 cp .env.example .env
 
-# 3. Installer les dépendances PHP et initialiser l'application
+# Installer les dépendances backend
 composer install
+
+# Générer la clé de chiffrement
 php artisan key:generate
 
-# 4. Exécuter les migrations du noyau
+# Exécuter les migrations de base de données
 php artisan migrate
 
-# 5. Lancer le serveur de développement
-php artisan serve
+# Installer et compiler les dépendances front-end (optionnel)
+npm install && npm run build
 ```
 
-### 5.2. Commandes de Diagnostic et Tests
-
+### 4. Démarrer le Serveur Local
 ```bash
-# Vérifier la santé du registre de plugins
+php artisan serve
+```
+- **Site public :** [http://localhost:8000](http://localhost:8000)
+- **Panneau d'administration :** [http://localhost:8000/admin](http://localhost:8000/admin)
+
+---
+
+## 💻 Référence des Commandes Artisan
+
+LCMS Core fournit un ensemble complet de commandes CLI pour piloter les extensions, les thèmes et la résilience :
+
+### Gestion des Plugins (`cms:plugin:*`)
+```bash
+# Lister toutes les extensions et leur état
 php artisan cms:plugin:list
 
-# Mode sans échec (désactive tous les plugins tiers temporairement)
+# Activer et monter une extension
+php artisan cms:plugin:enable acme.pages
+
+# Désactiver une extension (sans suppression de données)
+php artisan cms:plugin:disable acme.pages
+
+# Publier les assets publics d'une extension vers public/vendor/plugins/
+php artisan cms:plugin:publish-assets acme.pages
+```
+
+### Gestion des Thèmes (`cms:theme:*`)
+```bash
+# Lister les thèmes disponibles et identifier le thème actif
+php artisan cms:theme:list
+
+# Activer un thème pour le rendu public
+php artisan cms:theme:activate default-modern
+
+# Publier les assets d'un thème vers public/vendor/themes/
+php artisan cms:theme:publish-assets default-modern
+```
+
+### Mode de Récupération d'Urgence (`cms:recovery:*`)
+```bash
+# Activer le Safe Mode (désactive l'exécution de toutes les extensions tierces)
 php artisan cms:recovery:safe-mode --on
 
-# Exécution des tests unitaires et d'architecture
-composer test
-composer run analyse
+# Désactiver le Safe Mode et restaurer le démarrage normal
+php artisan cms:recovery:safe-mode --off
 ```
 
 ---
 
-## 6. Documentation Complète
+## 🧩 Anatomie d'un Plugin LCMS
 
-Pour approfondir la conception et les directives techniques :
-- [Architecture du Système](docs/ARCHITECTURE.md)
-- [Cycle de Vie des Plugins](docs/PLUGIN_SYSTEM.md)
-- [Modèle de Menaces & Sécurité](docs/THREAT_MODEL.md)
-- [Spécification des User Stories & Commits](docs/USER_STORIES.md)
-- [Plan Opérationnel](docs/PLAN.md)
-- [Feuille de Route](docs/ROADMAP.md)
-- [Journal des Décisions Architecturales (ADR)](docs/decisions/README.md)
+Chaque plugin est logé dans son propre sous-dossier au sein de `platform/plugins/{vendor}.{nom}/` et contient obligatoirement un manifeste immuable `plugin.json` :
+
+```json
+{
+  "id": "acme.mon-plugin",
+  "name": "Mon Extension Métier",
+  "version": "1.0.0",
+  "description": "Exemple d'extension autonome pour LCMS Core",
+  "author": {
+    "name": "Acme Development Team",
+    "email": "contact@acme.test",
+    "homepage": "https://acme.test"
+  },
+  "compatibility": {
+    "php": "^8.2",
+    "lcms": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Plugins\\MonPlugin\\": "src/"
+    }
+  },
+  "providers": [
+    "Plugins\\MonPlugin\\Providers\\MonPluginServiceProvider"
+  ],
+  "dependencies": {
+    "acme.media-library": "^1.0"
+  },
+  "conflicts": [],
+  "permissions": [
+    {
+      "key": "mon_plugin.manage",
+      "label": "Gérer les fonctionnalités de Mon Plugin"
+    }
+  ],
+  "routes": {
+    "web": "routes/web.php",
+    "api": "routes/api.php"
+  }
+}
+```
+
+### Structure recommandée d'une extension :
+```text
+platform/plugins/acme.mon-plugin/
+├── plugin.json                 # Manifeste validé obligatoirement
+├── database/
+│   └── migrations/             # Migrations isolées du plugin
+├── resources/
+│   └── views/                  # Vues Blade (surchargeables par le thème)
+├── routes/
+│   └── web.php                 # Routes montées uniquement à l'état ACTIVE
+└── src/
+    ├── Http/Controllers/       # Contrôleurs isolés
+    ├── Models/                 # Modèles Eloquent du plugin
+    └── Providers/              # ServiceProviders enregistrés au boot
+```
+
+---
+
+## 🔒 Sécurité et Robustesse
+
+Le projet applique les principes de défense en profondeur documentés dans nos modèles de menaces :
+
+- **Prévention du Zip Slip & Attaques de Décompression :** `PluginZipInstaller` contrôle chaque segment de chemin (`..`, séparateurs de lecteur, barres obliques absolues) et refuse catégoriquement l'extraction hors du bac à sable temporaire.
+- **Filtrage des Fichiers Exécutables :** Interdiction stricte de toute extension potentiellement dangereuse (`.exe`, `.sh`, `.bat`, `.cmd`, `.phar`, `.phtml`, etc.) dans les archives téléversées.
+- **Protection Anti-Traversal sur les Manifestes :** Les chemins de routes et d'autoloading déclarés dans `plugin.json` sont inspectés par `ManifestValidator` pour bloquer les tentatives de saut de répertoire.
+- **Isolation d'Exécution :** L'enregistrement des `ServiceProvider` des plugins est encapsulé dans une frontière de capture de fautes ; tout crash est capturé et le composant incriminé est consigné en quarantaine.
+- **Authentification & Contrôles CSRF :** Toutes les actions d'activation, de désactivation, de téléversement et de désinstallation d'extensions sont protégées par une authentification administrateur et un jeton CSRF.
+
+---
+
+## 🧪 Assurance Qualité & Tests
+
+Le projet est couvert par une suite rigoureuse de **213 tests automatisés** sans aucun contournement :
+
+```bash
+# Exécuter l'intégralité de la suite de tests
+composer test
+
+# Lancer l'analyse statique au niveau maximal (Niveau 8)
+composer run analyse
+
+# Vérifier la conformité du style de code
+composer run lint
+
+# Formater automatiquement le code selon les standards Laravel
+composer run format
+```
+
+---
+
+## 📚 Documentation Technique Approfondie
+
+Les spécifications détaillées et l'historique architectural sont disponibles dans le dossier [`docs/`](docs/) :
+
+- 🏛️ [Spécifications de l'Architecture](docs/ARCHITECTURE.md) : Modèle conceptuel à trois couches et flux d'exécution.
+- ⚙️ [Fonctionnement du Système de Plugins](docs/PLUGIN_SYSTEM.md) : Machine à états, cycle de vie et conventions.
+- 🛡️ [Politique de Sécurité](docs/SECURITY.md) & [Modèle de Menaces STRIDE](docs/THREAT_MODEL.md) : Analyse des vecteurs d'attaque et contre-mesures.
+- 🧪 [Stratégie de Test](docs/TESTING.md) : Pyramide de tests, tests unitaires, d'intégration et d'architecture.
+- 📋 [Plan de Travail Opérationnel](docs/PLAN.md) : Suivi des tâches, critères d'acceptation et jalons des phases 0 à 5.
+- 📐 [Dossier des Décisions Architecturales (ADR)](docs/decisions/README.md) :
+  - [ADR-0001 : Monolithe Modulaire](docs/decisions/ADR-0001-modular-monolith.md)
+  - [ADR-0002 : Manifestes et Contrats Publics](docs/decisions/ADR-0002-plugin-manifest-and-contracts.md)
+  - [ADR-0003 : Layout d'Administration Unifié, Gestion Détaillée et Import Sécurisé ZIP](docs/decisions/ADR-0003-unified-admin-layout-and-secure-plugin-management.md)
+
+---
+
+## 📄 Licence
+
+Ce projet est distribué sous licence open-source **MIT**. Consultez le fichier [LICENSE](LICENSE) pour plus d'informations.
