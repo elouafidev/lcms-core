@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', function () {
-    return response('Login Page', 200);
-})->name('login');
+// Route::get('/login', function () {
+//     return response('Login Page', 200);
+// })->name('login');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

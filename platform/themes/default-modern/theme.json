@@ -1,0 +1,18 @@
+{
+    "id": "default-modern",
+    "name": "Default Modern",
+    "version": "1.0.0",
+    "description": "Thème de référence moderne, responsive et accessible intégrant navigation, pages et SEO.",
+    "author": {
+        "name": "CMS Core Team",
+        "email": "core@example.com"
+    },
+    "assets": {
+        "css": "css/theme.css"
+    },
+    "settings": {
+        "primary_color": "#2563eb",
+        "typography": "Inter, sans-serif"
+    }
+}
+

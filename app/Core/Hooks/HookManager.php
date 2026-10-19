@@ -95,6 +95,22 @@ class HookManager
     }
 
     /**
+     * Alias for applyFilter.
+     */
+    public function filter(string $hook, mixed $value, mixed ...$args): mixed
+    {
+        return $this->applyFilter($hook, $value, ...$args);
+    }
+
+    /**
+     * Alias for doAction.
+     */
+    public function action(string $hook, mixed ...$args): void
+    {
+        $this->doAction($hook, ...$args);
+    }
+
+    /**
      * Determine if a filter hook has any callbacks registered (or a specific callback).
      */
     public function hasFilter(string $hook, ?callable $callback = null): bool
