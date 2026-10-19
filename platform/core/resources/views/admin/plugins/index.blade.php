@@ -66,7 +66,9 @@
                         @endphp
                         <tr>
                             <td>
-                                <div style="font-weight: 600; font-size: 1rem;">{{ $manifest->getName() }}</div>
+                                <div style="font-weight: 600; font-size: 1rem;">
+                                    <a href="{{ route('admin.plugins.show', $pluginId) }}" style="color: var(--primary); text-decoration: none;" title="Voir les détails et configurer">{{ $manifest->getName() }}</a>
+                                </div>
                                 <div style="font-family: monospace; font-size: 0.85rem; color: var(--muted-color);">{{ $pluginId }}</div>
                                 @if($state === 'ERROR' && $plugin instanceof \App\Core\PluginRegistry\Models\PluginRecord && $plugin->error_message)
                                     <div style="color: var(--danger); font-size: 0.8rem; margin-top: 0.35rem; font-family: monospace;">

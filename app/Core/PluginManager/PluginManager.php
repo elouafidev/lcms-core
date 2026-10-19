@@ -6,6 +6,7 @@ namespace App\Core\PluginManager;
 
 use App\Core\Admin\NavigationRegistry;
 use App\Core\Assets\PluginAssetManager;
+use App\Core\Contracts\PluginInterface;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
 use App\Core\Lifecycle\PluginMigrationManager;
@@ -17,6 +18,7 @@ use App\Core\Recovery\PluginQuarantineHandler;
 use App\Core\Recovery\SafeModeManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
@@ -153,13 +155,46 @@ class PluginManager
     }
 
     /**
+     * Find plugins that declare a dependency on the given plugin ID.
+     *
+     * @return array<string, PluginInterface>
+     */
+    public function getDependents(string $pluginId, bool $onlyActive = true): array
+    {
+        $dependents = [];
+        $candidates = $onlyActive ? $this->registry->getActive()->all() : $this->registry->getAll();
+
+        foreach ($candidates as $candidate) {
+            $manifest = $candidate->getManifest();
+            if ($manifest->getId() === $pluginId) {
+                continue;
+            }
+
+            $deps = $manifest->getDependencies();
+            if (isset($deps[$pluginId])) {
+                $dependents[$manifest->getId()] = $candidate;
+            }
+        }
+
+        return $dependents;
+    }
+
+    /**
      * Deactivate an active plugin.
      */
-    public function deactivate(string $pluginId): PluginRecord
+    public function deactivate(string $pluginId, bool $force = false): PluginRecord
     {
         $record = $this->registry->find($pluginId);
         if ($record === null) {
             throw new RuntimeException("Cannot deactivate plugin '{$pluginId}': Plugin is not installed.");
+        }
+
+        if (! $force) {
+            $activeDependents = $this->getDependents($pluginId, onlyActive: true);
+            if (! empty($activeDependents)) {
+                $names = implode(', ', array_map(fn ($p) => $p->getManifest()->getName()." ({$p->getManifest()->getId()})", $activeDependents));
+                throw new InvalidArgumentException("Impossible de désactiver '{$pluginId}' : les extensions actives suivantes en dépendent : {$names}.");
+            }
         }
 
         if (! $record->state->canTransitionTo(PluginState::DISABLED)) {
@@ -275,15 +310,23 @@ class PluginManager
     /**
      * Uninstall a plugin, optionally purging its database tables.
      */
-    public function uninstall(string $pluginId, bool $purgeData = false): void
+    public function uninstall(string $pluginId, bool $purgeData = false, bool $force = false): void
     {
         $record = $this->registry->find($pluginId);
         if ($record === null) {
             return;
         }
 
+        if (! $force) {
+            $activeDependents = $this->getDependents($pluginId, onlyActive: true);
+            if (! empty($activeDependents)) {
+                $names = implode(', ', array_map(fn ($p) => $p->getManifest()->getName()." ({$p->getManifest()->getId()})", $activeDependents));
+                throw new InvalidArgumentException("Impossible de désinstaller '{$pluginId}' : les extensions actives suivantes en dépendent : {$names}.");
+            }
+        }
+
         if ($record->is_active) {
-            $this->deactivate($pluginId);
+            $this->deactivate($pluginId, force: true);
         }
 
         $this->navigationRegistry->unregisterByPlugin($pluginId);
