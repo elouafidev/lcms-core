@@ -49,6 +49,11 @@
 | **P4-T3** | Gestionnaire d'Assets de Thème (`ThemeAssetManager`, `cms:theme:publish-assets`) | Phase 4 (US-021) | P4-T2 | **Terminé** |
 | **P4-T4** | Thème de Référence Découplé (`platform/themes/default-modern`) | Phase 4 (US-022) | P4-T3 | **Terminé** |
 | **P4-T5** | Commandes CLI et Interface d'Administration des Thèmes (`AdminThemeController`) | Phase 4 (US-023) | P4-T4 | **Terminé** |
+|---|---|---|---|---|
+| **P5-T1** | Renommage officiel du projet en LCMS Core (CORR-01) | Phase 5 | P4-T5 | **Terminé** |
+| **P5-T2** | Layout unifié admin et persistance de l'admin-sidebar (CORR-04) | Phase 5 | P5-T1 | **Terminé** |
+| **P5-T3** | Page détaillée de plugin et gardes de dépendances inverses (CORR-02) | Phase 5 | P5-T2 | **Terminé** |
+| **P5-T4** | Pipeline sécurisé d'importation et installation de plugins ZIP (CORR-03) | Phase 5 | P5-T3 | **Terminé** |
 
 ---
 
@@ -207,5 +212,38 @@
 - **Dépendances :** P4-T4.
 - **Critère d'acceptation :** Changement de thème instantané depuis l'admin et en CLI.
 - **Statut :** **Terminé**.
+
+---
+
+## 3. Fiches Détail des Tâches de la Phase 5 (Correctifs et Améliorations LCMS Core)
+
+### Tâche P5-T1 : Renommage officiel du projet en LCMS Core (CORR-01)
+- **Objectif :** Harmoniser le nom commercial officiel **LCMS Core** dans la barre latérale, le layout du thème par défaut et les fichiers d'environnement (`.env.example`, `.env`), sans altérer les namespaces ou identifiants techniques.
+- **Fichiers :** `platform/core/resources/views/admin/layouts/sidebar.blade.php`, `platform/themes/default-modern/resources/views/layouts/app.blade.php`, `.env.example`, `.env`, `tests/Feature/AdminNavigationRegistryTest.php`.
+- **Dépendances :** P4-T5.
+- **Critère d'acceptation :** Nom « LCMS Core » présent et vérifié dans tous les tests de navigation.
+- **Statut :** **Terminé**.
+
+### Tâche P5-T2 : Layout unifié admin et persistance de l'admin-sidebar (CORR-04)
+- **Objectif :** Éliminer les ruptures d'affichage de la barre latérale sur les pages de configuration des plugins via un layout maître canonique `core::admin.layouts.app`.
+- **Fichiers :** `platform/core/resources/views/admin/layouts/app.blade.php`, refactorisation des vues `acme.menus`, `acme.pages`, `acme.seo`, `acme.media-library`, `tests/Feature/AdminUnifiedLayoutTest.php`.
+- **Dépendances :** P5-T1.
+- **Critère d'acceptation :** L'élément `.admin-sidebar` est présent et testé avec succès sur 100% des routes d'administration.
+- **Statut :** **Terminé**.
+
+### Tâche P5-T3 : Page détaillée de plugin et gardes de dépendances inverses (CORR-02)
+- **Objectif :** Rendre les noms de plugins cliquables vers `/admin/plugins/{id}`, afficher la cartographie des métadonnées et prérequis, et bloquer la désactivation / désinstallation non confirmée si des plugins actifs en dépendent (`PluginManager::getDependents()`).
+- **Fichiers :** `app/Core/PluginManager/PluginManager.php`, `platform/core/routes/admin.php`, `platform/core/Http/Controllers/Admin/PluginController.php`, `platform/core/resources/views/admin/plugins/show.blade.php`, `tests/Feature/AdminPluginDetailTest.php`.
+- **Dépendances :** P5-T2.
+- **Critère d'acceptation :** Page de configuration détaillée opérationnelle, blocage des désactivations en cascade sauf paramètre force.
+- **Statut :** **Terminé**.
+
+### Tâche P5-T4 : Pipeline sécurisé d'importation et installation de plugins ZIP (CORR-03)
+- **Objectif :** Permettre l'import et l'installation d'extensions au format ZIP avec protections anti-traversal (Zip Slip), détection des exécutables interdits, décompression en bac à sable et redécouverte automatique.
+- **Fichiers :** `app/Core/PluginDiscovery/PluginZipInstaller.php`, `app/Core/PluginDiscovery/Exceptions/InvalidPluginArchiveException.php`, `app/Core/CoreServiceProvider.php`, `platform/core/Http/Controllers/Admin/PluginController.php`, `platform/core/resources/views/admin/plugins/index.blade.php`, `tests/Feature/AdminPluginZipUploadTest.php`.
+- **Dépendances :** P5-T3.
+- **Critère d'acceptation :** Upload ZIP validé avec redirection vers la fiche détaillée, rejets stricts des attaques Zip Slip et exécutables.
+- **Statut :** **Terminé**.
+
 
 

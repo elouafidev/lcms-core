@@ -1,20 +1,24 @@
 # Contexte Courant du Projet — Laravel Plugin-First CMS
 
-**Dernière mise à jour :** 2026-10-12 (Phase 0)
+**Dernière mise à jour :** 2026-10-19 (Phase 5 - Correctifs LCMS Core)
 **Responsable d'architecture :** Équipe d'ingénierie logicielle & Architecture CMS
 
 ---
 
 ## 1. Vision et Orientation Stratégique
-Le projet conçoit et implémente un CMS modulaire fondé sur Laravel où le noyau est strictement minimal (Lean Core) et où l'ensemble des fonctionnalités éditoriales et métier (pages, blogs, médias, formulaires, e-commerce, SEO) sont portées par des plugins autonomes respectant des contrats publics précis.
+Le projet conçoit et implémente un CMS modulaire fondé sur Laravel dont le nom officiel est désormais **LCMS Core**. Le noyau est strictement minimal (Lean Core) et l'ensemble des fonctionnalités éditoriales et métier (pages, menus, médias, formulaires, thèmes, SEO) sont portées par des plugins autonomes respectant des contrats publics précis.
 Priorité absolue : robustesse architecturale, isolation logique, gestion rigoureuse des dépendances et résilience (tolérance aux erreurs d'extensions).
 
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 4 TERMINÉE À 100% (US-019 à US-023 VALIDÉES)**
-- **Objectif de phase :** Moteur de thèmes découplés, contrats publics `ThemeInterface`, découverte dans `platform/themes/`, surcharge dynamique de templates Blade de plugins (View Overriding), gestionnaire d'assets de thèmes, thème de référence `default-modern`, panneau d'administration `/admin/themes` et commandes Artisan (`cms:theme:list`, `cms:theme:activate`).
-- **Statut :** Phase 4 achevée avec succès. US-023 validée avec 193 tests au vert (1190 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 5 TERMINÉE À 100% (CORRECTIFS LCMS CORE VALIDÉS : CORR-01 À CORR-04)**
+- **Objectif de phase :**
+  1. **CORR-01 :** Harmonisation du nom officiel **LCMS Core** sur l'ensemble de l'interface et des thèmes.
+  2. **CORR-02 :** Page de configuration détaillée d'un plugin (`/admin/plugins/{id}`) et contrôle préventif des dépendances inverses.
+  3. **CORR-03 :** Pipeline sécurisé d'importation et d'installation d'extensions au format ZIP (`PluginZipInstaller`, protection Zip Slip).
+  4. **CORR-04 :** Layout d'administration unifié (`core::admin.layouts.app`) assurant l'affichage permanent et cohérent de l'`admin-sidebar`.
+- **Statut :** Phase 5 achevée avec succès. 213 tests au vert (1286 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -50,12 +54,18 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-022 (P4-T4) :** Thème de référence complet et découplé `platform/themes/default-modern` (layouts, navigation, pages statiques, hooks SEO et assets stylisés).
 - [x] **US-023 (P4-T5) :** Commandes CLI et interface d'administration des thèmes (`ThemeListCommand`, `ThemeActivateCommand`, `AdminThemeController`, vue `/admin/themes` et entrée `themes-management` dans `NavigationRegistry`).
 
+### 3.2. Phase 5 — Correctifs et Améliorations LCMS Core (Terminée)
+- [x] **CORR-01 :** Renommage commercial et harmonisation du nom officiel **LCMS Core** dans l'interface d'administration (`sidebar.blade.php`), le thème de référence `default-modern`, `.env.example` et `.env`, avec préservation stricte des namespaces et identifiants techniques.
+- [x] **CORR-02 :** Vue détaillée d'une extension (`/admin/plugins/{id}`), liens cliquables dans `/admin/plugins`, inspection des métadonnées, diagnostic de résolution des dépendances directes et gardes de dépendances inverses (`PluginManager::getDependents()`) empêchant les désactivations / désinstallations en cascade non confirmées.
+- [x] **CORR-03 :** Pipeline sécurisé d'importation et installation de plugins via archive ZIP (`PluginZipInstaller`), protection contre les attaques Zip Slip, rejet d'exécutables interdits, validation de `plugin.json` via `ManifestValidator`, bac à sable temporaire nettoyé systématiquement et redécouverte automatique.
+- [x] **CORR-04 :** Layout d'administration unifié (`core::admin.layouts.app`), persistance inaltérable de l'`admin-sidebar` et des alertes de session sur toutes les vues de plugins (`acme.menus`, `acme.pages`, `acme.seo`, `acme.media-library`, `core::admin.plugins.*`, `core::admin.themes.*`).
+
 ---
 
 ## 4. Architecture Actuellement Retenue
 - **Paradigme :** Monolithe modulaire avec séparation stricte en trois couches :
   1. **Noyau (`app/Core`) :** Infrastructure technique pure, injection de dépendances, registre, contrats.
-  2. **Panneau d'administration système (`platform/core`) :** Authentification sécurisée et écran de contrôle des extensions.
+  2. **Panneau d'administration système (`platform/core`) :** Authentification sécurisée, écran de contrôle des extensions et layout unifié.
   3. **Extensions (`platform/plugins/*`) :** Modules autonomes dotés de leur propre espace de noms (`Plugins\{PluginId}\`), routes, contrôleurs, vues et migrations.
 - **Principe d'isolation :** Aucun appel direct d'implémentation privée entre plugins. Communication exclusive via contrats publics (`app/Core/Contracts`), événements Laravel typés et bus de hooks (`app/Core/Hooks`).
 
@@ -65,26 +75,28 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 
 | Composant | Version Retenue / Cible | Rôle |
 |---|---|---|
-| **Système d'exploitation** | Debian 12 (Bookworm) | Environnement conteneurisé d'exécution |
+| **Système d'exploitation** | Windows (Hôte) / Debian 12 (Conteneur) | Environnement d'exécution |
 | **PHP** | 8.2+ | Moteur d'exécution backend avec typage strict |
 | **Laravel** | 11.x / 12.x | Framework de base pour routage, IoC et ORM Eloquent |
 | **Composer** | 2.x | Gestionnaire de dépendances PHP |
 | **Base de données** | SQLite (Dev/Test) / PostgreSQL (Prod) | Persistance des données du noyau et des plugins |
-| **Node.js** | 22.x | Console interactive d'exploration architecturale |
 
 ---
 
 ## 6. Problèmes Connus et Risques Identifiés
 
-1. **Environnement conteneurisé PHP :** Le conteneur initial fourni dispose de Node.js préinstallé. Les binaires PHP et extensions requises (mbstring, xml, sqlite, curl) sont installés via le gestionnaire de paquets du système hôte (`apt-get`).
-2. **Risque de corruption du cycle de vie lors d'une migration interrompue :** Un plugin échouant à mi-migration ne doit pas laisser la base dans un état incohérent. *Mitigation :* Transactions de migration avec table de journalisation dédiée `cms_plugin_migrations`.
-3. **Risque de crash global induit par un plugin tiers défectueux :** Si un `ServiceProvider` d'un plugin déclenche une exception fatale au boot. *Mitigation :* `PluginManager` isole l'enregistrement via un boot sous surveillance et propose un mécanisme de *Safe Mode* par variable d'environnement ou drapeau en cache.
+1. **Dépendances inverses critiques :** Si une extension comme `acme.menus` ou `acme.media-library` est désactivée alors que le thème ou des pages en dépendent, le site public peut dégrader son rendu. *Mitigation :* `PluginManager::getDependents()` bloque la désactivation/désinstallation sans `force=true` et affiche un avertissement clair sur `/admin/plugins/{id}`.
+2. **Archives ZIP corrompues ou malicieuses :** Risque de traversée d'arborescence (Zip Slip) ou d'injection d'exécutables (`.exe`, `.sh`, `.phar`). *Mitigation :* `PluginZipInstaller` filtre chaque entrée d'archive, valide `plugin.json` dans un bac à sable temporaire UUID avant déplacement final et assure le nettoyage dans un bloc `finally`.
 
 ---
 
 ## 7. Prochaine Tâche Recommandée
-1. Présenter le bilan complet de la **PHASE 4 (Moteur de Thèmes & Rendu Découplé)** à l'utilisateur (100% complétée, 23 User Stories validées au total sur le projet).
-2. Clôturer l'ensemble du périmètre des spécifications initiales avec l'intégralité des 193 tests automatisés au vert, conformité PHPStan niveau 8 et Laravel Pint.
+1. Présenter le bilan complet de la **PHASE 5 (Correctifs LCMS Core)** à l'utilisateur :
+   - 213 tests au vert (1286 assertions).
+   - Analyse statique PHPStan niveau 8 sans erreur.
+   - Laravel Pint 100% conforme.
+   - Les 4 correctifs (CORR-01, CORR-02, CORR-03, CORR-04) sont pleinement opérationnels et validés par des tests unitaires et d'intégration.
+   - Les règles Git ont été strictement respectées (`LCMS_CORE_CORRECTIFS.md` à la racine, `/docs/correctifs/` exclu).
 
 ---
 
@@ -92,3 +104,4 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - Ne jamais ajouter de contrôleur de blog ou de gestionnaire de contenu directement dans `app/Http/Controllers` ou `app/Core`.
 - Ne jamais charger un plugin dont le manifeste échoue à la validation de schéma.
 - Conserver la séparation physique entre `platform/plugins/` et le code de base de l'application Laravel.
+- Toujours étendre `@extends('core::admin.layouts.app')` pour toutes les vues d'administration afin de conserver la barre latérale `admin-sidebar`.
