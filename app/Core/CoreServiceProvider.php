@@ -11,6 +11,8 @@ use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
 use App\Core\Console\Commands\PluginPublishAssetsCommand;
 use App\Core\Console\Commands\SafeModeCommand;
+use App\Core\Console\Commands\ThemeActivateCommand;
+use App\Core\Console\Commands\ThemeListCommand;
 use App\Core\Console\Commands\ThemePublishAssetsCommand;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Hooks\HookManager;
@@ -83,8 +85,19 @@ class CoreServiceProvider extends ServiceProvider
                 SafeModeCommand::class,
                 PluginPublishAssetsCommand::class,
                 ThemePublishAssetsCommand::class,
+                ThemeListCommand::class,
+                ThemeActivateCommand::class,
             ]);
         }
+
+        $navigation = $this->app->make(NavigationRegistry::class);
+        $navigation->registerItem(
+            id: 'themes-management',
+            label: 'Gestion des Thèmes',
+            url: '/admin/themes',
+            icon: 'palette',
+            priority: 15
+        );
 
         $this->app->booted(function (): void {
             $this->app->make(PluginManager::class)->boot();
