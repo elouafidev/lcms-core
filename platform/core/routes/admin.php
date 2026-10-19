@@ -9,6 +9,7 @@ use Platform\Core\Http\Controllers\Admin\PluginController;
 Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/', [PluginController::class, 'index'])->name('dashboard');
     Route::get('/plugins', [PluginController::class, 'index'])->name('plugins.index');
+    Route::get('/plugins/{id}', [PluginController::class, 'show'])->name('plugins.show');
     Route::post('/plugins/{id}/enable', [PluginController::class, 'enable'])->name('plugins.enable');
     Route::post('/plugins/{id}/disable', [PluginController::class, 'disable'])->name('plugins.disable');
     Route::post('/plugins/{id}/install', [PluginController::class, 'install'])->name('plugins.install');
