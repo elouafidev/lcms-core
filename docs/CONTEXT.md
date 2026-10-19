@@ -12,9 +12,9 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 2. Phase Actuelle
-- **Phase active :** **PHASE 4 EN COURS (US-022 VALIDÉE — 4/5)**
-- **Objectif de phase :** Moteur de thèmes découplés, contrats publics `ThemeInterface`, découverte dans `platform/themes/`, surcharge dynamique de templates Blade de plugins (View Overriding), gestionnaire d'assets de thèmes et thème de référence `default-modern`.
-- **Statut :** Phase 4 en phase finale. US-022 validée avec 184 tests au vert (1124 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Phase active :** **PHASE 4 TERMINÉE À 100% (US-019 à US-023 VALIDÉES)**
+- **Objectif de phase :** Moteur de thèmes découplés, contrats publics `ThemeInterface`, découverte dans `platform/themes/`, surcharge dynamique de templates Blade de plugins (View Overriding), gestionnaire d'assets de thèmes, thème de référence `default-modern`, panneau d'administration `/admin/themes` et commandes Artisan (`cms:theme:list`, `cms:theme:activate`).
+- **Statut :** Phase 4 achevée avec succès. US-023 validée avec 193 tests au vert (1190 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -48,9 +48,7 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **US-020 (P4-T2) :** Gestionnaire de thèmes `ThemeManager`, persistance de l'activation via table `cms_themes` et hiérarchie de surcharge des templates Blade de plugins (View Overriding).
 - [x] **US-021 (P4-T3) :** Gestionnaire d'assets de thème `ThemeAssetManager` et commande CLI de publication `cms:theme:publish-assets`.
 - [x] **US-022 (P4-T4) :** Thème de référence complet et découplé `platform/themes/default-modern` (layouts, navigation, pages statiques, hooks SEO et assets stylisés).
-
-### 3.2. Prochaine Étape (Phase 4 — Tâche P4-T5 / US-023)
-- [ ] **US-023 (P4-T5) :** Commandes CLI et interface d'administration des thèmes (`ThemeListCommand`, `ThemeActivateCommand`, `AdminThemeController` et vue `/admin/themes`).
+- [x] **US-023 (P4-T5) :** Commandes CLI et interface d'administration des thèmes (`ThemeListCommand`, `ThemeActivateCommand`, `AdminThemeController`, vue `/admin/themes` et entrée `themes-management` dans `NavigationRegistry`).
 
 ---
 
@@ -85,11 +83,8 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 ---
 
 ## 7. Prochaine Tâche Recommandée
-1. Présenter le bilan de validation de la **PHASE 2 (Stabilisation, Dépendances & Résilience)** à l'utilisateur (100% complétée).
-2. Engager la **PHASE 3 (Médiathèque, Thèmes & Gestionnaire d'Assets)** :
-   - Publication d'assets statiques isolés par extension (`PluginAssetManager`).
-   - Contrat de stockage de médias (`MediaStorageInterface`).
-   - Moteur de thèmes interchangeables sans couplage noyau.
+1. Présenter le bilan complet de la **PHASE 4 (Moteur de Thèmes & Rendu Découplé)** à l'utilisateur (100% complétée, 23 User Stories validées au total sur le projet).
+2. Clôturer l'ensemble du périmètre des spécifications initiales avec l'intégralité des 193 tests automatisés au vert, conformité PHPStan niveau 8 et Laravel Pint.
 
 ---
 

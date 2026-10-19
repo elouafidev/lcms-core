@@ -38,11 +38,17 @@
 | **P2-T3** | Tolérance aux crashs et Safe Mode (`SafeModeManager`, `PluginQuarantineHandler`) | Phase 2 (US-012) | P2-T2 | **Terminé** |
 | **P2-T4** | Navigation dynamique et registre de permissions (`NavigationRegistry`, `PermissionRegistry`) | Phase 2 (US-013) | P2-T3 | **Terminé** |
 |---|---|---|---|---|
-| **P3-T1** | Gestionnaire d'actifs statiques isolés (`PluginAssetManager`) | Phase 3 (US-014) | P2-T4 | **À faire** |
-| **P3-T2** | Contrat de stockage et plugin médiathèque (`acme.media-library`) | Phase 3 (US-015) | P3-T1 | **À faire** |
-| **P3-T3** | Plugin de gestion des pages statiques (`acme.pages`) | Phase 3 (US-016) | P3-T2 | **À faire** |
-| **P3-T4** | Plugin de menus arborescents et hook de rendu (`acme.menus`) | Phase 3 (US-017) | P3-T3 | **À faire** |
-| **P3-T5** | Plugin SEO et métadonnées via bus de hooks (`acme.seo`) | Phase 3 (US-018) | P3-T4 | **À faire** |
+| **P3-T1** | Gestionnaire d'actifs statiques isolés (`PluginAssetManager`) | Phase 3 (US-014) | P2-T4 | **Terminé** |
+| **P3-T2** | Contrat de stockage et plugin médiathèque (`acme.media-library`) | Phase 3 (US-015) | P3-T1 | **Terminé** |
+| **P3-T3** | Plugin de gestion des pages statiques (`acme.pages`) | Phase 3 (US-016) | P3-T2 | **Terminé** |
+| **P3-T4** | Plugin de menus arborescents et hook de rendu (`acme.menus`) | Phase 3 (US-017) | P3-T3 | **Terminé** |
+| **P3-T5** | Plugin SEO et métadonnées via bus de hooks (`acme.seo`) | Phase 3 (US-018) | P3-T4 | **Terminé** |
+|---|---|---|---|---|
+| **P4-T1** | Contrats Publics de Thèmes et Découverte (`ThemeDiscovery`, `ThemeManifest`) | Phase 4 (US-019) | P3-T5 | **Terminé** |
+| **P4-T2** | Gestionnaire de Thèmes et Surcharge de Vues (`ThemeManager`, `cms_themes`) | Phase 4 (US-020) | P4-T1 | **Terminé** |
+| **P4-T3** | Gestionnaire d'Assets de Thème (`ThemeAssetManager`, `cms:theme:publish-assets`) | Phase 4 (US-021) | P4-T2 | **Terminé** |
+| **P4-T4** | Thème de Référence Découplé (`platform/themes/default-modern`) | Phase 4 (US-022) | P4-T3 | **Terminé** |
+| **P4-T5** | Commandes CLI et Interface d'Administration des Thèmes (`AdminThemeController`) | Phase 4 (US-023) | P4-T4 | **Terminé** |
 
 ---
 
@@ -197,7 +203,9 @@
 
 ### Tâche P4-T5 : Commandes CLI et Interface d'Administration des Thèmes (US-023)
 - **Objectif :** Écran d'administration `/admin/themes` et commandes `cms:theme:list`, `cms:theme:activate`.
-- **Fichiers :** `app/Core/Console/Commands/ThemeListCommand.php`, `app/Core/Console/Commands/ThemeActivateCommand.php`, `app/Http/Controllers/Admin/AdminThemeController.php`, `resources/views/admin/themes/index.blade.php`, `tests/Feature/Themes/AdminThemeTest.php`.
+- **Fichiers :** `app/Core/Console/Commands/ThemeListCommand.php`, `app/Core/Console/Commands/ThemeActivateCommand.php`, `platform/core/Http/Controllers/Admin/AdminThemeController.php`, `platform/core/resources/views/admin/themes/index.blade.php`, `tests/Feature/Themes/AdminThemeTest.php`.
 - **Dépendances :** P4-T4.
 - **Critère d'acceptation :** Changement de thème instantané depuis l'admin et en CLI.
+- **Statut :** **Terminé**.
+
 
