@@ -228,7 +228,7 @@ class AdminNavigationRegistryTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin');
 
         $response->assertOk();
-        $response->assertSee('CMS Control');
+        $response->assertSee('LCMS Core');
         $response->assertSee('Gestion des Plugins');
         $response->assertSee('Prospects CRM');
         $response->assertSee('/admin/crm/leads');

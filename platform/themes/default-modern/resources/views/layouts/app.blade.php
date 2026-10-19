@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name', 'Laravel Plugin-First CMS'))</title>
+    <title>@yield('title', config('app.name', 'LCMS Core'))</title>
 
     {!! \App\Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
 
@@ -14,7 +14,7 @@
         <div class="cms-container cms-header-inner">
             <a href="/" class="cms-brand">
                 <span class="cms-logo-icon">❖</span>
-                <span class="cms-brand-name">{{ config('app.name', 'Laravel CMS') }}</span>
+                <span class="cms-brand-name">{{ config('app.name', 'LCMS Core') }}</span>
             </a>
 
             <nav class="cms-navbar" aria-label="Navigation principale">
@@ -31,7 +31,7 @@
 
     <footer class="cms-footer">
         <div class="cms-container cms-footer-inner">
-            <p class="cms-copyright">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel CMS') }} — Propulsé par un noyau Plugin-First modulaire.</p>
+            <p class="cms-copyright">&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — Propulsé par LCMS Core.</p>
             {!! \App\Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
         </div>
     </footer>
