@@ -21,6 +21,7 @@ use App\Core\Permissions\PermissionRegistry;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
 use App\Core\PluginDiscovery\PluginDiscovery;
+use App\Core\PluginDiscovery\PluginZipInstaller;
 use App\Core\PluginManager\PluginManager;
 use App\Core\PluginRegistry\PluginRegistry;
 use App\Core\Recovery\PluginQuarantineHandler;
@@ -45,6 +46,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(ManifestValidator::class);
         $this->app->singleton(PluginClassLoader::class);
         $this->app->singleton(PluginDiscovery::class);
+        $this->app->singleton(PluginZipInstaller::class);
         $this->app->singleton(DependencyResolver::class);
         $this->app->singleton(HookManager::class);
         $this->app->singleton(PluginMigrationManager::class);

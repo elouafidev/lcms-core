@@ -4,20 +4,54 @@ declare(strict_types=1);
 
 namespace Platform\Core\Http\Controllers\Admin;
 
+use App\Core\PluginDiscovery\PluginZipInstaller;
 use App\Core\PluginManager\PluginManager;
 use App\Core\PluginRegistry\PluginRegistry;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use Throwable;
 
 class PluginController extends Controller
 {
+    private PluginZipInstaller $zipInstaller;
+
     public function __construct(
         private PluginRegistry $registry,
-        private PluginManager $pluginManager
-    ) {}
+        private PluginManager $pluginManager,
+        ?PluginZipInstaller $zipInstaller = null
+    ) {
+        $this->zipInstaller = $zipInstaller ?? app(PluginZipInstaller::class);
+    }
+
+    /**
+     * Upload and install a plugin from a ZIP archive.
+     */
+    public function upload(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'plugin_archive' => ['required', 'file', 'mimes:zip', 'max:20480'],
+        ]);
+
+        $file = $request->file('plugin_archive');
+        if (! $file instanceof UploadedFile) {
+            return redirect()->back(fallback: route('admin.plugins.index'))
+                ->with('error', "Aucun fichier d'archive ZIP valide n'a été transmis.");
+        }
+
+        try {
+            $overwrite = $request->boolean('overwrite', false);
+            $manifest = $this->zipInstaller->installArchive($file, $overwrite);
+
+            return redirect()->route('admin.plugins.show', $manifest->getId())
+                ->with('success', "Extension '{$manifest->getName()}' ({$manifest->getVersion()}) importée et installée avec succès.");
+        } catch (Throwable $e) {
+            return redirect()->back(fallback: route('admin.plugins.index'))
+                ->with('error', "Échec de l'importation de l'archive ZIP : ".$e->getMessage());
+        }
+    }
 
     /**
      * Display the list of all plugins and their status.
