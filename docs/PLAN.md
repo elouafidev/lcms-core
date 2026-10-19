@@ -193,6 +193,7 @@
 - **Fichiers :** `platform/themes/default-modern/*`, `tests/Feature/Themes/DefaultModernThemeTest.php`.
 - **Dépendances :** P4-T3.
 - **Critère d'acceptation :** Rendu front fluide combinant pages, menus et SEO.
+- **Statut :** **Terminé**.
 
 ### Tâche P4-T5 : Commandes CLI et Interface d'Administration des Thèmes (US-023)
 - **Objectif :** Écran d'administration `/admin/themes` et commandes `cms:theme:list`, `cms:theme:activate`.

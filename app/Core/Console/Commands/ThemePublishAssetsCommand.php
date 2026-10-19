@@ -115,4 +115,3 @@ class ThemePublishAssetsCommand extends Command
         return self::SUCCESS;
     }
 }
-
