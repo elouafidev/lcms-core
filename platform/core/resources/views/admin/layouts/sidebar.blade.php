@@ -6,7 +6,7 @@
 
 <aside class="admin-sidebar" style="width: 250px; background-color: #ffffff; border-right: 1px solid var(--border-color, #e2e8f0); min-height: 100vh; padding: 1.5rem 1rem; box-sizing: border-box; flex-shrink: 0;">
     <div class="sidebar-brand" style="font-weight: 700; font-size: 1.15rem; color: #0f172a; margin-bottom: 1.5rem; padding-left: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>⚡</span> <span>CMS Control</span>
+        <span>⚡</span> <span>LCMS Core</span>
     </div>
 
     <nav class="sidebar-nav">
