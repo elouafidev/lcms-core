@@ -20,4 +20,5 @@ yarn-error.log
 *.local
 .DS_Store
 Thumbs.db
-
+/docs/correctifs/
+/LCMS_CORE_CORRECTIFS.md
