@@ -42,6 +42,11 @@ class AdminThemeTest extends TestCase
 
         $this->assetManager->clean('default-modern');
 
+        $tempThemePath = base_path('platform/themes/temp-delete-theme');
+        if (is_dir($tempThemePath)) {
+            $this->deleteDirectory($tempThemePath);
+        }
+
         parent::tearDown();
     }
 
@@ -50,10 +55,16 @@ class AdminThemeTest extends TestCase
         $this->get(route('admin.themes.index'))
             ->assertRedirect(route('login'));
 
+        $this->post(route('admin.themes.upload'))
+            ->assertRedirect(route('login'));
+
         $this->post(route('admin.themes.activate', 'default-modern'))
             ->assertRedirect(route('login'));
 
         $this->post(route('admin.themes.deactivate'))
+            ->assertRedirect(route('login'));
+
+        $this->post(route('admin.themes.delete', 'default-modern'))
             ->assertRedirect(route('login'));
     }
 
@@ -67,10 +78,14 @@ class AdminThemeTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('core::admin.themes.index');
         $response->assertSee('Gestion des Thèmes CMS');
+        $response->assertSee('Importer un thème (.zip)');
+        $response->assertSee(route('admin.themes.upload'));
         $response->assertSee('default-modern');
         $response->assertSee('Default Modern');
         $response->assertSee('Disponible');
         $response->assertSee('Activer');
+        $response->assertSee('Supprimer');
+        $response->assertSee(route('admin.themes.delete', 'default-modern'));
     }
 
     public function test_admin_can_activate_theme_via_http(): void
@@ -90,6 +105,7 @@ class AdminThemeTest extends TestCase
         $indexResponse->assertOk();
         $indexResponse->assertSee('Actif');
         $indexResponse->assertSee('Désactiver');
+        $indexResponse->assertDontSee(route('admin.themes.delete', 'default-modern'));
     }
 
     public function test_admin_can_deactivate_theme_via_http(): void
@@ -155,6 +171,58 @@ class AdminThemeTest extends TestCase
             ->assertFailed();
     }
 
+    public function test_admin_can_delete_inactive_theme_via_http(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $tempThemePath = base_path('platform/themes/temp-delete-theme');
+        mkdir($tempThemePath, 0777, true);
+        file_put_contents($tempThemePath.'/theme.json', (string) json_encode([
+            'id' => 'temp-delete-theme',
+            'name' => 'Temp Delete Theme',
+            'version' => '1.0.0',
+        ]));
+
+        $this->discovery->discover();
+        $this->assertTrue($this->discovery->has('temp-delete-theme'));
+
+        $response = $this->actingAs($admin)->post(route('admin.themes.delete', 'temp-delete-theme'));
+
+        $response->assertRedirect(route('admin.themes.index'));
+        $response->assertSessionHas('success');
+
+        $this->assertDirectoryDoesNotExist($tempThemePath);
+        $this->assertFalse($this->discovery->has('temp-delete-theme'));
+    }
+
+    public function test_admin_cannot_delete_active_theme(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $this->themeManager->activate('default-modern');
+        $this->assertSame('default-modern', $this->themeManager->getActiveThemeId());
+
+        $themePath = base_path('platform/themes/default-modern');
+        $this->assertDirectoryExists($themePath);
+
+        $response = $this->actingAs($admin)->post(route('admin.themes.delete', 'default-modern'));
+
+        $response->assertSessionHas('error');
+        $this->assertDirectoryExists($themePath);
+    }
+
+    public function test_deleting_non_existent_theme_returns_error(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->post(route('admin.themes.delete', 'non-existent-theme-xyz'));
+
+        $response->assertSessionHas('error');
+    }
+
     public function test_navigation_registry_registers_themes_management_and_sidebar_renders_it(): void
     {
         $navRegistry = $this->app->make(NavigationRegistry::class);
@@ -172,5 +240,19 @@ class AdminThemeTest extends TestCase
         $response->assertOk();
         $response->assertSee('Gestion des Thèmes');
         $response->assertSee(route('admin.themes.index'));
+    }
+
+    private function deleteDirectory(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir) ?: [], ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir.DIRECTORY_SEPARATOR.$file;
+            is_dir($path) ? $this->deleteDirectory($path) : unlink($path);
+        }
+        rmdir($dir);
     }
 }

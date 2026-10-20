@@ -29,6 +29,7 @@ use App\Core\Recovery\SafeModeManager;
 use App\Core\Themes\ThemeAssetManager;
 use App\Core\Themes\ThemeDiscovery;
 use App\Core\Themes\ThemeManager;
+use App\Core\Themes\ThemeZipInstaller;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -60,6 +61,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeDiscovery::class);
         $this->app->singleton(ThemeAssetManager::class);
         $this->app->singleton(ThemeManager::class);
+        $this->app->singleton(ThemeZipInstaller::class);
     }
 
     /**
