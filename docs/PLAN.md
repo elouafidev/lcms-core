@@ -55,6 +55,7 @@
 | **P5-T3** | Page détaillée de plugin et gardes de dépendances inverses (CORR-02) | Phase 5 | P5-T2 | **Terminé** |
 | **P5-T4** | Pipeline sécurisé d'importation et installation de plugins ZIP (CORR-03) | Phase 5 | P5-T3 | **Terminé** |
 | **P5-T5** | Bouton de suppression et purge physique des extensions désinstallées | Phase 5 | P5-T4 | **Terminé** |
+| **P5-T6** | Importation de thème ZIP et suppression sécurisée des thèmes inactifs | Phase 5 | P5-T5 | **Terminé** |
 
 ---
 

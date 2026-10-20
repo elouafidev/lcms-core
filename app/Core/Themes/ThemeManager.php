@@ -12,6 +12,7 @@ use Illuminate\View\Factory as ViewFactory;
 use Illuminate\View\FileViewFinder;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Throwable;
 
 class ThemeManager
@@ -358,5 +359,78 @@ class ThemeManager
     public function getDiscovery(): ThemeDiscovery
     {
         return $this->discovery;
+    }
+
+    /**
+     * Delete an inactive theme completely from the filesystem.
+     *
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    public function delete(string $themeId): void
+    {
+        if ($this->getActiveThemeId() === $themeId) {
+            throw new InvalidArgumentException("Impossible de supprimer le thème '{$themeId}' car il est actuellement actif. Veuillez activer un autre thème ou le désactiver au préalable.");
+        }
+
+        /** @var ThemeRecord|null $record */
+        $record = ThemeRecord::query()->where('theme_id', $themeId)->first();
+        if ($record !== null && $record->is_active) {
+            throw new InvalidArgumentException("Impossible de supprimer le thème '{$themeId}' car il est enregistré comme actif dans la base de données.");
+        }
+
+        $theme = $this->discovery->get($themeId);
+        $path = $theme?->getPath();
+
+        if ($path === null) {
+            $themesBasePath = (string) config('cms.themes.path', base_path('platform/themes'));
+            $candidatePath = $themesBasePath.DIRECTORY_SEPARATOR.$themeId;
+            if (is_dir($candidatePath)) {
+                $path = $candidatePath;
+            }
+        }
+
+        if ($path === null || ! is_dir($path)) {
+            throw new RuntimeException("Dossier introuvable sur le disque pour le thème '{$themeId}'.");
+        }
+
+        $themesBasePath = realpath((string) config('cms.themes.path', base_path('platform/themes')));
+        $realPath = realpath($path);
+
+        if ($realPath === false || $themesBasePath === false || ! str_starts_with($realPath, $themesBasePath.DIRECTORY_SEPARATOR)) {
+            throw new RuntimeException("Chemin non autorisé ou en dehors du répertoire des thèmes pour '{$themeId}'.");
+        }
+
+        $this->deleteDirectoryRecursively($realPath);
+        $this->assetManager->clean($themeId);
+
+        if ($record !== null) {
+            $record->delete();
+        }
+
+        $this->discovery->discover();
+
+        $this->logger?->info("Thème '{$themeId}' supprimé définitivement du système de fichiers.");
+    }
+
+    private function deleteDirectoryRecursively(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir) ?: [], ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir.DIRECTORY_SEPARATOR.$file;
+            if (is_dir($path)) {
+                $this->deleteDirectoryRecursively($path);
+            } else {
+                @chmod($path, 0777);
+                unlink($path);
+            }
+        }
+
+        @chmod($dir, 0777);
+        rmdir($dir);
     }
 }

@@ -19,6 +19,8 @@ Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(funct
 
     // Themes management routes
     Route::get('/themes', [AdminThemeController::class, 'index'])->name('themes.index');
+    Route::post('/themes/upload', [AdminThemeController::class, 'upload'])->name('themes.upload');
     Route::post('/themes/{id}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
     Route::post('/themes/deactivate', [AdminThemeController::class, 'deactivate'])->name('themes.deactivate');
+    Route::post('/themes/{id}/delete', [AdminThemeController::class, 'delete'])->name('themes.delete');
 });
