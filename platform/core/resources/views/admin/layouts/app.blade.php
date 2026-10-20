@@ -3,174 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name', 'LCMS Core') . ' — Administration')</title>
+
+    <!-- Google Font: Source Sans 3 (AdminLTE 4) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
+
+    <!-- Overlayscrollbars CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- AdminLTE 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-beta3/dist/css/adminlte.min.css">
+
+    <!-- Compatibility & Tweaks Layer -->
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --muted-color: #64748b;
-            --border-color: #e2e8f0;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --danger: #ef4444;
-            --danger-hover: #dc2626;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --primary: #0d6efd;
+            --primary-hover: #0b5ed7;
+            --danger: #dc3545;
+            --danger-hover: #bb2d3b;
+            --success: #198754;
+            --warning: #ffc107;
+            --muted-color: #6c757d;
+            --border-color: #dee2e6;
         }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            min-height: 100vh;
-        }
-        .admin-main {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1200px;
-            box-sizing: border-box;
-        }
-        header.admin-header {
+
+        /* Layout & Header Compatibility */
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--bs-border-color, #dee2e6);
         }
-        h1.admin-title {
-            font-size: 1.75rem;
-            margin: 0;
+        .admin-title {
+            font-size: 1.5rem;
             font-weight: 700;
+            margin: 0;
+            color: var(--bs-heading-color, #212529);
         }
-        .alert {
-            padding: 1rem 1.25rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-        .alert-success {
-            background-color: #ecfdf5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-        .alert-error {
-            background-color: #fef2f2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-        }
-        .alert-warning {
-            background-color: #fffbeb;
-            color: #92400e;
-            border: 1px solid #fde68a;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-        .table th, .table td {
-            padding: 0.85rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .table th {
-            background-color: #f1f5f9;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--muted-color);
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .badge-available { background-color: #e2e8f0; color: #475569; }
-        .badge-installed { background-color: #dbeafe; color: #1e40af; }
-        .badge-active { background-color: #d1fae5; color: #065f46; }
-        .badge-disabled { background-color: #fef3c7; color: #92400e; }
-        .badge-error { background-color: #fee2e2; color: #991b1b; }
-        .btn {
-            display: inline-block;
-            padding: 0.4rem 0.85rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 0.375rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-decoration: none;
-        }
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-        .btn-danger {
-            background-color: var(--danger);
-            color: white;
-        }
-        .btn-danger:hover {
-            background-color: var(--danger-hover);
-        }
-        .btn-secondary {
-            background-color: #64748b;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background-color: #475569;
-        }
+
+        /* Inline action forms in tables */
         .actions-form {
             display: inline-block;
             margin-right: 0.25rem;
+            margin-bottom: 0;
+        }
+
+        /* Legacy badge mapping */
+        .badge-available { background-color: #6c757d; color: #ffffff; }
+        .badge-installed { background-color: #0d6efd; color: #ffffff; }
+        .badge-active { background-color: #198754; color: #ffffff; }
+        .badge-disabled { background-color: #ffc107; color: #000000; }
+        .badge-error { background-color: #dc3545; color: #ffffff; }
+
+        /* Legacy alert mapping */
+        .alert-error {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        /* Sidebar brand & item refinement */
+        .app-sidebar .sidebar-brand {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .app-sidebar .nav-header {
+            letter-spacing: 0.05em;
         }
     </style>
+
     @stack('styles')
 </head>
-<body>
-    @include('core::admin.layouts.sidebar')
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+    <div class="app-wrapper">
+        <!-- Navbar Header -->
+        @include('core::admin.layouts.navbar')
 
-    <main class="admin-main">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        <!-- Main Sidebar -->
+        @include('core::admin.layouts.sidebar')
+
+        <!-- App Main Body -->
+        <main class="app-main admin-main">
+            <div class="app-content py-4">
+                <div class="container-fluid">
+                    <!-- Session Notifications -->
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-error alert-dismissible fade show shadow-sm" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        </div>
+                    @endif
+
+                    @if(session('warning'))
+                        <div class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                            {{ session('warning') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        </div>
+                    @endif
+
+                    <!-- Page Content -->
+                    @yield('content')
+                </div>
             </div>
-        @endif
+        </main>
 
-        @if(session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
-        @endif
+        <!-- Footer -->
+        @include('core::admin.layouts.footer')
+    </div>
 
-        @if(session('warning'))
-            <div class="alert alert-warning">
-                {{ session('warning') }}
-            </div>
-        @endif
+    <!-- Scripts: Overlayscrollbars, Popper, Bootstrap 5, AdminLTE 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-beta3/dist/js/adminlte.min.js"></script>
 
-        @yield('content')
-    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebarWrapper = document.querySelector(".sidebar-wrapper");
+            if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== "undefined") {
+                OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                    scrollbars: {
+                        theme: "os-theme-light",
+                        autoHide: "leave",
+                        clickScroll: true,
+                    },
+                });
+            }
+        });
+    </script>
 
     @stack('scripts')
 </body>
