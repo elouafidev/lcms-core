@@ -4,48 +4,59 @@
     $navItems = array_filter($navigationRegistry->getItems(), fn ($item) => $item->getId() !== 'themes-management');
 @endphp
 
-<aside class="admin-sidebar" style="width: 250px; background-color: #ffffff; border-right: 1px solid var(--border-color, #e2e8f0); min-height: 100vh; padding: 1.5rem 1rem; box-sizing: border-box; flex-shrink: 0;">
-    <div class="sidebar-brand" style="font-weight: 700; font-size: 1.15rem; color: #0f172a; margin-bottom: 1.5rem; padding-left: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>⚡</span> <span>LCMS Core</span>
+<aside class="app-sidebar admin-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <!-- Sidebar Brand -->
+    <div class="sidebar-brand">
+        <a href="{{ route('admin.dashboard') }}" class="brand-link text-decoration-none d-flex align-items-center gap-2 py-3 px-3">
+            <span class="fs-4">⚡</span>
+            <span class="brand-text fw-bold fs-5 text-white">LCMS Core</span>
+        </a>
     </div>
 
-    <nav class="sidebar-nav">
-        <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem; padding-left: 0.5rem; letter-spacing: 0.05em;">
-            Système
-        </div>
-        <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0;">
-            <li style="margin-bottom: 0.25rem;">
-                <a href="{{ route('admin.plugins.index') }}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; text-decoration: none; color: {{ request()->routeIs('admin.plugins.*') ? '#2563eb' : '#334155' }}; background-color: {{ request()->routeIs('admin.plugins.*') ? '#eff6ff' : 'transparent' }}; font-weight: {{ request()->routeIs('admin.plugins.*') ? '600' : '400' }}; font-size: 0.9rem;">
-                    <span class="nav-icon">🧩</span>
-                    <span class="nav-label">Gestion des Plugins</span>
-                </a>
-            </li>
-            <li style="margin-bottom: 0.25rem;">
-                <a href="{{ route('admin.themes.index') }}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; text-decoration: none; color: {{ request()->routeIs('admin.themes.*') ? '#2563eb' : '#334155' }}; background-color: {{ request()->routeIs('admin.themes.*') ? '#eff6ff' : 'transparent' }}; font-weight: {{ request()->routeIs('admin.themes.*') ? '600' : '400' }}; font-size: 0.9rem;">
-                    <span class="nav-icon">🎨</span>
-                    <span class="nav-label">Gestion des Thèmes</span>
-                </a>
-            </li>
-        </ul>
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-header text-uppercase fs-7 text-muted fw-bold px-3 pt-2 pb-1">
+                    Système
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.plugins.index') }}" class="nav-link {{ request()->routeIs('admin.plugins.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-puzzle"></i>
+                        <p class="mb-0">Gestion des Plugins</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.themes.index') }}" class="nav-link {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-palette"></i>
+                        <p class="mb-0">Gestion des Thèmes</p>
+                    </a>
+                </li>
 
-        @if(! empty($navItems))
-            <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem; padding-left: 0.5rem; letter-spacing: 0.05em;">
-                Extensions & Modules
-            </div>
-            <ul class="plugin-nav-list" style="list-style: none; padding: 0; margin: 0;">
-                @foreach($navItems as $item)
-                    <li style="margin-bottom: 0.25rem;" data-plugin-id="{{ $item->getPluginId() ?? '' }}">
-                        <a href="{{ $item->getUrl() }}" class="plugin-nav-link" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; text-decoration: none; color: {{ request()->url() === url($item->getUrl()) ? '#2563eb' : '#334155' }}; background-color: {{ request()->url() === url($item->getUrl()) ? '#eff6ff' : 'transparent' }}; font-weight: {{ request()->url() === url($item->getUrl()) ? '600' : '400' }}; font-size: 0.9rem;">
-                            @if($item->getIcon())
-                                <span class="nav-icon">{{ $item->getIcon() }}</span>
-                            @else
-                                <span class="nav-icon">📌</span>
-                            @endif
-                            <span class="nav-label">{{ $item->getLabel() }}</span>
-                        </a>
+                @if(! empty($navItems))
+                    <li class="nav-header text-uppercase fs-7 text-muted fw-bold px-3 pt-3 pb-1">
+                        Extensions &amp; Modules
                     </li>
-                @endforeach
+                    @foreach($navItems as $item)
+                        @php
+                            $isActive = (request()->url() === url($item->getUrl()));
+                            $icon = $item->getIcon();
+                        @endphp
+                        <li class="nav-item" data-plugin-id="{{ $item->getPluginId() ?? '' }}">
+                            <a href="{{ $item->getUrl() }}" class="nav-link plugin-nav-link {{ $isActive ? 'active' : '' }}">
+                                @if($icon && (str_starts_with($icon, 'bi ') || str_starts_with($icon, 'bi-')))
+                                    <i class="nav-icon {{ $icon }}"></i>
+                                @elseif($icon)
+                                    <span class="nav-icon me-1">{{ $icon }}</span>
+                                @else
+                                    <i class="nav-icon bi bi-app-indicator"></i>
+                                @endif
+                                <p class="mb-0">{{ $item->getLabel() }}</p>
+                            </a>
+                        </li>
+                    @endforeach
+                @endif
             </ul>
-        @endif
-    </nav>
+        </nav>
+    </div>
 </aside>

@@ -22,3 +22,5 @@ yarn-error.log
 Thumbs.db
 /docs/correctifs/
 /LCMS_CORE_CORRECTIFS.md
+/docs/integration AdminLTE 4.md
+/docs/*integration*AdminLTE*.md

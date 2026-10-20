@@ -56,6 +56,7 @@
 | **P5-T4** | Pipeline sécurisé d'importation et installation de plugins ZIP (CORR-03) | Phase 5 | P5-T3 | **Terminé** |
 | **P5-T5** | Bouton de suppression et purge physique des extensions désinstallées | Phase 5 | P5-T4 | **Terminé** |
 | **P5-T6** | Importation de thème ZIP et suppression sécurisée des thèmes inactifs | Phase 5 | P5-T5 | **Terminé** |
+| **P5-T7** | Intégration du thème AdminLTE version 4 sur l'ensemble de l'administration | Phase 5 | P5-T6 | **Terminé** |
 
 ---
 
