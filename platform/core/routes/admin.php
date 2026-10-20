@@ -15,6 +15,7 @@ Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(funct
     Route::post('/plugins/{id}/disable', [PluginController::class, 'disable'])->name('plugins.disable');
     Route::post('/plugins/{id}/install', [PluginController::class, 'install'])->name('plugins.install');
     Route::post('/plugins/{id}/uninstall', [PluginController::class, 'uninstall'])->name('plugins.uninstall');
+    Route::post('/plugins/{id}/delete', [PluginController::class, 'delete'])->name('plugins.delete');
 
     // Themes management routes
     Route::get('/themes', [AdminThemeController::class, 'index'])->name('themes.index');

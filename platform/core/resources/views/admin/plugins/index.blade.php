@@ -108,6 +108,10 @@
                                         @csrf
                                         <button type="submit" class="btn btn-primary">Installer et Activer</button>
                                     </form>
+                                    <form method="POST" action="{{ route('admin.plugins.delete', $pluginId) }}" class="actions-form" onsubmit="return confirm('Confirmer la suppression définitive des fichiers de l\'extension \'{{ $manifest->getName() }}\' ?');">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
                                 @elseif($state === 'INSTALLED' || $state === 'DISABLED')
                                     <form method="POST" action="{{ route('admin.plugins.enable', $pluginId) }}" class="actions-form">
                                         @csrf
