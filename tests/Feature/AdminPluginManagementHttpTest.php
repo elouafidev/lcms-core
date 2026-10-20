@@ -136,6 +136,57 @@ class AdminPluginManagementHttpTest extends TestCase
         $response->assertSee('MODE DE SECOURS (SAFE MODE) ACTIF');
     }
 
+    public function test_delete_button_is_visible_on_management_and_detail_views_when_plugin_is_uninstalled(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        // 1. On index view (/admin/plugins)
+        $responseIndex = $this->actingAs($user)->get('/admin/plugins');
+        $responseIndex->assertOk();
+        $responseIndex->assertSee(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $responseIndex->assertSee('Supprimer');
+
+        // 2. On detail view (/admin/plugins/{id})
+        $responseDetail = $this->actingAs($user)->get('/admin/plugins/acme.sample-plugin');
+        $responseDetail->assertOk();
+        $responseDetail->assertSee(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $responseDetail->assertSee('Supprimer définitivement');
+    }
+
+    public function test_authenticated_user_can_delete_uninstalled_plugin_from_filesystem(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $pluginPath = $this->tempPluginsDir.'/acme.sample-plugin';
+        $this->assertDirectoryExists($pluginPath);
+
+        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'acme.sample-plugin'));
+
+        $response->assertRedirect(route('admin.plugins.index'));
+        $response->assertSessionHas('success');
+        $this->assertDirectoryDoesNotExist($pluginPath);
+    }
+
+    public function test_cannot_delete_plugin_while_it_is_still_installed_or_active(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        // Enable plugin first
+        $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/enable');
+
+        $pluginPath = $this->tempPluginsDir.'/acme.sample-plugin';
+        $this->assertDirectoryExists($pluginPath);
+
+        // Attempt deletion while active/installed
+        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'acme.sample-plugin'));
+
+        $response->assertSessionHas('error');
+        $this->assertDirectoryExists($pluginPath);
+    }
+
     private function createTestPlugin(string $id): void
     {
         $pluginDir = $this->tempPluginsDir.'/'.$id;

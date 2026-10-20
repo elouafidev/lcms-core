@@ -341,4 +341,66 @@ class PluginManager
 
         $record->delete();
     }
+
+    /**
+     * Delete an uninstalled plugin completely from the filesystem.
+     *
+     * @throws InvalidArgumentException|RuntimeException
+     */
+    public function delete(string $pluginId): void
+    {
+        if ($this->registry->isInstalled($pluginId)) {
+            throw new InvalidArgumentException("Impossible de supprimer l'extension '{$pluginId}' car elle est encore installée. Veuillez la désinstaller au préalable.");
+        }
+
+        $discovered = $this->registry->getDiscovered($pluginId);
+        $path = $discovered !== null ? $discovered->getPath() : null;
+
+        if ($path === null) {
+            $pluginsBasePath = (string) config('cms.plugins.path', base_path('platform/plugins'));
+            $candidatePath = $pluginsBasePath.DIRECTORY_SEPARATOR.$pluginId;
+            if (is_dir($candidatePath)) {
+                $path = $candidatePath;
+            }
+        }
+
+        if ($path === null || ! is_dir($path)) {
+            throw new RuntimeException("Dossier introuvable sur le disque pour l'extension '{$pluginId}'.");
+        }
+
+        $pluginsBasePath = realpath((string) config('cms.plugins.path', base_path('platform/plugins')));
+        $realPath = realpath($path);
+
+        if ($realPath === false || $pluginsBasePath === false || ! str_starts_with($realPath, $pluginsBasePath.DIRECTORY_SEPARATOR)) {
+            throw new RuntimeException("Chemin non autorisé ou en dehors du répertoire des plugins pour '{$pluginId}'.");
+        }
+
+        $this->deleteDirectoryRecursively($realPath);
+        $this->assetManager->clean($pluginId);
+
+        $this->registry->getDiscovery()->discover();
+
+        $this->logger?->info("Plugin '{$pluginId}' supprimé définitivement du système de fichiers.");
+    }
+
+    private function deleteDirectoryRecursively(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir) ?: [], ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir.DIRECTORY_SEPARATOR.$file;
+            if (is_dir($path)) {
+                $this->deleteDirectoryRecursively($path);
+            } else {
+                @chmod($path, 0777);
+                unlink($path);
+            }
+        }
+
+        @chmod($dir, 0777);
+        rmdir($dir);
+    }
 }

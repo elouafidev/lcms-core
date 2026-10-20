@@ -192,4 +192,20 @@ class PluginController extends Controller
                 ->with('error', "Échec de la désinstallation du plugin '{$id}': ".$e->getMessage());
         }
     }
+
+    /**
+     * Delete an uninstalled plugin completely from the filesystem.
+     */
+    public function delete(string $id): RedirectResponse
+    {
+        try {
+            $this->pluginManager->delete($id);
+
+            return redirect()->route('admin.plugins.index')
+                ->with('success', "Extension '{$id}' supprimée avec succès.");
+        } catch (Throwable $e) {
+            return redirect()->back(fallback: route('admin.plugins.index'))
+                ->with('error', "Échec de la suppression de l'extension '{$id}': ".$e->getMessage());
+        }
+    }
 }
