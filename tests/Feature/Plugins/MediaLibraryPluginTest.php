@@ -152,6 +152,50 @@ class MediaLibraryPluginTest extends TestCase
         ]);
     }
 
+    public function test_authenticated_user_can_upload_media_via_standard_html_form_to_upload_route(): void
+    {
+        $this->pluginManager->install('acme.media-library');
+        $this->pluginManager->activate('acme.media-library');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $file = UploadedFile::fake()->create('document.pdf', 200, 'application/pdf');
+
+        $response = $this->actingAs($user)->post('/admin/media/upload', [
+            'file' => $file,
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('plugin_media_items', [
+            'name' => 'document.pdf',
+        ]);
+    }
+
+    public function test_authenticated_user_can_upload_media_via_post_to_base_media_route(): void
+    {
+        $this->pluginManager->install('acme.media-library');
+        $this->pluginManager->activate('acme.media-library');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $file = UploadedFile::fake()->create('photo.png', 150, 'image/png');
+
+        $response = $this->actingAs($user)->post('/admin/media', [
+            'file' => $file,
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('plugin_media_items', [
+            'name' => 'photo.png',
+        ]);
+    }
+
     public function test_upload_rejects_forbidden_mime_types(): void
     {
         $this->pluginManager->install('acme.media-library');

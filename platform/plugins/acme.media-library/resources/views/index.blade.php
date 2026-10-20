@@ -42,7 +42,7 @@
             </h5>
         </div>
         <div class="card-body">
-            <form action="/admin/media" method="POST" enctype="multipart/form-data">
+            <form action="/admin/media/upload" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row align-items-end g-3">
                     <div class="col-md-8 col-lg-6">
