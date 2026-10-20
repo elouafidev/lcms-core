@@ -18,7 +18,7 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
   2. **CORR-02 :** Page de configuration détaillée d'un plugin (`/admin/plugins/{id}`) et contrôle préventif des dépendances inverses.
   3. **CORR-03 :** Pipeline sécurisé d'importation et d'installation d'extensions au format ZIP (`PluginZipInstaller`, protection Zip Slip).
   4. **CORR-04 :** Layout d'administration unifié (`core::admin.layouts.app`) assurant l'affichage permanent et cohérent de l'`admin-sidebar`.
-- **Statut :** Phase 5 achevée avec succès. 213 tests au vert (1286 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
+- **Statut :** Phase 5 achevée avec succès. 216 tests au vert (1300 assertions), analyse statique PHPStan niveau 8 (0 erreurs) et Laravel Pint (0 erreurs).
 
 ---
 
@@ -59,6 +59,7 @@ Priorité absolue : robustesse architecturale, isolation logique, gestion rigour
 - [x] **CORR-02 :** Vue détaillée d'une extension (`/admin/plugins/{id}`), liens cliquables dans `/admin/plugins`, inspection des métadonnées, diagnostic de résolution des dépendances directes et gardes de dépendances inverses (`PluginManager::getDependents()`) empêchant les désactivations / désinstallations en cascade non confirmées.
 - [x] **CORR-03 :** Pipeline sécurisé d'importation et installation de plugins via archive ZIP (`PluginZipInstaller`), protection contre les attaques Zip Slip, rejet d'exécutables interdits, validation de `plugin.json` via `ManifestValidator`, bac à sable temporaire nettoyé systématiquement et redécouverte automatique.
 - [x] **CORR-04 :** Layout d'administration unifié (`core::admin.layouts.app`), persistance inaltérable de l'`admin-sidebar` et des alertes de session sur toutes les vues de plugins (`acme.menus`, `acme.pages`, `acme.seo`, `acme.media-library`, `core::admin.plugins.*`, `core::admin.themes.*`).
+- [x] **Suppression de plugin :** Bouton de suppression définitive sur la gestion des extensions (`/admin/plugins` et `/admin/plugins/{id}`) lorsque l'extension est désinstallée (`AVAILABLE`), purge sécurisée du dossier physique avec vérification de confinement via `PluginManager::delete()`, nettoyage d'assets et redécouverte automatique.
 
 ---
 

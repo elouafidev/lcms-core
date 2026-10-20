@@ -54,6 +54,7 @@
 | **P5-T2** | Layout unifié admin et persistance de l'admin-sidebar (CORR-04) | Phase 5 | P5-T1 | **Terminé** |
 | **P5-T3** | Page détaillée de plugin et gardes de dépendances inverses (CORR-02) | Phase 5 | P5-T2 | **Terminé** |
 | **P5-T4** | Pipeline sécurisé d'importation et installation de plugins ZIP (CORR-03) | Phase 5 | P5-T3 | **Terminé** |
+| **P5-T5** | Bouton de suppression et purge physique des extensions désinstallées | Phase 5 | P5-T4 | **Terminé** |
 
 ---
 
@@ -243,6 +244,13 @@
 - **Fichiers :** `app/Core/PluginDiscovery/PluginZipInstaller.php`, `app/Core/PluginDiscovery/Exceptions/InvalidPluginArchiveException.php`, `app/Core/CoreServiceProvider.php`, `platform/core/Http/Controllers/Admin/PluginController.php`, `platform/core/resources/views/admin/plugins/index.blade.php`, `tests/Feature/AdminPluginZipUploadTest.php`.
 - **Dépendances :** P5-T3.
 - **Critère d'acceptation :** Upload ZIP validé avec redirection vers la fiche détaillée, rejets stricts des attaques Zip Slip et exécutables.
+- **Statut :** **Terminé**.
+
+### Tâche P5-T5 : Bouton de suppression et purge physique des extensions désinstallées
+- **Objectif :** Fournir un bouton de suppression d'extension sur les vues d'administration (`/admin/plugins` et `/admin/plugins/{id}`) actif uniquement lorsque le plugin est désinstallé (`AVAILABLE`), avec confirmation explicite, purge sécurisée du répertoire avec contrôle anti-traversal via `PluginManager::delete()` et nettoyage d'assets.
+- **Fichiers :** `app/Core/PluginManager/PluginManager.php`, `platform/core/routes/admin.php`, `platform/core/Http/Controllers/Admin/PluginController.php`, `platform/core/resources/views/admin/plugins/index.blade.php`, `platform/core/resources/views/admin/plugins/show.blade.php`, `tests/Feature/AdminPluginManagementHttpTest.php`.
+- **Dépendances :** P5-T4.
+- **Critère d'acceptation :** Boutons visibles et fonctionnels à l'état désinstallé, rejet des suppressions si le plugin est actif/installé, suppression physique vérifiée par tests.
 - **Statut :** **Terminé**.
 
 
