@@ -25,7 +25,7 @@ class ManifestValidatorTest extends TestCase
         $this->expectException(InvalidManifestException::class);
         $this->expectExceptionMessage('JSON syntax error');
 
-        $this->validator->validate('{"id": "acme.test", "name": "Test", incomplete_json');
+        $this->validator->validate('{"id": "lcmscore.test", "name": "Test", incomplete_json');
     }
 
     public function test_throws_exception_when_required_fields_are_missing(): void
@@ -45,7 +45,7 @@ class ManifestValidatorTest extends TestCase
     {
         $invalidIds = [
             'invalid_id_without_vendor',
-            'Acme.DemoPlugin', // uppercase
+            'Lcmscore.DemoPlugin', // uppercase
             'vendor.slug with spaces',
             'vendor..double_dot',
         ];
@@ -76,7 +76,7 @@ class ManifestValidatorTest extends TestCase
         foreach ($invalidVersions as $invalidVersion) {
             try {
                 $this->validator->validate([
-                    'id' => 'acme.valid-slug',
+                    'id' => 'lcmscore.valid-slug',
                     'name' => 'Valid Name',
                     'version' => $invalidVersion,
                 ]);
@@ -90,7 +90,7 @@ class ManifestValidatorTest extends TestCase
     public function test_throws_exception_on_directory_traversal_in_routes(): void
     {
         $payload = [
-            'id' => 'acme.safe-plugin',
+            'id' => 'lcmscore.safe-plugin',
             'name' => 'Safe Plugin',
             'version' => '1.0.0',
             'routes' => [
@@ -107,7 +107,7 @@ class ManifestValidatorTest extends TestCase
     public function test_throws_exception_on_directory_traversal_in_autoload(): void
     {
         $payload = [
-            'id' => 'acme.safe-plugin',
+            'id' => 'lcmscore.safe-plugin',
             'name' => 'Safe Plugin',
             'version' => '1.0.0',
             'autoload' => [
@@ -126,7 +126,7 @@ class ManifestValidatorTest extends TestCase
     public function test_throws_exception_on_absolute_path(): void
     {
         $payload = [
-            'id' => 'acme.safe-plugin',
+            'id' => 'lcmscore.safe-plugin',
             'name' => 'Safe Plugin',
             'version' => '1.0.0',
             'routes' => [
@@ -143,8 +143,8 @@ class ManifestValidatorTest extends TestCase
     public function test_validates_and_parses_valid_manifest_successfully(): void
     {
         $validJson = json_encode([
-            'id' => 'acme.demo-hello',
-            'name' => 'Acme Demo Hello',
+            'id' => 'lcmscore.demo-hello',
+            'name' => 'LCMS Core Demo Hello',
             'version' => '1.0.0',
             'description' => 'Demo plugin for testing contracts.',
             'author' => [
@@ -160,7 +160,7 @@ class ManifestValidatorTest extends TestCase
                 'Plugins\\DemoHello\\Providers\\DemoPluginServiceProvider',
             ],
             'dependencies' => [
-                'acme.media-library' => '^1.0.0',
+                'lcmscore.media-library' => '^1.0.0',
             ],
             'conflicts' => [
                 'legacy.hello',
@@ -184,12 +184,12 @@ class ManifestValidatorTest extends TestCase
 
         $this->assertInstanceOf(PluginManifest::class, $manifest);
         $this->assertInstanceOf(PluginManifestInterface::class, $manifest);
-        $this->assertEquals('acme.demo-hello', $manifest->getId());
-        $this->assertEquals('Acme Demo Hello', $manifest->getName());
+        $this->assertEquals('lcmscore.demo-hello', $manifest->getId());
+        $this->assertEquals('LCMS Core Demo Hello', $manifest->getName());
         $this->assertEquals('1.0.0', $manifest->getVersion());
         $this->assertEquals('Demo plugin for testing contracts.', $manifest->getDescription());
         $this->assertEquals(['Plugins\\DemoHello\\Providers\\DemoPluginServiceProvider'], $manifest->getProviders());
-        $this->assertEquals(['acme.media-library' => '^1.0.0'], $manifest->getDependencies());
+        $this->assertEquals(['lcmscore.media-library' => '^1.0.0'], $manifest->getDependencies());
         $this->assertEquals(['legacy.hello'], $manifest->getConflicts());
         $this->assertEquals('routes/web.php', $manifest->getRoutes()['web']);
         $this->assertEquals(['Plugins\\DemoHello\\' => 'src/'], $manifest->getAutoload()['psr-4']);

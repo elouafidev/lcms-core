@@ -91,7 +91,7 @@ class AdminPluginZipUploadTest extends TestCase
         $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
         $zip->addFromString('payload.exe', 'binary contents');
         $zip->addFromString('plugin.json', json_encode([
-            'id' => 'acme.dangerous',
+            'id' => 'lcmscore.dangerous',
             'name' => 'Dangerous Plugin',
             'version' => '1.0.0',
         ]));
@@ -134,7 +134,7 @@ class AdminPluginZipUploadTest extends TestCase
         $user = User::factory()->create();
 
         $manifest = [
-            'id' => 'acme.valid-zip',
+            'id' => 'lcmscore.valid-zip',
             'name' => 'Valid Zip Plugin',
             'version' => '1.5.0',
             'description' => 'A plugin imported from ZIP archive.',
@@ -158,11 +158,11 @@ class AdminPluginZipUploadTest extends TestCase
             'plugin_archive' => $uploadedFile,
         ]);
 
-        $response->assertRedirect(route('admin.plugins.show', 'acme.valid-zip'));
+        $response->assertRedirect(route('admin.plugins.show', 'lcmscore.valid-zip'));
         $response->assertSessionHas('success');
 
-        $this->assertFileExists($this->tempPluginsDir.'/acme.valid-zip/plugin.json');
-        $this->assertFileExists($this->tempPluginsDir.'/acme.valid-zip/src/Plugin.php');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.valid-zip/plugin.json');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.valid-zip/src/Plugin.php');
     }
 
     public function test_upload_installs_valid_zip_with_nested_folder_structure(): void
@@ -171,7 +171,7 @@ class AdminPluginZipUploadTest extends TestCase
         $user = User::factory()->create();
 
         $manifest = [
-            'id' => 'acme.nested-zip',
+            'id' => 'lcmscore.nested-zip',
             'name' => 'Nested Zip Plugin',
             'version' => '2.1.0',
             'description' => 'A plugin wrapped in a top-level directory.',
@@ -195,11 +195,11 @@ class AdminPluginZipUploadTest extends TestCase
             'plugin_archive' => $uploadedFile,
         ]);
 
-        $response->assertRedirect(route('admin.plugins.show', 'acme.nested-zip'));
+        $response->assertRedirect(route('admin.plugins.show', 'lcmscore.nested-zip'));
         $response->assertSessionHas('success');
 
-        $this->assertFileExists($this->tempPluginsDir.'/acme.nested-zip/plugin.json');
-        $this->assertFileExists($this->tempPluginsDir.'/acme.nested-zip/src/Nested.php');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.nested-zip/plugin.json');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.nested-zip/src/Nested.php');
     }
 
     public function test_upload_duplicate_without_overwrite_fails_and_with_overwrite_succeeds(): void
@@ -208,7 +208,7 @@ class AdminPluginZipUploadTest extends TestCase
         $user = User::factory()->create();
 
         $manifestV1 = [
-            'id' => 'acme.overwrite-test',
+            'id' => 'lcmscore.overwrite-test',
             'name' => 'Overwrite Test Plugin',
             'version' => '1.0.0',
         ];
@@ -224,7 +224,7 @@ class AdminPluginZipUploadTest extends TestCase
 
         // Attempt second upload without overwrite
         $manifestV2 = [
-            'id' => 'acme.overwrite-test',
+            'id' => 'lcmscore.overwrite-test',
             'name' => 'Overwrite Test Plugin V2',
             'version' => '2.0.0',
         ];
@@ -250,7 +250,7 @@ class AdminPluginZipUploadTest extends TestCase
         $responseWithOverwrite->assertSessionHas('success');
 
         /** @var string $content */
-        $content = file_get_contents($this->tempPluginsDir.'/acme.overwrite-test/plugin.json');
+        $content = file_get_contents($this->tempPluginsDir.'/lcmscore.overwrite-test/plugin.json');
         $this->assertStringContainsString('2.0.0', $content);
     }
 

@@ -70,10 +70,10 @@ flowchart TD
     end
 
     subgraph Plugins["Extensions Autonomes (platform/plugins)"]
-        Pages["acme.pages (Pages & Routage)"]
-        Menus["acme.menus (Menus & Directive @menu)"]
-        Media["acme.media-library (Médiathèque)"]
-        SEO["acme.seo (Méta-tags & Hook cms.head)"]
+        Pages["lcmscore.pages (Pages & Routage)"]
+        Menus["lcmscore.menus (Menus & Directive @menu)"]
+        Media["lcmscore.media-library (Médiathèque)"]
+        SEO["lcmscore.seo (Méta-tags & Hook cms.head)"]
     end
 
     subgraph Themes["Moteur de Présentation (platform/themes)"]
@@ -99,10 +99,10 @@ flowchart TD
 
 | Identifiant | Rôle & Fonctionnalités | Contrats & Hooks |
 |---|---|---|
-| [`acme.pages`](platform/plugins/acme.pages) | Gestion des pages statiques avec slugs personnalisés, publication/brouillon et routes dynamiques `/page/{slug}`. | `PluginInterface` |
-| [`acme.menus`](platform/plugins/acme.menus) | Gestion hiérarchique des éléments de navigation, directive Blade `@menu('main-nav')` et filtre `cms.menu`. | `PluginInterface`, `HookSubscriberInterface` |
-| [`acme.media-library`](platform/plugins/acme.media-library) | Stockage et organisation des fichiers médias avec upload sécurisé et gestion des métadonnées. | `MediaStorageInterface` |
-| [`acme.seo`](platform/plugins/acme.seo) | Optimisation pour moteurs de recherche, liens canoniques et métadonnées OpenGraph injectées via le filtre `cms.head`. | `HookSubscriberInterface` |
+| [`lcmscore.pages`](platform/plugins/lcmscore.pages) | Gestion des pages statiques avec slugs personnalisés, publication/brouillon et routes dynamiques `/page/{slug}`. | `PluginInterface` |
+| [`lcmscore.menus`](platform/plugins/lcmscore.menus) | Gestion hiérarchique des éléments de navigation, directive Blade `@menu('main-nav')` et filtre `cms.menu`. | `PluginInterface`, `HookSubscriberInterface` |
+| [`lcmscore.media-library`](platform/plugins/lcmscore.media-library) | Stockage et organisation des fichiers médias avec upload sécurisé et gestion des métadonnées. | `MediaStorageInterface` |
+| [`lcmscore.seo`](platform/plugins/lcmscore.seo) | Optimisation pour moteurs de recherche, liens canoniques et métadonnées OpenGraph injectées via le filtre `cms.head`. | `HookSubscriberInterface` |
 | [`default-modern`](platform/themes/default-modern) | Thème responsive moderne avec typographie soignée, intégration fluide des menus, des pages et surcharge de templates de plugins. | `ThemeInterface` |
 
 ---
@@ -164,13 +164,13 @@ LCMS Core fournit un ensemble complet de commandes CLI pour piloter les extensio
 php artisan cms:plugin:list
 
 # Activer et monter une extension
-php artisan cms:plugin:enable acme.pages
+php artisan cms:plugin:enable lcmscore.pages
 
 # Désactiver une extension (sans suppression de données)
-php artisan cms:plugin:disable acme.pages
+php artisan cms:plugin:disable lcmscore.pages
 
 # Publier les assets publics d'une extension vers public/vendor/plugins/
-php artisan cms:plugin:publish-assets acme.pages
+php artisan cms:plugin:publish-assets lcmscore.pages
 ```
 
 ### Gestion des Thèmes (`cms:theme:*`)
@@ -202,14 +202,14 @@ Chaque plugin est logé dans son propre sous-dossier au sein de `platform/plugin
 
 ```json
 {
-  "id": "acme.mon-plugin",
+  "id": "lcmscore.mon-plugin",
   "name": "Mon Extension Métier",
   "version": "1.0.0",
   "description": "Exemple d'extension autonome pour LCMS Core",
   "author": {
-    "name": "Acme Development Team",
-    "email": "contact@acme.test",
-    "homepage": "https://acme.test"
+    "name": "LCMS Core Development Team",
+    "email": "contact@lcmscore.test",
+    "homepage": "https://lcmscore.test"
   },
   "compatibility": {
     "php": "^8.2",
@@ -224,7 +224,7 @@ Chaque plugin est logé dans son propre sous-dossier au sein de `platform/plugin
     "Plugins\\MonPlugin\\Providers\\MonPluginServiceProvider"
   ],
   "dependencies": {
-    "acme.media-library": "^1.0"
+    "lcmscore.media-library": "^1.0"
   },
   "conflicts": [],
   "permissions": [
@@ -242,7 +242,7 @@ Chaque plugin est logé dans son propre sous-dossier au sein de `platform/plugin
 
 ### Structure recommandée d'une extension :
 ```text
-platform/plugins/acme.mon-plugin/
+platform/plugins/lcmscore.mon-plugin/
 ├── plugin.json                 # Manifeste validé obligatoirement
 ├── database/
 │   └── migrations/             # Migrations isolées du plugin

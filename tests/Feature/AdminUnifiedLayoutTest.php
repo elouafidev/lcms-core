@@ -31,7 +31,7 @@ class AdminUnifiedLayoutTest extends TestCase
         $this->pluginManager = $this->app->make(PluginManager::class);
 
         // Ensure plugins are active so their admin routes are mounted
-        foreach (['acme.menus', 'acme.pages', 'acme.seo', 'acme.media-library'] as $pluginId) {
+        foreach (['lcmscore.menus', 'lcmscore.pages', 'lcmscore.seo', 'lcmscore.media-library'] as $pluginId) {
             if ($this->pluginManager->getRegistry()->getDiscovered($pluginId) !== null) {
                 if (! $this->pluginManager->getRegistry()->isInstalled($pluginId)) {
                     $this->pluginManager->install($pluginId);

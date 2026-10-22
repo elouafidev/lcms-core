@@ -50,15 +50,15 @@ class PluginMigrationManagerTest extends TestCase
 
     public function test_migrates_plugin_database_tables_on_installation(): void
     {
-        $pluginPath = $this->createMigratedPlugin('acme.migrated-plugin', 'plugin_test_items');
+        $pluginPath = $this->createMigratedPlugin('lcmscore.migrated-plugin', 'plugin_test_items');
 
         $this->assertFalse(Schema::hasTable('plugin_test_items'));
 
-        $this->pluginManager->install('acme.migrated-plugin');
+        $this->pluginManager->install('lcmscore.migrated-plugin');
 
         $this->assertTrue(Schema::hasTable('plugin_test_items'));
         $this->assertDatabaseHas('cms_plugin_migrations', [
-            'plugin_id' => 'acme.migrated-plugin',
+            'plugin_id' => 'lcmscore.migrated-plugin',
             'migration' => '2026_10_13_000010_create_plugin_test_items_table.php',
             'batch' => 1,
         ]);
@@ -66,10 +66,10 @@ class PluginMigrationManagerTest extends TestCase
 
     public function test_deactivation_does_not_rollback_or_delete_tables(): void
     {
-        $this->createMigratedPlugin('acme.preserve-plugin', 'plugin_preserve_items');
+        $this->createMigratedPlugin('lcmscore.preserve-plugin', 'plugin_preserve_items');
 
-        $this->pluginManager->install('acme.preserve-plugin');
-        $this->pluginManager->activate('acme.preserve-plugin');
+        $this->pluginManager->install('lcmscore.preserve-plugin');
+        $this->pluginManager->activate('lcmscore.preserve-plugin');
 
         // Insert dummy row to verify persistence
         DB::table('plugin_preserve_items')->insert([
@@ -79,7 +79,7 @@ class PluginMigrationManagerTest extends TestCase
         ]);
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.preserve-plugin');
+        $this->pluginManager->deactivate('lcmscore.preserve-plugin');
 
         // Strict verification: table and records must NOT be dropped
         $this->assertTrue(Schema::hasTable('plugin_preserve_items'));
@@ -87,39 +87,39 @@ class PluginMigrationManagerTest extends TestCase
             'title' => 'Preserved data test',
         ]);
         $this->assertDatabaseHas('cms_plugin_migrations', [
-            'plugin_id' => 'acme.preserve-plugin',
+            'plugin_id' => 'lcmscore.preserve-plugin',
             'migration' => '2026_10_13_000010_create_plugin_preserve_items_table.php',
         ]);
     }
 
     public function test_subsequent_migrate_does_not_rerun_applied_migrations(): void
     {
-        $pluginPath = $this->createMigratedPlugin('acme.idempotent-plugin', 'plugin_idempotent_items');
+        $pluginPath = $this->createMigratedPlugin('lcmscore.idempotent-plugin', 'plugin_idempotent_items');
 
-        $appliedFirst = $this->migrationManager->migrate('acme.idempotent-plugin', $pluginPath);
+        $appliedFirst = $this->migrationManager->migrate('lcmscore.idempotent-plugin', $pluginPath);
         $this->assertCount(1, $appliedFirst);
 
         // Second run should skip already ran migration
-        $appliedSecond = $this->migrationManager->migrate('acme.idempotent-plugin', $pluginPath);
+        $appliedSecond = $this->migrationManager->migrate('lcmscore.idempotent-plugin', $pluginPath);
         $this->assertCount(0, $appliedSecond);
     }
 
     public function test_uninstall_with_purge_rolls_back_tables_and_removes_tracking(): void
     {
-        $this->createMigratedPlugin('acme.purge-plugin', 'plugin_purge_items');
+        $this->createMigratedPlugin('lcmscore.purge-plugin', 'plugin_purge_items');
 
-        $this->pluginManager->install('acme.purge-plugin');
+        $this->pluginManager->install('lcmscore.purge-plugin');
         $this->assertTrue(Schema::hasTable('plugin_purge_items'));
 
         // Uninstall with purgeData = true
-        $this->pluginManager->uninstall('acme.purge-plugin', purgeData: true);
+        $this->pluginManager->uninstall('lcmscore.purge-plugin', purgeData: true);
 
         $this->assertFalse(Schema::hasTable('plugin_purge_items'));
         $this->assertDatabaseMissing('cms_plugin_migrations', [
-            'plugin_id' => 'acme.purge-plugin',
+            'plugin_id' => 'lcmscore.purge-plugin',
         ]);
         $this->assertDatabaseMissing('cms_plugins', [
-            'id' => 'acme.purge-plugin',
+            'id' => 'lcmscore.purge-plugin',
         ]);
     }
 

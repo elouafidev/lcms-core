@@ -1,0 +1,31 @@
+{
+    "id": "lcmscore.pages",
+    "name": "Static Pages",
+    "version": "1.0.0",
+    "description": "Fundamental static and dynamic pages management plugin",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Pages\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Pages\\Providers\\PagesServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "pages.manage",
+            "label": "Gérer les pages"
+        }
+    ]
+}

@@ -161,9 +161,9 @@ class ThemeManagerTest extends TestCase
 
     public function test_view_overriding_hierarchy_theme_takes_precedence_over_plugin_view(): void
     {
-        // 1. Install and activate acme.pages plugin
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        // 1. Install and activate lcmscore.pages plugin
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         // Verify original plugin view rendering
         $dummyPage = new Page([
@@ -202,8 +202,8 @@ class ThemeManagerTest extends TestCase
 
     public function test_automatic_fallback_to_plugin_view_when_theme_does_not_override_template(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         // Theme overrides page.blade.php but NOT admin/index.blade.php
         $themeDir = $this->createTheme('partial-theme', [
@@ -228,8 +228,8 @@ class ThemeManagerTest extends TestCase
 
     public function test_deactivating_theme_immediately_restores_original_plugin_view(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         $themeDir = $this->createTheme('revert-theme', [
             'id' => 'revert-theme',
@@ -266,8 +266,8 @@ class ThemeManagerTest extends TestCase
 
     public function test_child_theme_overrides_parent_theme_and_cascades_properly(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         // 1. Parent theme overrides page.blade.php and dummy.blade.php
         $parentDir = $this->createTheme('parent-theme', [

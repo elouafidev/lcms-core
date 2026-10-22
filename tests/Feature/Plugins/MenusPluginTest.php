@@ -44,7 +44,7 @@ class MenusPluginTest extends TestCase
 
     public function test_plugin_is_discoverable_and_inactive_initially(): void
     {
-        $discovered = $this->pluginRegistry->getDiscovered('acme.menus');
+        $discovered = $this->pluginRegistry->getDiscovered('lcmscore.menus');
 
         $this->assertNotNull($discovered);
         $this->assertSame(PluginState::AVAILABLE->value, $discovered->getState());
@@ -58,8 +58,8 @@ class MenusPluginTest extends TestCase
 
     public function test_install_and_activation_creates_tables_and_navigation(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         $this->assertTrue(Schema::hasTable('plugin_menus'));
         $this->assertTrue(Schema::hasTable('plugin_menu_items'));
@@ -74,8 +74,8 @@ class MenusPluginTest extends TestCase
 
     public function test_menu_renderer_renders_hierarchical_html_for_active_menu(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         /** @var Menu $menu */
         $menu = Menu::query()->create([
@@ -122,8 +122,8 @@ class MenusPluginTest extends TestCase
 
     public function test_menu_renderer_handles_nested_menu_items(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         /** @var Menu $menu */
         $menu = Menu::query()->create([
@@ -173,8 +173,8 @@ class MenusPluginTest extends TestCase
 
     public function test_menu_renderer_respects_custom_options(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         Menu::query()->create([
             'name' => 'Custom Nav',
@@ -195,8 +195,8 @@ class MenusPluginTest extends TestCase
 
     public function test_menu_renderer_returns_empty_string_for_non_existent_or_inactive_menu(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         Menu::query()->create([
             'name' => 'Désactivé',
@@ -213,8 +213,8 @@ class MenusPluginTest extends TestCase
 
     public function test_menu_renderer_returns_empty_string_when_plugin_is_deactivated(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         Menu::query()->create([
             'name' => 'Menu Actif',
@@ -227,15 +227,15 @@ class MenusPluginTest extends TestCase
         $this->assertNotEmpty($renderer->render('active-menu'));
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.menus');
+        $this->pluginManager->deactivate('lcmscore.menus');
 
         $this->assertSame('', $renderer->render('active-menu'));
     }
 
     public function test_menu_can_be_rendered_via_hook_filter(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         $menu = Menu::query()->create([
             'name' => 'Top Bar',
@@ -258,8 +258,8 @@ class MenusPluginTest extends TestCase
 
     public function test_hook_filter_menu_rendered_allows_intercepting_markup(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         Menu::query()->create([
             'name' => 'Filter Test',
@@ -280,8 +280,8 @@ class MenusPluginTest extends TestCase
 
     public function test_guest_is_redirected_to_login_on_admin_menus(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         $response = $this->get('/admin/menus');
         $response->assertRedirect('/login');
@@ -292,8 +292,8 @@ class MenusPluginTest extends TestCase
 
     public function test_authenticated_user_can_create_menu_and_items_via_http(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -337,8 +337,8 @@ class MenusPluginTest extends TestCase
 
     public function test_authenticated_user_can_delete_menu_and_cascade_items(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         /** @var Menu $menu */
         $menu = Menu::query()->create([
@@ -369,8 +369,8 @@ class MenusPluginTest extends TestCase
 
     public function test_deactivation_hides_routes_and_navigation_while_preserving_database_data(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         /** @var Menu $menu */
         $menu = Menu::query()->create([
@@ -393,7 +393,7 @@ class MenusPluginTest extends TestCase
         $this->actingAs($user)->get('/admin/menus')->assertOk();
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.menus');
+        $this->pluginManager->deactivate('lcmscore.menus');
 
         // Navigation should be hidden
         $this->assertFalse($this->navigationRegistry->has('menus-management'));
@@ -410,16 +410,16 @@ class MenusPluginTest extends TestCase
 
     public function test_uninstallation_with_purge_drops_tables_and_cleans_record(): void
     {
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         $this->assertTrue(Schema::hasTable('plugin_menus'));
         $this->assertTrue(Schema::hasTable('plugin_menu_items'));
 
-        $this->pluginManager->uninstall('acme.menus', purgeData: true);
+        $this->pluginManager->uninstall('lcmscore.menus', purgeData: true);
 
         $this->assertFalse(Schema::hasTable('plugin_menus'));
         $this->assertFalse(Schema::hasTable('plugin_menu_items'));
-        $this->assertNull($this->pluginRegistry->find('acme.menus'));
+        $this->assertNull($this->pluginRegistry->find('lcmscore.menus'));
     }
 }

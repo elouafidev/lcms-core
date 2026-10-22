@@ -74,57 +74,57 @@ class PluginManagerLifecycleTest extends TestCase
 
     public function test_install_transitions_available_plugin_to_installed(): void
     {
-        $this->createPluginOnDisk('acme.sample-plugin', 'Sample Plugin', '1.0.0');
+        $this->createPluginOnDisk('lcmscore.sample-plugin', 'Sample Plugin', '1.0.0');
 
-        $this->assertFalse($this->registry->isInstalled('acme.sample-plugin'));
+        $this->assertFalse($this->registry->isInstalled('lcmscore.sample-plugin'));
 
-        $record = $this->manager->install('acme.sample-plugin');
+        $record = $this->manager->install('lcmscore.sample-plugin');
 
         $this->assertEquals(PluginState::INSTALLED, $record->state);
         $this->assertFalse($record->is_active);
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
             'state' => 'INSTALLED',
             'is_active' => false,
         ]);
-        $this->assertTrue($this->registry->isInstalled('acme.sample-plugin'));
+        $this->assertTrue($this->registry->isInstalled('lcmscore.sample-plugin'));
     }
 
     public function test_activate_transitions_installed_plugin_to_active_and_registers_provider(): void
     {
         $this->createPluginOnDisk(
-            id: 'acme.active-plugin',
+            id: 'lcmscore.active-plugin',
             name: 'Active Plugin',
             version: '1.0.0',
             providers: [DummyLifecycleServiceProvider::class]
         );
 
-        $this->manager->install('acme.active-plugin');
+        $this->manager->install('lcmscore.active-plugin');
 
         $this->assertNull(config('cms.test_dummy_loaded'));
 
-        $record = $this->manager->activate('acme.active-plugin');
+        $record = $this->manager->activate('lcmscore.active-plugin');
 
         $this->assertEquals(PluginState::ACTIVE, $record->state);
         $this->assertTrue($record->is_active);
-        $this->assertTrue($this->registry->isActive('acme.active-plugin'));
+        $this->assertTrue($this->registry->isActive('lcmscore.active-plugin'));
         $this->assertTrue(config('cms.test_dummy_loaded'));
     }
 
     public function test_deactivate_transitions_active_plugin_to_disabled(): void
     {
-        $this->createPluginOnDisk('acme.toggle-plugin', 'Toggle Plugin', '1.0.0');
+        $this->createPluginOnDisk('lcmscore.toggle-plugin', 'Toggle Plugin', '1.0.0');
 
-        $this->manager->install('acme.toggle-plugin');
-        $this->manager->activate('acme.toggle-plugin');
+        $this->manager->install('lcmscore.toggle-plugin');
+        $this->manager->activate('lcmscore.toggle-plugin');
 
-        $record = $this->manager->deactivate('acme.toggle-plugin');
+        $record = $this->manager->deactivate('lcmscore.toggle-plugin');
 
         $this->assertEquals(PluginState::DISABLED, $record->state);
         $this->assertFalse($record->is_active);
-        $this->assertFalse($this->registry->isActive('acme.toggle-plugin'));
+        $this->assertFalse($this->registry->isActive('lcmscore.toggle-plugin'));
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.toggle-plugin',
+            'id' => 'lcmscore.toggle-plugin',
             'state' => 'DISABLED',
             'is_active' => false,
         ]);
@@ -133,28 +133,28 @@ class PluginManagerLifecycleTest extends TestCase
     public function test_cannot_activate_uninstalled_plugin(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Cannot activate plugin 'acme.non-installed': Plugin is not installed.");
+        $this->expectExceptionMessage("Cannot activate plugin 'lcmscore.non-installed': Plugin is not installed.");
 
-        $this->manager->activate('acme.non-installed');
+        $this->manager->activate('lcmscore.non-installed');
     }
 
     public function test_cannot_perform_forbidden_transition(): void
     {
-        $this->createPluginOnDisk('acme.bad-transition', 'Bad Transition', '1.0.0');
+        $this->createPluginOnDisk('lcmscore.bad-transition', 'Bad Transition', '1.0.0');
 
-        $record = $this->manager->install('acme.bad-transition');
+        $record = $this->manager->install('lcmscore.bad-transition');
 
         // Cannot deactivate an INSTALLED plugin (must be ACTIVE first)
         $this->expectException(InvalidStateTransitionException::class);
         $this->expectExceptionMessage("cannot transition from state 'INSTALLED' to 'DISABLED'");
 
-        $this->manager->deactivate('acme.bad-transition');
+        $this->manager->deactivate('lcmscore.bad-transition');
     }
 
     public function test_unhandled_boot_exception_quarantines_plugin_to_error_state(): void
     {
         $this->createPluginOnDisk(
-            id: 'acme.failing-plugin',
+            id: 'lcmscore.failing-plugin',
             name: 'Failing Plugin',
             version: '1.0.0',
             providers: [DummyFailingServiceProvider::class]
@@ -162,13 +162,13 @@ class PluginManagerLifecycleTest extends TestCase
 
         // Directly store as ACTIVE to simulate an active plugin that fails during app boot
         $plugin = PluginRecord::create([
-            'id' => 'acme.failing-plugin',
+            'id' => 'lcmscore.failing-plugin',
             'name' => 'Failing Plugin',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.failing-plugin',
+                'id' => 'lcmscore.failing-plugin',
                 'name' => 'Failing Plugin',
                 'version' => '1.0.0',
                 'providers' => [DummyFailingServiceProvider::class],
@@ -190,20 +190,20 @@ class PluginManagerLifecycleTest extends TestCase
         config(['cms.safe_mode.enabled' => true]);
 
         $this->createPluginOnDisk(
-            id: 'acme.safe-sample',
+            id: 'lcmscore.safe-sample',
             name: 'Safe Sample',
             version: '1.0.0',
             providers: [DummyLifecycleServiceProvider::class]
         );
 
         PluginRecord::create([
-            'id' => 'acme.safe-sample',
+            'id' => 'lcmscore.safe-sample',
             'name' => 'Safe Sample',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.safe-sample',
+                'id' => 'lcmscore.safe-sample',
                 'name' => 'Safe Sample',
                 'version' => '1.0.0',
                 'providers' => [DummyLifecycleServiceProvider::class],

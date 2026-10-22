@@ -22,7 +22,7 @@ class AdminPluginManagementHttpTest extends TestCase
         mkdir($this->tempPluginsDir, 0777, true);
         config(['cms.plugins.path' => $this->tempPluginsDir]);
 
-        $this->createTestPlugin('acme.sample-plugin');
+        $this->createTestPlugin('lcmscore.sample-plugin');
     }
 
     protected function tearDown(): void
@@ -53,7 +53,7 @@ class AdminPluginManagementHttpTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Gestion des Extensions CMS');
-        $response->assertSee('acme.sample-plugin');
+        $response->assertSee('lcmscore.sample-plugin');
     }
 
     public function test_authenticated_user_can_enable_discovered_plugin(): void
@@ -61,13 +61,13 @@ class AdminPluginManagementHttpTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/enable');
+        $response = $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/enable');
 
         $response->assertRedirect(route('admin.plugins.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
             'is_active' => 1,
             'state' => 'ACTIVE',
         ]);
@@ -78,15 +78,15 @@ class AdminPluginManagementHttpTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/enable');
+        $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/enable');
 
-        $response = $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/disable');
+        $response = $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/disable');
 
         $response->assertRedirect(route('admin.plugins.index'));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
             'is_active' => 0,
             'state' => 'DISABLED',
         ]);
@@ -97,9 +97,9 @@ class AdminPluginManagementHttpTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/enable');
+        $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/enable');
 
-        $response = $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/uninstall', [
+        $response = $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/uninstall', [
             'purge_data' => 1,
         ]);
 
@@ -107,13 +107,13 @@ class AdminPluginManagementHttpTest extends TestCase
         $response->assertSessionHas('success');
 
         $this->assertDatabaseMissing('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
         ]);
     }
 
     public function test_unauthenticated_post_actions_are_redirected_to_login(): void
     {
-        $response = $this->post('/admin/plugins/acme.sample-plugin/enable');
+        $response = $this->post('/admin/plugins/lcmscore.sample-plugin/enable');
 
         $response->assertRedirect('/login');
     }
@@ -144,13 +144,13 @@ class AdminPluginManagementHttpTest extends TestCase
         // 1. On index view (/admin/plugins)
         $responseIndex = $this->actingAs($user)->get('/admin/plugins');
         $responseIndex->assertOk();
-        $responseIndex->assertSee(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $responseIndex->assertSee(route('admin.plugins.delete', 'lcmscore.sample-plugin'));
         $responseIndex->assertSee('Supprimer');
 
         // 2. On detail view (/admin/plugins/{id})
-        $responseDetail = $this->actingAs($user)->get('/admin/plugins/acme.sample-plugin');
+        $responseDetail = $this->actingAs($user)->get('/admin/plugins/lcmscore.sample-plugin');
         $responseDetail->assertOk();
-        $responseDetail->assertSee(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $responseDetail->assertSee(route('admin.plugins.delete', 'lcmscore.sample-plugin'));
         $responseDetail->assertSee('Supprimer définitivement');
     }
 
@@ -159,10 +159,10 @@ class AdminPluginManagementHttpTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $pluginPath = $this->tempPluginsDir.'/acme.sample-plugin';
+        $pluginPath = $this->tempPluginsDir.'/lcmscore.sample-plugin';
         $this->assertDirectoryExists($pluginPath);
 
-        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'lcmscore.sample-plugin'));
 
         $response->assertRedirect(route('admin.plugins.index'));
         $response->assertSessionHas('success');
@@ -175,13 +175,13 @@ class AdminPluginManagementHttpTest extends TestCase
         $user = User::factory()->create();
 
         // Enable plugin first
-        $this->actingAs($user)->post('/admin/plugins/acme.sample-plugin/enable');
+        $this->actingAs($user)->post('/admin/plugins/lcmscore.sample-plugin/enable');
 
-        $pluginPath = $this->tempPluginsDir.'/acme.sample-plugin';
+        $pluginPath = $this->tempPluginsDir.'/lcmscore.sample-plugin';
         $this->assertDirectoryExists($pluginPath);
 
         // Attempt deletion while active/installed
-        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'acme.sample-plugin'));
+        $response = $this->actingAs($user)->post(route('admin.plugins.delete', 'lcmscore.sample-plugin'));
 
         $response->assertSessionHas('error');
         $this->assertDirectoryExists($pluginPath);

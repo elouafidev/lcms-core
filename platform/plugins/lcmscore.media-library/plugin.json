@@ -1,0 +1,32 @@
+{
+    "id": "lcmscore.media-library",
+    "name": "Media Library",
+    "version": "1.0.0",
+    "description": "Autonomous media library plugin implementing MediaStorageInterface",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\MediaLibrary\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\MediaLibrary\\Providers\\MediaLibraryServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "media.manage",
+            "label": "Gérer la médiathèque"
+        }
+    ]
+}
+

@@ -38,7 +38,7 @@ class PagesPluginTest extends TestCase
 
     public function test_plugin_is_discoverable_and_inactive_initially(): void
     {
-        $discovered = $this->pluginRegistry->getDiscovered('acme.pages');
+        $discovered = $this->pluginRegistry->getDiscovered('lcmscore.pages');
 
         $this->assertNotNull($discovered);
         $this->assertSame(PluginState::AVAILABLE->value, $discovered->getState());
@@ -50,8 +50,8 @@ class PagesPluginTest extends TestCase
 
     public function test_install_and_activation_creates_table_and_navigation(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         $this->assertTrue(Schema::hasTable('plugin_pages'));
 
@@ -65,8 +65,8 @@ class PagesPluginTest extends TestCase
 
     public function test_published_page_returns_200_with_rendered_content(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         Page::query()->create([
             'title' => 'À Propos de Nous',
@@ -85,8 +85,8 @@ class PagesPluginTest extends TestCase
 
     public function test_draft_page_returns_404_on_public_route(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         Page::query()->create([
             'title' => 'Page Brouillon',
@@ -103,8 +103,8 @@ class PagesPluginTest extends TestCase
 
     public function test_non_existent_page_slug_returns_404(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         $response = $this->get('/page/non-existent-page-slug');
 
@@ -113,8 +113,8 @@ class PagesPluginTest extends TestCase
 
     public function test_guest_is_redirected_to_login_on_admin_pages(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         $response = $this->get('/admin/pages');
         $response->assertRedirect('/login');
@@ -125,8 +125,8 @@ class PagesPluginTest extends TestCase
 
     public function test_authenticated_user_can_view_admin_pages_list(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -139,8 +139,8 @@ class PagesPluginTest extends TestCase
 
     public function test_authenticated_user_can_create_page_via_http(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -173,8 +173,8 @@ class PagesPluginTest extends TestCase
 
     public function test_authenticated_user_can_delete_page_via_http(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         /** @var Page $page */
         $page = Page::query()->create([
@@ -197,8 +197,8 @@ class PagesPluginTest extends TestCase
 
     public function test_deactivation_hides_routes_and_navigation_while_preserving_database_data(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         Page::query()->create([
             'title' => 'Politique de Confidentialité',
@@ -212,7 +212,7 @@ class PagesPluginTest extends TestCase
         $this->get('/page/privacy-policy')->assertOk();
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.pages');
+        $this->pluginManager->deactivate('lcmscore.pages');
 
         // Navigation should be hidden
         $this->assertFalse($this->navigationRegistry->has('pages-management'));
@@ -230,14 +230,14 @@ class PagesPluginTest extends TestCase
 
     public function test_uninstallation_with_purge_drops_table_and_cleans_record(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         $this->assertTrue(Schema::hasTable('plugin_pages'));
 
-        $this->pluginManager->uninstall('acme.pages', purgeData: true);
+        $this->pluginManager->uninstall('lcmscore.pages', purgeData: true);
 
         $this->assertFalse(Schema::hasTable('plugin_pages'));
-        $this->assertNull($this->pluginRegistry->find('acme.pages'));
+        $this->assertNull($this->pluginRegistry->find('lcmscore.pages'));
     }
 }

@@ -40,22 +40,22 @@ class DependencyResolverTest extends TestCase
 
     public function test_resolves_independent_plugins_in_deterministic_order(): void
     {
-        $pluginZ = $this->createPlugin('acme.zeta');
-        $pluginA = $this->createPlugin('acme.alpha');
-        $pluginM = $this->createPlugin('acme.mu');
+        $pluginZ = $this->createPlugin('lcmscore.zeta');
+        $pluginA = $this->createPlugin('lcmscore.alpha');
+        $pluginM = $this->createPlugin('lcmscore.mu');
 
         $resolved = $this->resolver->resolve([$pluginZ, $pluginA, $pluginM]);
 
         $ids = array_map(fn (PluginInterface $p): string => $p->getManifest()->getId(), $resolved);
-        $this->assertSame(['acme.alpha', 'acme.mu', 'acme.zeta'], $ids);
+        $this->assertSame(['lcmscore.alpha', 'lcmscore.mu', 'lcmscore.zeta'], $ids);
     }
 
     public function test_resolves_linear_dependency_chain(): void
     {
         // A depends on B, B depends on C, C has no dependencies
-        $pluginC = $this->createPlugin('acme.plugin-c', []);
-        $pluginB = $this->createPlugin('acme.plugin-b', ['acme.plugin-c' => '^1.0']);
-        $pluginA = $this->createPlugin('acme.plugin-a', ['acme.plugin-b' => '^1.0']);
+        $pluginC = $this->createPlugin('lcmscore.plugin-c', []);
+        $pluginB = $this->createPlugin('lcmscore.plugin-b', ['lcmscore.plugin-c' => '^1.0']);
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', ['lcmscore.plugin-b' => '^1.0']);
 
         // Feed in shuffled/arbitrary order: [A, C, B]
         $resolved = $this->resolver->resolve([$pluginA, $pluginC, $pluginB]);
@@ -63,7 +63,7 @@ class DependencyResolverTest extends TestCase
         $ids = array_map(fn (PluginInterface $p): string => $p->getManifest()->getId(), $resolved);
 
         // Required topological order: C must be loaded before B, and B before A
-        $this->assertSame(['acme.plugin-c', 'acme.plugin-b', 'acme.plugin-a'], $ids);
+        $this->assertSame(['lcmscore.plugin-c', 'lcmscore.plugin-b', 'lcmscore.plugin-a'], $ids);
     }
 
     public function test_resolves_diamond_dependency_graph(): void
@@ -74,49 +74,49 @@ class DependencyResolverTest extends TestCase
         //     B   C
         //      \ /
         //       D
-        $pluginA = $this->createPlugin('acme.plugin-a', []);
-        $pluginB = $this->createPlugin('acme.plugin-b', ['acme.plugin-a' => '^1.0']);
-        $pluginC = $this->createPlugin('acme.plugin-c', ['acme.plugin-a' => '^1.0']);
-        $pluginD = $this->createPlugin('acme.plugin-d', [
-            'acme.plugin-b' => '^1.0',
-            'acme.plugin-c' => '^1.0',
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', []);
+        $pluginB = $this->createPlugin('lcmscore.plugin-b', ['lcmscore.plugin-a' => '^1.0']);
+        $pluginC = $this->createPlugin('lcmscore.plugin-c', ['lcmscore.plugin-a' => '^1.0']);
+        $pluginD = $this->createPlugin('lcmscore.plugin-d', [
+            'lcmscore.plugin-b' => '^1.0',
+            'lcmscore.plugin-c' => '^1.0',
         ]);
 
         $resolved = $this->resolver->resolve([$pluginD, $pluginB, $pluginA, $pluginC]);
         $ids = array_map(fn (PluginInterface $p): string => $p->getManifest()->getId(), $resolved);
 
         // A must be first, D must be last
-        $this->assertSame('acme.plugin-a', $ids[0]);
-        $this->assertSame('acme.plugin-d', $ids[3]);
-        $this->assertTrue(in_array($ids[1], ['acme.plugin-b', 'acme.plugin-c'], true));
-        $this->assertTrue(in_array($ids[2], ['acme.plugin-b', 'acme.plugin-c'], true));
+        $this->assertSame('lcmscore.plugin-a', $ids[0]);
+        $this->assertSame('lcmscore.plugin-d', $ids[3]);
+        $this->assertTrue(in_array($ids[1], ['lcmscore.plugin-b', 'lcmscore.plugin-c'], true));
+        $this->assertTrue(in_array($ids[2], ['lcmscore.plugin-b', 'lcmscore.plugin-c'], true));
     }
 
     public function test_throws_missing_dependency_exception_when_required_dependency_is_not_present(): void
     {
-        $pluginA = $this->createPlugin('acme.plugin-a', ['acme.non-existent' => '^2.0']);
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', ['lcmscore.non-existent' => '^2.0']);
 
         $this->expectException(MissingDependencyException::class);
-        $this->expectExceptionMessage("Plugin 'acme.plugin-a' requires missing dependency 'acme.non-existent'");
+        $this->expectExceptionMessage("Plugin 'lcmscore.plugin-a' requires missing dependency 'lcmscore.non-existent'");
 
         $this->resolver->resolve([$pluginA], checkMissing: true);
     }
 
     public function test_allows_missing_dependencies_when_check_missing_is_disabled(): void
     {
-        $pluginA = $this->createPlugin('acme.plugin-a', ['acme.non-existent' => '^2.0']);
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', ['lcmscore.non-existent' => '^2.0']);
 
         $resolved = $this->resolver->resolve([$pluginA], checkMissing: false);
 
         $this->assertCount(1, $resolved);
-        $this->assertSame('acme.plugin-a', $resolved[0]->getManifest()->getId());
+        $this->assertSame('lcmscore.plugin-a', $resolved[0]->getManifest()->getId());
     }
 
     public function test_throws_circular_dependency_exception_on_direct_mutual_dependency(): void
     {
         // A -> B and B -> A
-        $pluginA = $this->createPlugin('acme.plugin-a', ['acme.plugin-b' => '*']);
-        $pluginB = $this->createPlugin('acme.plugin-b', ['acme.plugin-a' => '*']);
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', ['lcmscore.plugin-b' => '*']);
+        $pluginB = $this->createPlugin('lcmscore.plugin-b', ['lcmscore.plugin-a' => '*']);
 
         $this->expectException(CircularDependencyException::class);
         $this->expectExceptionMessage('Circular dependency detected');
@@ -127,9 +127,9 @@ class DependencyResolverTest extends TestCase
     public function test_throws_circular_dependency_exception_on_indirect_cyclic_dependency(): void
     {
         // A -> B -> C -> A
-        $pluginA = $this->createPlugin('acme.plugin-a', ['acme.plugin-b' => '*']);
-        $pluginB = $this->createPlugin('acme.plugin-b', ['acme.plugin-c' => '*']);
-        $pluginC = $this->createPlugin('acme.plugin-c', ['acme.plugin-a' => '*']);
+        $pluginA = $this->createPlugin('lcmscore.plugin-a', ['lcmscore.plugin-b' => '*']);
+        $pluginB = $this->createPlugin('lcmscore.plugin-b', ['lcmscore.plugin-c' => '*']);
+        $pluginC = $this->createPlugin('lcmscore.plugin-c', ['lcmscore.plugin-a' => '*']);
 
         $this->expectException(CircularDependencyException::class);
         $this->expectExceptionMessage('Circular dependency detected');
@@ -139,7 +139,7 @@ class DependencyResolverTest extends TestCase
 
     public function test_throws_circular_dependency_exception_on_self_dependency(): void
     {
-        $pluginA = $this->createPlugin('acme.self-loop', ['acme.self-loop' => '*']);
+        $pluginA = $this->createPlugin('lcmscore.self-loop', ['lcmscore.self-loop' => '*']);
 
         $this->expectException(CircularDependencyException::class);
         $this->expectExceptionMessage('Circular dependency detected');
@@ -153,27 +153,27 @@ class DependencyResolverTest extends TestCase
         mkdir($tempDir, 0777, true);
         config(['cms.plugins.path' => $tempDir]);
 
-        $this->createPluginDir($tempDir, 'acme.first-plugin', ['acme.second-plugin' => '*']);
-        $this->createPluginDir($tempDir, 'acme.second-plugin', ['acme.first-plugin' => '*']);
+        $this->createPluginDir($tempDir, 'lcmscore.first-plugin', ['lcmscore.second-plugin' => '*']);
+        $this->createPluginDir($tempDir, 'lcmscore.second-plugin', ['lcmscore.first-plugin' => '*']);
 
         $discovery = new PluginDiscovery(new ManifestValidator, new PluginClassLoader);
         $registry = new PluginRegistry($discovery);
         $manager = new PluginManager($registry, new PluginMigrationManager, $this->app, null, $this->resolver);
 
         // Install both plugins
-        $manager->install('acme.first-plugin');
-        $manager->install('acme.second-plugin');
+        $manager->install('lcmscore.first-plugin');
+        $manager->install('lcmscore.second-plugin');
 
         // Activation of first plugin must fail because of the cycle
         try {
-            $manager->activate('acme.first-plugin');
+            $manager->activate('lcmscore.first-plugin');
             $this->fail('Expected CircularDependencyException was not thrown during activation.');
         } catch (CircularDependencyException $e) {
             $this->assertStringContainsString('Circular dependency detected', $e->getMessage());
         }
 
         // Plugin state must remain INSTALLED, not ACTIVE
-        $record = $registry->find('acme.first-plugin');
+        $record = $registry->find('lcmscore.first-plugin');
         $this->assertNotNull($record);
         $this->assertSame(PluginState::INSTALLED, $record->state);
         $this->assertFalse($record->is_active);

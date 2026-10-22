@@ -1,0 +1,27 @@
+{
+    "id": "lcmscore.demo-hello",
+    "name": "Demo Hello",
+    "version": "1.0.0",
+    "description": "Demonstration reference plugin for the Plugin-First CMS architecture",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\DemoHello\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\DemoHello\\Providers\\DemoHelloServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": []
+}
+
