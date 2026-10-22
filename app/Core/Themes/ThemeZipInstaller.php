@@ -135,28 +135,40 @@ class ThemeZipInstaller
     }
 
     /**
-     * Locate directory containing theme.json (either sandbox root or immediate subdirectory).
+     * Locate directory containing theme.json (searches sandbox root and subdirectories up to 3 levels deep).
      */
     private function locateThemeRoot(string $dir): ?string
     {
-        if (file_exists($dir.DIRECTORY_SEPARATOR.'theme.json')) {
-            return $dir;
-        }
+        $queue = [$dir];
+        $depth = 0;
+        $maxDepth = 3;
 
-        $items = scandir($dir);
-        if ($items === false) {
-            return null;
-        }
+        while (! empty($queue) && $depth <= $maxDepth) {
+            $nextQueue = [];
+            foreach ($queue as $currentDir) {
+                if (file_exists($currentDir.DIRECTORY_SEPARATOR.'theme.json')) {
+                    return $currentDir;
+                }
 
-        foreach ($items as $item) {
-            if ($item === '.' || $item === '..') {
-                continue;
+                $items = scandir($currentDir);
+                if ($items === false) {
+                    continue;
+                }
+
+                foreach ($items as $item) {
+                    if ($item === '.' || $item === '..' || $item === '__MACOSX' || str_starts_with($item, '.')) {
+                        continue;
+                    }
+
+                    $subDir = $currentDir.DIRECTORY_SEPARATOR.$item;
+                    if (is_dir($subDir)) {
+                        $nextQueue[] = $subDir;
+                    }
+                }
             }
 
-            $subDir = $dir.DIRECTORY_SEPARATOR.$item;
-            if (is_dir($subDir) && file_exists($subDir.DIRECTORY_SEPARATOR.'theme.json')) {
-                return $subDir;
-            }
+            $queue = $nextQueue;
+            $depth++;
         }
 
         return null;

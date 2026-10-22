@@ -54,13 +54,13 @@
                         <i class="bi bi-file-earmark-zip me-1"></i> Importer une extension (.zip)
                     </h5>
                     <p class="text-muted small mb-0">
-                        Sélectionnez une archive ZIP contenant un plugin LCMS conforme avec son manifeste <code>plugin.json</code>.
+                        Sélectionnez une archive ZIP contenant un plugin LCMS conforme avec son manifeste <code>plugin.json</code> (max 50 Mo).
                     </p>
                 </div>
                 <div class="col-lg-6">
                     <form method="POST" action="{{ route('admin.plugins.upload') }}" enctype="multipart/form-data" class="d-flex align-items-center gap-2 flex-wrap justify-content-lg-end">
                         @csrf
-                        <input type="file" name="plugin_archive" accept=".zip,application/zip" required class="form-control form-control-sm" style="max-width: 250px;">
+                        <input type="file" name="plugin_archive" accept=".zip,application/zip,application/x-zip,application/x-zip-compressed" required class="form-control form-control-sm" style="max-width: 250px;">
                         <div class="form-check me-2">
                             <input class="form-check-input" type="checkbox" name="overwrite" value="1" id="overwritePlugin">
                             <label class="form-check-label small text-muted" for="overwritePlugin">

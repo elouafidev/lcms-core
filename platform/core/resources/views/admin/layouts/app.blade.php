@@ -116,6 +116,21 @@
                         </div>
                     @endif
 
+                    @if(isset($errors) && $errors->any())
+                        <div class="alert alert-danger alert-error alert-dismissible fade show shadow-sm" role="alert">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="bi bi-exclamation-octagon-fill me-2 fs-5"></i>
+                                <strong>Veuillez corriger les erreurs suivantes :</strong>
+                            </div>
+                            <ul class="mb-0 ps-3">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        </div>
+                    @endif
+
                     <!-- Page Content -->
                     @yield('content')
                 </div>

@@ -47,8 +47,39 @@ class AdminThemeController extends Controller
      */
     public function upload(Request $request): RedirectResponse
     {
+        $rawFile = $request->file('theme_archive');
+        if ($rawFile instanceof UploadedFile && ! $rawFile->isValid()) {
+            $uploadError = $rawFile->getError();
+            $maxUpload = ini_get('upload_max_filesize') ?: '2M';
+            $message = match ($uploadError) {
+                UPLOAD_ERR_INI_SIZE => "Le fichier dépasse la taille maximale autorisée par le serveur PHP (upload_max_filesize = {$maxUpload}).",
+                UPLOAD_ERR_FORM_SIZE => 'Le fichier dépasse la directive de taille maximale du formulaire.',
+                UPLOAD_ERR_PARTIAL => "Le fichier n'a été que partiellement téléversé.",
+                UPLOAD_ERR_NO_FILE => "Aucun fichier d'archive n'a été téléversé.",
+                UPLOAD_ERR_NO_TMP_DIR => 'Le dossier temporaire est manquant sur le serveur PHP.',
+                UPLOAD_ERR_CANT_WRITE => "Échec de l'écriture du fichier sur le disque du serveur.",
+                UPLOAD_ERR_EXTENSION => 'Une extension PHP a interrompu le téléversement du fichier.',
+                default => "Erreur lors du téléversement du fichier (code: {$uploadError}).",
+            };
+
+            return redirect()->back(fallback: route('admin.themes.index'))
+                ->with('error', $message);
+        }
+
         $request->validate([
-            'theme_archive' => ['required', 'file', 'mimes:zip', 'max:20480'],
+            'theme_archive' => [
+                'required',
+                'file',
+                'extensions:zip',
+                'mimetypes:application/zip,application/x-zip,application/x-zip-compressed,application/octet-stream,multipart/x-zip',
+                'max:51200',
+            ],
+        ], [
+            'theme_archive.required' => "Veuillez sélectionner un fichier d'archive ZIP pour le thème.",
+            'theme_archive.file' => 'Le fichier transmis est invalide ou corrompu.',
+            'theme_archive.extensions' => "L'archive doit obligatoirement posséder l'extension .zip.",
+            'theme_archive.mimetypes' => "Le fichier sélectionné n'est pas reconnu comme une archive ZIP valide.",
+            'theme_archive.max' => "L'archive du thème ne doit pas dépasser 50 Mo.",
         ]);
 
         $file = $request->file('theme_archive');

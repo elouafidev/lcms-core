@@ -60,6 +60,20 @@ class AdminPluginZipUploadTest extends TestCase
         $response->assertSessionHasErrors(['plugin_archive']);
     }
 
+    public function test_upload_displays_validation_error_alert_on_admin_page(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->from(route('admin.plugins.index'))->followingRedirects()->post(route('admin.plugins.upload'), [
+            'plugin_archive' => UploadedFile::fake()->create('malicious.php', 100, 'text/plain'),
+        ]);
+
+        $response->assertOk();
+        $response->assertSee('Veuillez corriger les erreurs suivantes :');
+        $response->assertSee("L'archive doit obligatoirement posséder l'extension .zip.");
+    }
+
     public function test_upload_rejects_zip_slip_traversal_attempt(): void
     {
         /** @var User $user */
@@ -252,6 +266,67 @@ class AdminPluginZipUploadTest extends TestCase
         /** @var string $content */
         $content = file_get_contents($this->tempPluginsDir.'/lcmscore.overwrite-test/plugin.json');
         $this->assertStringContainsString('2.0.0', $content);
+    }
+
+    public function test_upload_accepts_zip_with_octet_stream_mime_type(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $manifest = [
+            'id' => 'lcmscore.octet-test',
+            'name' => 'Octet Plugin',
+            'version' => '1.0.0',
+            'author' => ['name' => 'Test Author'],
+            'providers' => [],
+        ];
+
+        $zipPath = $this->tempWorkingDir.'/octet_plugin.zip';
+        $zip = new ZipArchive;
+        $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFromString('plugin.json', (string) json_encode($manifest, JSON_PRETTY_PRINT));
+        $zip->close();
+
+        // Simulate Windows browser uploading ZIP with application/octet-stream
+        $uploaded = new UploadedFile($zipPath, 'octet_plugin.zip', 'application/octet-stream', null, true);
+
+        $response = $this->actingAs($user)->post(route('admin.plugins.upload'), [
+            'plugin_archive' => $uploaded,
+        ]);
+
+        $response->assertRedirect(route('admin.plugins.show', 'lcmscore.octet-test'));
+        $response->assertSessionHas('success');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.octet-test/plugin.json');
+    }
+
+    public function test_upload_accepts_nested_directory_plugin_archive(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $manifest = [
+            'id' => 'lcmscore.nested-test',
+            'name' => 'Nested Plugin',
+            'version' => '1.0.0',
+            'author' => ['name' => 'Test Author'],
+            'providers' => [],
+        ];
+
+        $zipPath = $this->tempWorkingDir.'/nested_plugin.zip';
+        $zip = new ZipArchive;
+        $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFromString('folder-level-1/my-plugin/plugin.json', (string) json_encode($manifest, JSON_PRETTY_PRINT));
+        $zip->close();
+
+        $uploaded = new UploadedFile($zipPath, 'nested_plugin.zip', 'application/zip', null, true);
+
+        $response = $this->actingAs($user)->post(route('admin.plugins.upload'), [
+            'plugin_archive' => $uploaded,
+        ]);
+
+        $response->assertRedirect(route('admin.plugins.show', 'lcmscore.nested-test'));
+        $response->assertSessionHas('success');
+        $this->assertFileExists($this->tempPluginsDir.'/lcmscore.nested-test/plugin.json');
     }
 
     private function deleteDirectory(string $dir): void
