@@ -51,7 +51,7 @@ class MenusServiceProvider extends ServiceProvider
                 id: 'menus-management',
                 label: 'Menus de Navigation',
                 url: '/admin/menus',
-                icon: 'menu',
+                icon: 'bi bi-menu-down',
                 priority: 30,
                 permission: 'menus.manage',
                 pluginId: 'acme.menus'

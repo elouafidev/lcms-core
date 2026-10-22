@@ -64,7 +64,7 @@ class SeoServiceProvider extends ServiceProvider
                 id: 'seo-settings',
                 label: 'Configuration SEO',
                 url: '/admin/seo',
-                icon: 'search',
+                icon: 'bi bi-search',
                 priority: 40,
                 permission: 'seo.manage',
                 pluginId: 'acme.seo'
