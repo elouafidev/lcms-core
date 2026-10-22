@@ -584,7 +584,7 @@ Refs: US-007
 
 #### Critères d'Acceptation
 ```gherkin
-Given le plugin "acme.demo-hello" dans platform/plugins/demo-hello/
+Given le plugin "lcmscore.demo-hello" dans platform/plugins/demo-hello/
 When le plugin est à l'état ACTIVE
 Then la requête GET /demo/hello retourne un code HTTP 200 avec le message de démonstration
 And les données proviennent de la table "plugin_demo_messages"
@@ -856,19 +856,19 @@ Refs: US-014
 
 ---
 
-### US-015 : Contrat MediaStorageInterface et Plugin Médiathèque (`acme.media-library`)
+### US-015 : Contrat MediaStorageInterface et Plugin Médiathèque (`lcmscore.media-library`)
 
 - **Identifiant :** `US-015` (Plan : `P3-T2`)
 - **Persona :** `PluginDev` / `ContentEditor`
 - **Énoncé :**
   > En tant que **développeur ou éditeur de contenu**,  
-  > Je souhaite **téléverser, inspecter et référencer des fichiers multimédias via un contrat abstrait `MediaStorageInterface` et le plugin autonome `acme.media-library`**,  
+  > Je souhaite **téléverser, inspecter et référencer des fichiers multimédias via un contrat abstrait `MediaStorageInterface` et le plugin autonome `lcmscore.media-library`**,  
   > Afin de **gérer une bibliothèque de médias centralisée sans qu'aucun code média ne soit codé en dur dans le noyau**.
 
 #### Critères d'Acceptation
 ```gherkin
 Given le contrat App\Core\Contracts\MediaStorageInterface
-When le plugin acme.media-library est activé
+When le plugin lcmscore.media-library est activé
 Then sa migration crée la table isolée plugin_media_items
 And le contrôleur permet d'uploader un fichier sous contrainte MIME sécurisée
 And les métadonnées (nom, type MIME, taille, URL) sont persistées et accessibles
@@ -877,21 +877,21 @@ And une entrée de navigation "Médiathèque" est visible dans le panneau d'admi
 
 #### Fichiers Impactés
 - `app/Core/Contracts/MediaStorageInterface.php`
-- `platform/plugins/acme.media-library/plugin.json`
-- `platform/plugins/acme.media-library/src/Providers/MediaLibraryServiceProvider.php`
-- `platform/plugins/acme.media-library/src/Models/MediaItem.php`
-- `platform/plugins/acme.media-library/src/Services/MediaStorageService.php`
-- `platform/plugins/acme.media-library/src/Http/Controllers/MediaController.php`
-- `platform/plugins/acme.media-library/database/migrations/2026_10_14_000001_create_plugin_media_items_table.php`
-- `platform/plugins/acme.media-library/routes/web.php`
+- `platform/plugins/lcmscore.media-library/plugin.json`
+- `platform/plugins/lcmscore.media-library/src/Providers/MediaLibraryServiceProvider.php`
+- `platform/plugins/lcmscore.media-library/src/Models/MediaItem.php`
+- `platform/plugins/lcmscore.media-library/src/Services/MediaStorageService.php`
+- `platform/plugins/lcmscore.media-library/src/Http/Controllers/MediaController.php`
+- `platform/plugins/lcmscore.media-library/database/migrations/2026_10_14_000001_create_plugin_media_items_table.php`
+- `platform/plugins/lcmscore.media-library/routes/web.php`
 - `tests/Feature/Plugins/MediaLibraryPluginTest.php`
 
 #### Commit de Code Associé
 ```text
-feat(media): implement MediaStorageInterface and acme.media-library plugin
+feat(media): implement MediaStorageInterface and lcmscore.media-library plugin
 
 - Introduce MediaStorageInterface contract in core contracts
-- Implement acme.media-library with isolated plugin_media_items table
+- Implement lcmscore.media-library with isolated plugin_media_items table
 - Provide secure upload, metadata inspection, and admin media gallery
 
 Refs: US-015
@@ -899,7 +899,7 @@ Refs: US-015
 
 ---
 
-### US-016 : Plugin Fondamental de Pages Statiques (`acme.pages`)
+### US-016 : Plugin Fondamental de Pages Statiques (`lcmscore.pages`)
 
 - **Identifiant :** `US-016` (Plan : `P3-T3`)
 - **Persona :** `ContentEditor` / `SiteVisitor`
@@ -910,29 +910,29 @@ Refs: US-015
 
 #### Critères d'Acceptation
 ```gherkin
-Given le plugin acme.pages actif
+Given le plugin lcmscore.pages actif
 When une page est créée avec le slug about-us et le statut published
 Then la requête HTTP GET /page/about-us renvoie 200 avec le contenu de la page
 When une page est en état draft
 Then la requête publique renvoie 404
-When le plugin acme.pages est désactivé
+When le plugin lcmscore.pages est désactivé
 Then les routes de pages renvoient 404 sans perte de données dans la table plugin_pages
 ```
 
 #### Fichiers Impactés
-- `platform/plugins/acme.pages/plugin.json`
-- `platform/plugins/acme.pages/src/Providers/PagesServiceProvider.php`
-- `platform/plugins/acme.pages/src/Models/Page.php`
-- `platform/plugins/acme.pages/src/Http/Controllers/PageController.php`
-- `platform/plugins/acme.pages/src/Http/Controllers/AdminPageController.php`
-- `platform/plugins/acme.pages/database/migrations/2026_10_14_000002_create_plugin_pages_table.php`
-- `platform/plugins/acme.pages/resources/views/page.blade.php`
-- `platform/plugins/acme.pages/routes/web.php`
+- `platform/plugins/lcmscore.pages/plugin.json`
+- `platform/plugins/lcmscore.pages/src/Providers/PagesServiceProvider.php`
+- `platform/plugins/lcmscore.pages/src/Models/Page.php`
+- `platform/plugins/lcmscore.pages/src/Http/Controllers/PageController.php`
+- `platform/plugins/lcmscore.pages/src/Http/Controllers/AdminPageController.php`
+- `platform/plugins/lcmscore.pages/database/migrations/2026_10_14_000002_create_plugin_pages_table.php`
+- `platform/plugins/lcmscore.pages/resources/views/page.blade.php`
+- `platform/plugins/lcmscore.pages/routes/web.php`
 - `tests/Feature/Plugins/PagesPluginTest.php`
 
 #### Commit de Code Associé
 ```text
-feat(pages): implement acme.pages plugin with dynamic routing and front template
+feat(pages): implement lcmscore.pages plugin with dynamic routing and front template
 
 - Add Page model with slug, published status, and content
 - Provide front /page/{slug} controller and Blade template
@@ -943,7 +943,7 @@ Refs: US-016
 
 ---
 
-### US-017 : Plugin Fondamental de Menus de Navigation (`acme.menus`)
+### US-017 : Plugin Fondamental de Menus de Navigation (`lcmscore.menus`)
 
 - **Identifiant :** `US-017` (Plan : `P3-T4`)
 - **Persona :** `SiteVisitor` / `ContentEditor`
@@ -954,7 +954,7 @@ Refs: US-016
 
 #### Critères d'Acceptation
 ```gherkin
-Given le plugin acme.menus actif
+Given le plugin lcmscore.menus actif
 When un menu main-nav est créé avec des liens ordonnés
 Then le service MenuRenderer::render('main-nav') génère le markup HTML du menu
 And les entrées sont stockées dans les tables isolées plugin_menus et plugin_menu_items
@@ -962,18 +962,18 @@ And les menus sont automatiquement masqués si le plugin est désactivé
 ```
 
 #### Fichiers Impactés
-- `platform/plugins/acme.menus/plugin.json`
-- `platform/plugins/acme.menus/src/Providers/MenusServiceProvider.php`
-- `platform/plugins/acme.menus/src/Models/Menu.php`
-- `platform/plugins/acme.menus/src/Models/MenuItem.php`
-- `platform/plugins/acme.menus/src/Services/MenuRenderer.php`
-- `platform/plugins/acme.menus/database/migrations/2026_10_14_000003_create_plugin_menus_table.php`
-- `platform/plugins/acme.menus/routes/web.php`
+- `platform/plugins/lcmscore.menus/plugin.json`
+- `platform/plugins/lcmscore.menus/src/Providers/MenusServiceProvider.php`
+- `platform/plugins/lcmscore.menus/src/Models/Menu.php`
+- `platform/plugins/lcmscore.menus/src/Models/MenuItem.php`
+- `platform/plugins/lcmscore.menus/src/Services/MenuRenderer.php`
+- `platform/plugins/lcmscore.menus/database/migrations/2026_10_14_000003_create_plugin_menus_table.php`
+- `platform/plugins/lcmscore.menus/routes/web.php`
 - `tests/Feature/Plugins/MenusPluginTest.php`
 
 #### Commit de Code Associé
 ```text
-feat(menus): implement acme.menus hierarchical navigation plugin and render hook
+feat(menus): implement lcmscore.menus hierarchical navigation plugin and render hook
 
 - Provide Menu and MenuItem models with ordering and nesting
 - Implement MenuRenderer service generating clean HTML navigation markup
@@ -984,7 +984,7 @@ Refs: US-017
 
 ---
 
-### US-018 : Plugin SEO et Métadonnées via Bus de Filtres Hook (`acme.seo`)
+### US-018 : Plugin SEO et Métadonnées via Bus de Filtres Hook (`lcmscore.seo`)
 
 - **Identifiant :** `US-018` (Plan : `P3-T5`)
 - **Persona :** `PluginDev` / `ContentEditor`
@@ -995,25 +995,25 @@ Refs: US-017
 
 #### Critères d'Acceptation
 ```gherkin
-Given le plugin acme.seo actif s'abonnant au filtre cms.head
+Given le plugin lcmscore.seo actif s'abonnant au filtre cms.head
 When une page publique est rendue
 Then le bus de hooks injecte meta description, og:title et canonical link
 And les paramètres par défaut du site sont configurables
-When le plugin acme.seo est désactivé
+When le plugin lcmscore.seo est désactivé
 Then le filtre est retiré et le <head> est rendu sans les balises SEO injectées
 ```
 
 #### Fichiers Impactés
-- `platform/plugins/acme.seo/plugin.json`
-- `platform/plugins/acme.seo/src/Providers/SeoServiceProvider.php`
-- `platform/plugins/acme.seo/src/Subscribers/SeoHookSubscriber.php`
-- `platform/plugins/acme.seo/src/Services/SeoMetaManager.php`
-- `platform/plugins/acme.seo/database/migrations/2026_10_14_000004_create_plugin_seo_settings_table.php`
+- `platform/plugins/lcmscore.seo/plugin.json`
+- `platform/plugins/lcmscore.seo/src/Providers/SeoServiceProvider.php`
+- `platform/plugins/lcmscore.seo/src/Subscribers/SeoHookSubscriber.php`
+- `platform/plugins/lcmscore.seo/src/Services/SeoMetaManager.php`
+- `platform/plugins/lcmscore.seo/database/migrations/2026_10_14_000004_create_plugin_seo_settings_table.php`
 - `tests/Feature/Plugins/SeoPluginTest.php`
 
 #### Commit de Code Associé
 ```text
-feat(seo): implement acme.seo plugin leveraging hook filter bus for head metadata
+feat(seo): implement lcmscore.seo plugin leveraging hook filter bus for head metadata
 
 - Provide SeoMetaManager generating meta tags, canonical, and OpenGraph markup
 - Register SeoHookSubscriber filtering cms.head hook dynamically
@@ -1077,7 +1077,7 @@ Refs: US-019
 
 #### Critères d'Acceptation
 ```gherkin
-Given un thème actif et un plugin acme.pages actif
+Given un thème actif et un plugin lcmscore.pages actif
 When le thème fournit un template views/plugins/pages/page.blade.php
 Then l'appel view('pages::page') rend la vue personnalisée du thème prioritaire
 When aucun template de surcharge n'est fourni par le thème
@@ -1248,10 +1248,10 @@ Refs: US-023
 | **US-013** | Navigation Dynamique & Registre Permissions | Phase 2 | US-011 | `feat(navigation): add dynamic admin navigation and permission registry` |
 |---|---|---|---|---|
 | **US-014** | Gestionnaire d'Assets Statiques Isolés | Phase 3 | US-013 | `feat(assets): implement isolated PluginAssetManager and asset publishing command` |
-| **US-015** | Contrat MediaStorage & Plugin Médiathèque | Phase 3 | US-014 | `feat(media): implement MediaStorageInterface and acme.media-library plugin` |
-| **US-016** | Plugin de Pages Statiques Dynamiques | Phase 3 | US-015 | `feat(pages): implement acme.pages plugin with dynamic routing and front template` |
-| **US-017** | Plugin de Menus Hiérarchiques | Phase 3 | US-016 | `feat(menus): implement acme.menus hierarchical navigation plugin and render hook` |
-| **US-018** | Plugin SEO & Métadonnées via Hooks | Phase 3 | US-011, US-016 | `feat(seo): implement acme.seo plugin leveraging hook filter bus for head metadata` |
+| **US-015** | Contrat MediaStorage & Plugin Médiathèque | Phase 3 | US-014 | `feat(media): implement MediaStorageInterface and lcmscore.media-library plugin` |
+| **US-016** | Plugin de Pages Statiques Dynamiques | Phase 3 | US-015 | `feat(pages): implement lcmscore.pages plugin with dynamic routing and front template` |
+| **US-017** | Plugin de Menus Hiérarchiques | Phase 3 | US-016 | `feat(menus): implement lcmscore.menus hierarchical navigation plugin and render hook` |
+| **US-018** | Plugin SEO & Métadonnées via Hooks | Phase 3 | US-011, US-016 | `feat(seo): implement lcmscore.seo plugin leveraging hook filter bus for head metadata` |
 |---|---|---|---|---|
 | **US-019** | Contrats Publics de Thèmes & Découverte | Phase 4 | US-018 | `feat(themes): implement ThemeInterface, ThemeManifest DTO, and ThemeDiscovery service` |
 | **US-020** | Gestionnaire de Thèmes & Surcharge de Vues | Phase 4 | US-019 | `feat(themes): implement ThemeManager with view overriding hierarchy and persistence` |

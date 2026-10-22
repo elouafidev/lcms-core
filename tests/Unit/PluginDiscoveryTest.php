@@ -51,8 +51,8 @@ class PluginDiscoveryTest extends TestCase
         mkdir($pluginDir.'/src', 0777, true);
 
         file_put_contents($pluginDir.'/plugin.json', json_encode([
-            'id' => 'acme.demo-hello',
-            'name' => 'Acme Demo Hello',
+            'id' => 'lcmscore.demo-hello',
+            'name' => 'LCMS Core Demo Hello',
             'version' => '1.0.0',
             'autoload' => [
                 'psr-4' => [
@@ -63,12 +63,12 @@ class PluginDiscoveryTest extends TestCase
 
         $discovered = $this->discovery->discover($this->tempPluginsDir);
 
-        $this->assertTrue($discovered->has('acme.demo-hello'));
+        $this->assertTrue($discovered->has('lcmscore.demo-hello'));
 
         /** @var DiscoveredPlugin $plugin */
-        $plugin = $discovered->get('acme.demo-hello');
+        $plugin = $discovered->get('lcmscore.demo-hello');
         $this->assertInstanceOf(DiscoveredPlugin::class, $plugin);
-        $this->assertEquals('acme.demo-hello', $plugin->getManifest()->getId());
+        $this->assertEquals('lcmscore.demo-hello', $plugin->getManifest()->getId());
         $this->assertEquals('AVAILABLE', $plugin->getState());
         $this->assertFalse($plugin->isActive());
         $this->assertEquals(str_replace('\\', '/', $pluginDir), $plugin->getPath());
@@ -85,7 +85,7 @@ class PluginDiscoveryTest extends TestCase
         $validDir = $this->tempPluginsDir.'/valid-plugin';
         mkdir($validDir, 0777, true);
         file_put_contents($validDir.'/plugin.json', json_encode([
-            'id' => 'acme.valid-plugin',
+            'id' => 'lcmscore.valid-plugin',
             'name' => 'Valid Plugin',
             'version' => '1.0.0',
         ]));
@@ -99,7 +99,7 @@ class PluginDiscoveryTest extends TestCase
         $traversalDir = $this->tempPluginsDir.'/traversal-plugin';
         mkdir($traversalDir, 0777, true);
         file_put_contents($traversalDir.'/plugin.json', json_encode([
-            'id' => 'acme.traversal-plugin',
+            'id' => 'lcmscore.traversal-plugin',
             'name' => 'Traversal Plugin',
             'version' => '1.0.0',
             'routes' => [
@@ -110,8 +110,8 @@ class PluginDiscoveryTest extends TestCase
         $discovered = $this->discovery->discover($this->tempPluginsDir);
 
         $this->assertCount(1, $discovered);
-        $this->assertTrue($discovered->has('acme.valid-plugin'));
-        $this->assertFalse($discovered->has('acme.traversal-plugin'));
+        $this->assertTrue($discovered->has('lcmscore.valid-plugin'));
+        $this->assertFalse($discovered->has('lcmscore.traversal-plugin'));
     }
 
     public function test_discovers_nested_vendor_structure_and_skips_empty_folders(): void
@@ -119,19 +119,19 @@ class PluginDiscoveryTest extends TestCase
         // Empty folder
         mkdir($this->tempPluginsDir.'/empty-folder', 0777, true);
 
-        // Nested vendor folder: platform/plugins/acme/nested-tool/plugin.json
-        $nestedPluginDir = $this->tempPluginsDir.'/acme/nested-tool';
+        // Nested vendor folder: platform/plugins/lcmscore/nested-tool/plugin.json
+        $nestedPluginDir = $this->tempPluginsDir.'/lcmscore/nested-tool';
         mkdir($nestedPluginDir, 0777, true);
         file_put_contents($nestedPluginDir.'/plugin.json', json_encode([
-            'id' => 'acme.nested-tool',
-            'name' => 'Acme Nested Tool',
+            'id' => 'lcmscore.nested-tool',
+            'name' => 'LCMS Core Nested Tool',
             'version' => '2.0.0',
         ]));
 
         $discovered = $this->discovery->discover($this->tempPluginsDir);
 
         $this->assertCount(1, $discovered);
-        $this->assertTrue($discovered->has('acme.nested-tool'));
+        $this->assertTrue($discovered->has('lcmscore.nested-tool'));
     }
 
     public function test_dynamic_autoloading_instantiates_class_from_discovered_plugin(): void

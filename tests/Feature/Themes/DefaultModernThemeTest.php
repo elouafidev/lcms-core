@@ -84,8 +84,8 @@ class DefaultModernThemeTest extends TestCase
     public function test_page_rendering_with_default_modern_theme_uses_theme_layout_and_styles(): void
     {
         // 1. Install and activate pages plugin
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
         // 2. Activate default-modern theme
         $this->themeManager->activate('default-modern');
@@ -126,11 +126,11 @@ class DefaultModernThemeTest extends TestCase
 
     public function test_page_rendering_integrates_seo_metadata_via_cms_head_hook(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $this->themeManager->activate('default-modern');
 
@@ -164,11 +164,11 @@ class DefaultModernThemeTest extends TestCase
 
     public function test_page_rendering_integrates_dynamic_navigation_menu_via_cms_menu_hook(): void
     {
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
         $this->themeManager->activate('default-modern');
 
@@ -219,14 +219,14 @@ class DefaultModernThemeTest extends TestCase
     public function test_end_to_end_full_stack_integration_with_pages_menus_and_seo(): void
     {
         // 1. Activate all 3 essential plugins and theme
-        $this->pluginManager->install('acme.pages');
-        $this->pluginManager->activate('acme.pages');
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
 
-        $this->pluginManager->install('acme.menus');
-        $this->pluginManager->activate('acme.menus');
+        $this->pluginManager->install('lcmscore.menus');
+        $this->pluginManager->activate('lcmscore.menus');
 
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $this->themeManager->activate('default-modern');
 

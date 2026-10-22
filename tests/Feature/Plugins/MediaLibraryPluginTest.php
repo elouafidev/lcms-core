@@ -42,7 +42,7 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_plugin_is_discoverable_and_inactive_initially(): void
     {
-        $discovered = $this->pluginRegistry->getDiscovered('acme.media-library');
+        $discovered = $this->pluginRegistry->getDiscovered('lcmscore.media-library');
 
         $this->assertNotNull($discovered);
         $this->assertSame(PluginState::AVAILABLE->value, $discovered->getState());
@@ -51,8 +51,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_install_and_activation_creates_table_and_registers_service(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         $this->assertTrue(Schema::hasTable('plugin_media_items'));
         $this->assertTrue($this->app->bound(MediaStorageInterface::class));
@@ -70,8 +70,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_media_storage_service_can_store_and_retrieve_file(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var MediaStorageInterface $storage */
         $storage = $this->app->make(MediaStorageInterface::class);
@@ -102,8 +102,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_guest_is_redirected_to_login_when_accessing_media_routes(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         $response = $this->get('/admin/media');
         $response->assertRedirect('/login');
@@ -114,8 +114,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_authenticated_user_can_view_media_gallery(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -128,8 +128,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_authenticated_user_can_upload_valid_media_via_http(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -154,8 +154,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_authenticated_user_can_upload_media_via_standard_html_form_to_upload_route(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -176,8 +176,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_authenticated_user_can_upload_media_via_post_to_base_media_route(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -198,8 +198,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_upload_rejects_forbidden_mime_types(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -216,8 +216,8 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_authenticated_user_can_delete_media_via_http(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var MediaStorageInterface $storage */
         $storage = $this->app->make(MediaStorageInterface::class);
@@ -235,15 +235,15 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_deactivation_hides_navigation_and_preserves_data(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         /** @var MediaStorageInterface $storage */
         $storage = $this->app->make(MediaStorageInterface::class);
         $storage->store(UploadedFile::fake()->create('keep_me.jpg', 50, 'image/jpeg'), 'media');
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.media-library');
+        $this->pluginManager->deactivate('lcmscore.media-library');
 
         // Navigation should be hidden
         $this->assertFalse($this->navigationRegistry->has('media-library'));
@@ -257,14 +257,14 @@ class MediaLibraryPluginTest extends TestCase
 
     public function test_uninstall_with_purge_drops_table(): void
     {
-        $this->pluginManager->install('acme.media-library');
-        $this->pluginManager->activate('acme.media-library');
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
 
         $this->assertTrue(Schema::hasTable('plugin_media_items'));
 
-        $this->pluginManager->uninstall('acme.media-library', purgeData: true);
+        $this->pluginManager->uninstall('lcmscore.media-library', purgeData: true);
 
         $this->assertFalse(Schema::hasTable('plugin_media_items'));
-        $this->assertNull($this->pluginRegistry->find('acme.media-library'));
+        $this->assertNull($this->pluginRegistry->find('lcmscore.media-library'));
     }
 }

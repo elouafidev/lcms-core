@@ -7,7 +7,7 @@
 ---
 
 ## 1. Contexte et Problématique
-1. **Rupture de navigation (admin-sidebar manquante) :** Certaines vues d'administration des plugins (`acme.menus`, `acme.pages`, `acme.seo`, `acme.media-library`) utilisaient des layouts partiels ou ad hoc, faisant disparaître l'`admin-sidebar` et brisant la continuité de l'expérience d'administration.
+1. **Rupture de navigation (admin-sidebar manquante) :** Certaines vues d'administration des plugins (`lcmscore.menus`, `lcmscore.pages`, `lcmscore.seo`, `lcmscore.media-library`) utilisaient des layouts partiels ou ad hoc, faisant disparaître l'`admin-sidebar` et brisant la continuité de l'expérience d'administration.
 2. **Gestion opaque des extensions :** Dans la liste `/admin/plugins`, l'administrateur n'avait accès qu'à des boutons basiques sans pouvoir inspecter les métadonnées déclarées, les dépendances directes, ni l'impact potentiel sur les extensions dépendantes (dépendances inverses).
 3. **Absence d'importation ZIP standardisée :** L'installation de plugins nécessitait un accès direct en écriture sur le système de fichiers (`platform/plugins/`), augmentant la friction et les risques d'injections malveillantes (Zip Slip, exécutables non filtrés).
 
@@ -29,7 +29,7 @@
 
 ## 3. Justifications et Bénéfices
 - **Cohérence visuelle et ergonomique garantie :** La barre latérale d'administration est omniprésente sur l'ensemble des modules d'administration.
-- **Résilience opérationnelle :** Impossible de désactiver par inadvertance un socle comme `acme.media-library` ou un plugin requis sans être immédiatement averti de l'impact en cascade.
+- **Résilience opérationnelle :** Impossible de désactiver par inadvertance un socle comme `lcmscore.media-library` ou un plugin requis sans être immédiatement averti de l'impact en cascade.
 - **Sécurité de premier ordre :** L'importation de plugins depuis l'interface est protégée contre l'exécution arbitraire et les débordements de chemins.
 
 ## 4. Conséquences

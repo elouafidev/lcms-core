@@ -16,7 +16,7 @@ class PluginEnableCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:plugin:enable {id : The plugin identifier (e.g. acme.demo-hello)}';
+    protected $signature = 'cms:plugin:enable {id : The plugin identifier (e.g. lcmscore.demo-hello)}';
 
     /**
      * The console command description.

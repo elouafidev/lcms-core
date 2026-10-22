@@ -7,7 +7,7 @@ namespace App\Core\Contracts;
 interface PluginManifestInterface
 {
     /**
-     * Get unique identifier (e.g. "acme.demo-hello").
+     * Get unique identifier (e.g. "lcmscore.demo-hello").
      */
     public function getId(): string;
 

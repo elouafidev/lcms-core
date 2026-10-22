@@ -39,10 +39,10 @@
 | **P2-T4** | Navigation dynamique et registre de permissions (`NavigationRegistry`, `PermissionRegistry`) | Phase 2 (US-013) | P2-T3 | **Terminé** |
 |---|---|---|---|---|
 | **P3-T1** | Gestionnaire d'actifs statiques isolés (`PluginAssetManager`) | Phase 3 (US-014) | P2-T4 | **Terminé** |
-| **P3-T2** | Contrat de stockage et plugin médiathèque (`acme.media-library`) | Phase 3 (US-015) | P3-T1 | **Terminé** |
-| **P3-T3** | Plugin de gestion des pages statiques (`acme.pages`) | Phase 3 (US-016) | P3-T2 | **Terminé** |
-| **P3-T4** | Plugin de menus arborescents et hook de rendu (`acme.menus`) | Phase 3 (US-017) | P3-T3 | **Terminé** |
-| **P3-T5** | Plugin SEO et métadonnées via bus de hooks (`acme.seo`) | Phase 3 (US-018) | P3-T4 | **Terminé** |
+| **P3-T2** | Contrat de stockage et plugin médiathèque (`lcmscore.media-library`) | Phase 3 (US-015) | P3-T1 | **Terminé** |
+| **P3-T3** | Plugin de gestion des pages statiques (`lcmscore.pages`) | Phase 3 (US-016) | P3-T2 | **Terminé** |
+| **P3-T4** | Plugin de menus arborescents et hook de rendu (`lcmscore.menus`) | Phase 3 (US-017) | P3-T3 | **Terminé** |
+| **P3-T5** | Plugin SEO et métadonnées via bus de hooks (`lcmscore.seo`) | Phase 3 (US-018) | P3-T4 | **Terminé** |
 |---|---|---|---|---|
 | **P4-T1** | Contrats Publics de Thèmes et Découverte (`ThemeDiscovery`, `ThemeManifest`) | Phase 4 (US-019) | P3-T5 | **Terminé** |
 | **P4-T2** | Gestionnaire de Thèmes et Surcharge de Vues (`ThemeManager`, `cms_themes`) | Phase 4 (US-020) | P4-T1 | **Terminé** |
@@ -151,28 +151,28 @@
 
 ### Tâche P3-T2 : Contrat de Stockage et Plugin Médiathèque (US-015)
 - **Objectif :** Bibliothèque de médias autonome avec contrat `MediaStorageInterface`.
-- **Fichiers :** `app/Core/Contracts/MediaStorageInterface.php`, `platform/plugins/acme.media-library/*`, `tests/Feature/Plugins/MediaLibraryPluginTest.php`.
+- **Fichiers :** `app/Core/Contracts/MediaStorageInterface.php`, `platform/plugins/lcmscore.media-library/*`, `tests/Feature/Plugins/MediaLibraryPluginTest.php`.
 - **Dépendances :** P3-T1.
 - **Critère d'acceptation :** Upload sécurisé de fichiers et persistance des métadonnées.
 - **Statut :** **Terminé**.
 
 ### Tâche P3-T3 : Plugin de Pages Statiques (US-016)
 - **Objectif :** Création et affichage de pages web avec URLs personnalisées.
-- **Fichiers :** `platform/plugins/acme.pages/*`.
+- **Fichiers :** `platform/plugins/lcmscore.pages/*`.
 - **Dépendances :** P3-T2.
 - **Critère d'acceptation :** Route `/page/{slug}` active uniquement si la page est publiée et le plugin actif.
 - **Statut :** **Terminé**.
 
 ### Tâche P3-T4 : Plugin de Menus Arborescents (US-017)
 - **Objectif :** Gestion de menus hiérarchiques et helper de rendu HTML.
-- **Fichiers :** `platform/plugins/acme.menus/*`.
+- **Fichiers :** `platform/plugins/lcmscore.menus/*`.
 - **Dépendances :** P3-T3.
 - **Critère d'acceptation :** Rendu HTML propre de navigation hiérarchique.
 - **Statut :** **Terminé**.
 
 ### Tâche P3-T5 : Plugin SEO et Métadonnées via Hooks (US-018)
 - **Objectif :** Injection de balises OpenGraph et canonical via le filtre `cms.head`.
-- **Fichiers :** `platform/plugins/acme.seo/*`.
+- **Fichiers :** `platform/plugins/lcmscore.seo/*`.
 - **Dépendances :** P3-T4.
 - **Critère d'acceptation :** Métadonnées injectées dynamiquement sans couplage dur.
 - **Statut :** **Terminé**.
@@ -229,7 +229,7 @@
 
 ### Tâche P5-T2 : Layout unifié admin et persistance de l'admin-sidebar (CORR-04)
 - **Objectif :** Éliminer les ruptures d'affichage de la barre latérale sur les pages de configuration des plugins via un layout maître canonique `core::admin.layouts.app`.
-- **Fichiers :** `platform/core/resources/views/admin/layouts/app.blade.php`, refactorisation des vues `acme.menus`, `acme.pages`, `acme.seo`, `acme.media-library`, `tests/Feature/AdminUnifiedLayoutTest.php`.
+- **Fichiers :** `platform/core/resources/views/admin/layouts/app.blade.php`, refactorisation des vues `lcmscore.menus`, `lcmscore.pages`, `lcmscore.seo`, `lcmscore.media-library`, `tests/Feature/AdminUnifiedLayoutTest.php`.
 - **Dépendances :** P5-T1.
 - **Critère d'acceptation :** L'élément `.admin-sidebar` est présent et testé avec succès sur 100% des routes d'administration.
 - **Statut :** **Terminé**.

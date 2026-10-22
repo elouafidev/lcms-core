@@ -17,7 +17,7 @@ class PluginPublishAssetsCommand extends Command
      * @var string
      */
     protected $signature = 'cms:plugin:publish-assets 
-                            {id? : The plugin identifier (e.g. acme.demo-hello)} 
+                            {id? : The plugin identifier (e.g. lcmscore.demo-hello)} 
                             {--all : Publish assets for all active plugins} 
                             {--force : Overwrite existing published files}';
 

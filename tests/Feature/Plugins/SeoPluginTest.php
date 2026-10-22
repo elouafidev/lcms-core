@@ -48,7 +48,7 @@ class SeoPluginTest extends TestCase
 
     public function test_plugin_is_discoverable_and_inactive_initially(): void
     {
-        $discovered = $this->pluginRegistry->getDiscovered('acme.seo');
+        $discovered = $this->pluginRegistry->getDiscovered('lcmscore.seo');
 
         $this->assertNotNull($discovered);
         $this->assertSame(PluginState::AVAILABLE->value, $discovered->getState());
@@ -63,8 +63,8 @@ class SeoPluginTest extends TestCase
 
     public function test_install_and_activation_creates_table_and_navigation(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $this->assertTrue(Schema::hasTable('plugin_seo_settings'));
 
@@ -78,17 +78,17 @@ class SeoPluginTest extends TestCase
 
     public function test_seo_subscriber_injects_metadata_into_cms_head_filter(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
-        $this->getSeoManager()->setTitle('Page de Contact - ACME')
+        $this->getSeoManager()->setTitle('Page de Contact - LCMS Core')
             ->setDescription('Prenez contact avec notre équipe technique.')
             ->setCanonical('https://example.com/contact')
             ->setOgTitle('Contactez-nous')
             ->setOgDescription('Équipe support disponible 24/7.')
             ->setOgImage('https://example.com/images/contact-og.png')
             ->setOgType('website')
-            ->setSiteName('ACME Corp');
+            ->setSiteName('LCMS Core');
 
         $initialHead = '<meta charset="UTF-8">';
         /** @var string $renderedHead */
@@ -101,13 +101,13 @@ class SeoPluginTest extends TestCase
         $this->assertStringContainsString('<meta property="og:description" content="Équipe support disponible 24/7.">', $renderedHead);
         $this->assertStringContainsString('<meta property="og:type" content="website">', $renderedHead);
         $this->assertStringContainsString('<meta property="og:image" content="https://example.com/images/contact-og.png">', $renderedHead);
-        $this->assertStringContainsString('<meta property="og:site_name" content="ACME Corp">', $renderedHead);
+        $this->assertStringContainsString('<meta property="og:site_name" content="LCMS Core">', $renderedHead);
     }
 
     public function test_seo_subscriber_uses_database_default_settings_when_page_meta_is_empty(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         SeoSetting::set('default_title', 'Titre Par Défaut');
         SeoSetting::set('default_description', 'Méta description par défaut du CMS.');
@@ -128,8 +128,8 @@ class SeoPluginTest extends TestCase
 
     public function test_explicit_page_meta_overrides_database_default_settings(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         SeoSetting::set('default_title', 'Titre Par Défaut');
         SeoSetting::set('default_description', 'Description par défaut');
@@ -147,8 +147,8 @@ class SeoPluginTest extends TestCase
 
     public function test_seo_tags_are_not_injected_when_plugin_is_deactivated(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $this->getSeoManager()->setTitle('Titre Actif')
             ->setDescription('Description Active');
@@ -160,7 +160,7 @@ class SeoPluginTest extends TestCase
         $this->assertStringContainsString('Titre Actif', $activeHead);
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.seo');
+        $this->pluginManager->deactivate('lcmscore.seo');
 
         // Navigation should be hidden
         $this->assertFalse($this->navigationRegistry->has('seo-settings'));
@@ -174,8 +174,8 @@ class SeoPluginTest extends TestCase
 
     public function test_guest_is_redirected_to_login_on_admin_seo(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $response = $this->get('/admin/seo');
         $response->assertRedirect('/login');
@@ -186,8 +186,8 @@ class SeoPluginTest extends TestCase
 
     public function test_authenticated_user_can_view_and_update_seo_settings_via_http(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         /** @var User $user */
         $user = User::factory()->create();
@@ -219,8 +219,8 @@ class SeoPluginTest extends TestCase
 
     public function test_deactivation_hides_routes_and_preserves_database_data(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         SeoSetting::set('persisted_key', 'persisted_value');
 
@@ -229,7 +229,7 @@ class SeoPluginTest extends TestCase
         $this->actingAs($user)->get('/admin/seo')->assertOk();
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.seo');
+        $this->pluginManager->deactivate('lcmscore.seo');
 
         // Admin route returns 404
         $this->actingAs($user)->get('/admin/seo')->assertNotFound();
@@ -244,14 +244,14 @@ class SeoPluginTest extends TestCase
 
     public function test_uninstallation_with_purge_drops_table_and_cleans_record(): void
     {
-        $this->pluginManager->install('acme.seo');
-        $this->pluginManager->activate('acme.seo');
+        $this->pluginManager->install('lcmscore.seo');
+        $this->pluginManager->activate('lcmscore.seo');
 
         $this->assertTrue(Schema::hasTable('plugin_seo_settings'));
 
-        $this->pluginManager->uninstall('acme.seo', purgeData: true);
+        $this->pluginManager->uninstall('lcmscore.seo', purgeData: true);
 
         $this->assertFalse(Schema::hasTable('plugin_seo_settings'));
-        $this->assertNull($this->pluginRegistry->find('acme.seo'));
+        $this->assertNull($this->pluginRegistry->find('lcmscore.seo'));
     }
 }

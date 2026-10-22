@@ -1,0 +1,31 @@
+{
+    "id": "lcmscore.menus",
+    "name": "Menus & Navigation",
+    "version": "1.0.0",
+    "description": "Hierarchical navigation menus management and rendering plugin",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Menus\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Menus\\Providers\\MenusServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "menus.manage",
+            "label": "Gérer les menus de navigation"
+        }
+    ]
+}

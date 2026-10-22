@@ -71,21 +71,21 @@ class AdminNavigationRegistryTest extends TestCase
     {
         // 1. Create one active plugin and one disabled plugin record in database
         PluginRecord::create([
-            'id' => 'acme.active',
+            'id' => 'lcmscore.active',
             'name' => 'Active Extension',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
-            'manifest' => ['id' => 'acme.active', 'name' => 'Active Extension', 'version' => '1.0.0'],
+            'manifest' => ['id' => 'lcmscore.active', 'name' => 'Active Extension', 'version' => '1.0.0'],
         ]);
 
         PluginRecord::create([
-            'id' => 'acme.inactive',
+            'id' => 'lcmscore.inactive',
             'name' => 'Inactive Extension',
             'version' => '1.0.0',
             'state' => PluginState::DISABLED,
             'is_active' => false,
-            'manifest' => ['id' => 'acme.inactive', 'name' => 'Inactive Extension', 'version' => '1.0.0'],
+            'manifest' => ['id' => 'lcmscore.inactive', 'name' => 'Inactive Extension', 'version' => '1.0.0'],
         ]);
 
         // 2. Register items belonging to each plugin
@@ -95,7 +95,7 @@ class AdminNavigationRegistryTest extends TestCase
             url: '/admin/active',
             icon: '🚀',
             priority: 10,
-            pluginId: 'acme.active'
+            pluginId: 'lcmscore.active'
         );
 
         $this->navigationRegistry->registerItem(
@@ -104,7 +104,7 @@ class AdminNavigationRegistryTest extends TestCase
             url: '/admin/inactive',
             icon: '💤',
             priority: 20,
-            pluginId: 'acme.inactive'
+            pluginId: 'lcmscore.inactive'
         );
 
         // 3. getItems() must only return the item belonging to the ACTIVE plugin
@@ -119,13 +119,13 @@ class AdminNavigationRegistryTest extends TestCase
     public function test_plugin_deactivation_purges_navigation_items_and_permissions(): void
     {
         $plugin = PluginRecord::create([
-            'id' => 'acme.shop',
+            'id' => 'lcmscore.shop',
             'name' => 'E-Commerce Shop',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.shop',
+                'id' => 'lcmscore.shop',
                 'name' => 'E-Commerce Shop',
                 'version' => '1.0.0',
                 'permissions' => [
@@ -141,7 +141,7 @@ class AdminNavigationRegistryTest extends TestCase
             label: 'Shop Orders',
             url: '/admin/shop/orders',
             icon: '🛒',
-            pluginId: 'acme.shop'
+            pluginId: 'lcmscore.shop'
         );
 
         $this->permissionRegistry->registerFromManifest($plugin->getManifest());
@@ -151,7 +151,7 @@ class AdminNavigationRegistryTest extends TestCase
         $this->assertTrue($this->permissionRegistry->has('shop.orders.manage'));
 
         // Deactivate plugin
-        $this->pluginManager->deactivate('acme.shop');
+        $this->pluginManager->deactivate('lcmscore.shop');
 
         // Verify items were purged
         $this->assertFalse($this->navigationRegistry->has('shop.orders'));
@@ -162,11 +162,11 @@ class AdminNavigationRegistryTest extends TestCase
     public function test_permission_registry_crud_and_filtering(): void
     {
         $manifest = new PluginManifest(
-            id: 'acme.blog',
+            id: 'lcmscore.blog',
             name: 'Blog Plugin',
             version: '1.2.0',
             description: 'A blogging system',
-            author: ['name' => 'Acme'],
+            author: ['name' => 'LCMS Core'],
             compatibility: ['cms' => '^1.0'],
             providers: [],
             dependencies: [],
@@ -189,9 +189,9 @@ class AdminNavigationRegistryTest extends TestCase
         $perm = $this->permissionRegistry->get('blog.posts.create');
         $this->assertNotNull($perm);
         $this->assertSame('Create Blog Posts', $perm['label']);
-        $this->assertSame('acme.blog', $perm['plugin_id']);
+        $this->assertSame('lcmscore.blog', $perm['plugin_id']);
 
-        $blogPerms = $this->permissionRegistry->getByPlugin('acme.blog');
+        $blogPerms = $this->permissionRegistry->getByPlugin('lcmscore.blog');
         $this->assertCount(2, $blogPerms);
 
         $this->permissionRegistry->unregister('blog.posts.create');
@@ -203,12 +203,12 @@ class AdminNavigationRegistryTest extends TestCase
     {
         // 1. Prepare active plugin
         $record = PluginRecord::create([
-            'id' => 'acme.crm',
+            'id' => 'lcmscore.crm',
             'name' => 'CRM Plugin',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
-            'manifest' => ['id' => 'acme.crm', 'name' => 'CRM Plugin', 'version' => '1.0.0'],
+            'manifest' => ['id' => 'lcmscore.crm', 'name' => 'CRM Plugin', 'version' => '1.0.0'],
         ]);
 
         // Register navigation item for CRM
@@ -218,7 +218,7 @@ class AdminNavigationRegistryTest extends TestCase
             url: '/admin/crm/leads',
             icon: '👥',
             priority: 15,
-            pluginId: 'acme.crm'
+            pluginId: 'lcmscore.crm'
         );
 
         /** @var User $admin */
@@ -235,7 +235,7 @@ class AdminNavigationRegistryTest extends TestCase
         $response->assertSee('👥');
 
         // 3. Deactivate the plugin
-        $this->pluginManager->deactivate('acme.crm');
+        $this->pluginManager->deactivate('lcmscore.crm');
 
         // 4. Visit /admin again: CRM navigation item must now be hidden
         $responseAfter = $this->actingAs($admin)->get('/admin');

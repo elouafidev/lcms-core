@@ -75,11 +75,11 @@
 ### Phase 3 — Plugins Fondamentaux
 - **Objectif :** Développer les fonctionnalités éditoriales standard sous forme de plugins autonomes.
 - **Composants :**
-  1. `acme.media-library` : Gestion des uploads, formats, métadonnées (aucun impact direct sur les autres plugins).
-  2. `acme.pages` : Gestionnaire de pages statiques (table `plugin_pages_items`).
-  3. `acme.menus` : Gestionnaire de navigation arborescente.
-  4. `acme.blog` : Articles, catégories, commentaires.
-  5. `acme.seo` : Métadonnées OpenGraph, balises canoniques, sitemap via hooks.
+  1. `lcmscore.media-library` : Gestion des uploads, formats, métadonnées (aucun impact direct sur les autres plugins).
+  2. `lcmscore.pages` : Gestionnaire de pages statiques (table `plugin_pages_items`).
+  3. `lcmscore.menus` : Gestionnaire de navigation arborescente.
+  4. `lcmscore.blog` : Articles, catégories, commentaires.
+  5. `lcmscore.seo` : Métadonnées OpenGraph, balises canoniques, sitemap via hooks.
   6. Thème Blade découplé par défaut.
 - **Critère de validation :** Chaque plugin peut être désactivé sans faire planter les autres. Pages et Blog peuvent fonctionner conjointement sans couplage direct.
 

@@ -84,13 +84,13 @@ class SafeModeAndQuarantineTest extends TestCase
     {
         // 1. Create and activate a dummy plugin in database
         $record = PluginRecord::create([
-            'id' => 'acme.failing-plugin',
+            'id' => 'lcmscore.failing-plugin',
             'name' => 'Failing Plugin',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.failing-plugin',
+                'id' => 'lcmscore.failing-plugin',
                 'name' => 'Failing Plugin',
                 'version' => '1.0.0',
                 'providers' => [CrashingBootServiceProvider::class],
@@ -115,13 +115,13 @@ class SafeModeAndQuarantineTest extends TestCase
         $this->assertTrue(Schema::hasTable('cms_plugin_errors'));
 
         $record = PluginRecord::create([
-            'id' => 'acme.crash-boot',
+            'id' => 'lcmscore.crash-boot',
             'name' => 'Crash Boot Plugin',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.crash-boot',
+                'id' => 'lcmscore.crash-boot',
                 'name' => 'Crash Boot Plugin',
                 'version' => '1.0.0',
                 'providers' => [CrashingBootServiceProvider::class],
@@ -140,12 +140,12 @@ class SafeModeAndQuarantineTest extends TestCase
 
         // Verify audit log in cms_plugin_errors table
         $this->assertDatabaseHas('cms_plugin_errors', [
-            'plugin_id' => 'acme.crash-boot',
+            'plugin_id' => 'lcmscore.crash-boot',
             'provider' => CrashingBootServiceProvider::class,
             'error_message' => 'Catastrophic failure in plugin boot phase',
         ]);
 
-        $errors = $this->quarantineHandler->getErrorsForPlugin('acme.crash-boot');
+        $errors = $this->quarantineHandler->getErrorsForPlugin('lcmscore.crash-boot');
         $this->assertCount(1, $errors);
         /** @var PluginErrorRecord $error */
         $error = $errors->first();
@@ -157,13 +157,13 @@ class SafeModeAndQuarantineTest extends TestCase
     public function test_failing_plugin_registration_is_quarantined(): void
     {
         $record = PluginRecord::create([
-            'id' => 'acme.crash-register',
+            'id' => 'lcmscore.crash-register',
             'name' => 'Crash Register Plugin',
             'version' => '1.0.0',
             'state' => PluginState::ACTIVE,
             'is_active' => true,
             'manifest' => [
-                'id' => 'acme.crash-register',
+                'id' => 'lcmscore.crash-register',
                 'name' => 'Crash Register Plugin',
                 'version' => '1.0.0',
                 'providers' => [CrashingRegisterServiceProvider::class],
@@ -179,7 +179,7 @@ class SafeModeAndQuarantineTest extends TestCase
         $this->assertStringContainsString('Fatal error during plugin provider registration', (string) $fresh->error_message);
 
         $this->assertDatabaseHas('cms_plugin_errors', [
-            'plugin_id' => 'acme.crash-register',
+            'plugin_id' => 'lcmscore.crash-register',
             'provider' => CrashingRegisterServiceProvider::class,
         ]);
     }
@@ -188,22 +188,22 @@ class SafeModeAndQuarantineTest extends TestCase
     {
         // 1. Create quarantined plugin
         PluginRecord::create([
-            'id' => 'acme.broken',
+            'id' => 'lcmscore.broken',
             'name' => 'Broken Extension',
             'version' => '2.1.0',
             'state' => PluginState::ERROR,
             'is_active' => false,
             'error_message' => 'Quarantined due to [RuntimeException]: Something broke',
             'manifest' => [
-                'id' => 'acme.broken',
+                'id' => 'lcmscore.broken',
                 'name' => 'Broken Extension',
                 'version' => '2.1.0',
             ],
         ]);
 
         PluginErrorRecord::create([
-            'plugin_id' => 'acme.broken',
-            'provider' => 'Acme\\Broken\\BrokenServiceProvider',
+            'plugin_id' => 'lcmscore.broken',
+            'provider' => 'Lcmscore\\Broken\\BrokenServiceProvider',
             'error_message' => 'Something broke',
             'stack_trace' => 'dummy stack trace',
             'context' => ['code' => 500],
@@ -226,21 +226,21 @@ class SafeModeAndQuarantineTest extends TestCase
     public function test_quarantine_handler_clear_and_get_all_errors(): void
     {
         PluginErrorRecord::create([
-            'plugin_id' => 'acme.one',
+            'plugin_id' => 'lcmscore.one',
             'error_message' => 'Error 1',
         ]);
 
         PluginErrorRecord::create([
-            'plugin_id' => 'acme.two',
+            'plugin_id' => 'lcmscore.two',
             'error_message' => 'Error 2',
         ]);
 
         $this->assertCount(2, $this->quarantineHandler->getAllErrors());
 
-        $this->quarantineHandler->clearErrorsForPlugin('acme.one');
+        $this->quarantineHandler->clearErrorsForPlugin('lcmscore.one');
 
         $this->assertCount(1, $this->quarantineHandler->getAllErrors());
-        $this->assertCount(0, $this->quarantineHandler->getErrorsForPlugin('acme.one'));
-        $this->assertCount(1, $this->quarantineHandler->getErrorsForPlugin('acme.two'));
+        $this->assertCount(0, $this->quarantineHandler->getErrorsForPlugin('lcmscore.one'));
+        $this->assertCount(1, $this->quarantineHandler->getErrorsForPlugin('lcmscore.two'));
     }
 }

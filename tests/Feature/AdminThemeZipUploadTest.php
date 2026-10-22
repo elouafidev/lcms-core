@@ -166,7 +166,7 @@ class AdminThemeZipUploadTest extends TestCase
             'name' => 'Custom Dark Theme',
             'version' => '1.2.0',
             'description' => 'A sleek dark mode theme',
-            'author' => ['name' => 'Acme Designers'],
+            'author' => ['name' => 'LCMS Core Designers'],
         ]));
         $zip->addFromString('views/layout.blade.php', '<html><body>Theme</body></html>');
         $zip->close();

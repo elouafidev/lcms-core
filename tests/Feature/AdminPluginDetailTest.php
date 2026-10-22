@@ -23,15 +23,15 @@ class AdminPluginDetailTest extends TestCase
         config(['cms.plugins.path' => $this->tempPluginsDir]);
 
         // Create base plugin
-        $this->createTestPlugin('acme.base-plugin', [
-            'id' => 'acme.base-plugin',
-            'name' => 'Acme Base Plugin',
+        $this->createTestPlugin('lcmscore.base-plugin', [
+            'id' => 'lcmscore.base-plugin',
+            'name' => 'LCMS Core Base Plugin',
             'version' => '1.2.0',
             'description' => 'A base foundation plugin for testing.',
             'author' => [
-                'name' => 'Acme Corp',
-                'email' => 'dev@acme.test',
-                'homepage' => 'https://acme.test',
+                'name' => 'LCMS Core Team',
+                'email' => 'dev@lcmscore.test',
+                'homepage' => 'https://lcmscore.test',
             ],
             'compatibility' => [
                 'php' => '^8.2',
@@ -47,30 +47,30 @@ class AdminPluginDetailTest extends TestCase
             ],
         ]);
 
-        // Create dependent plugin that depends on acme.base-plugin
-        $this->createTestPlugin('acme.dependent-plugin', [
-            'id' => 'acme.dependent-plugin',
-            'name' => 'Acme Dependent Plugin',
+        // Create dependent plugin that depends on lcmscore.base-plugin
+        $this->createTestPlugin('lcmscore.dependent-plugin', [
+            'id' => 'lcmscore.dependent-plugin',
+            'name' => 'LCMS Core Dependent Plugin',
             'version' => '2.0.0',
             'description' => 'An extension requiring the base plugin.',
             'author' => ['name' => 'Partner Team'],
             'providers' => [],
             'dependencies' => [
-                'acme.base-plugin' => '^1.0',
+                'lcmscore.base-plugin' => '^1.0',
             ],
         ]);
 
         // Create plugin with missing dependency to test resolution display
-        $this->createTestPlugin('acme.broken-deps-plugin', [
-            'id' => 'acme.broken-deps-plugin',
-            'name' => 'Acme Broken Deps Plugin',
+        $this->createTestPlugin('lcmscore.broken-deps-plugin', [
+            'id' => 'lcmscore.broken-deps-plugin',
+            'name' => 'LCMS Core Broken Deps Plugin',
             'version' => '1.0.0',
             'description' => 'An extension with a missing dependency.',
             'author' => ['name' => 'Dev Team'],
             'providers' => [],
             'dependencies' => [
-                'acme.base-plugin' => '^1.0',
-                'acme.missing-plugin' => '^1.0',
+                'lcmscore.base-plugin' => '^1.0',
+                'lcmscore.missing-plugin' => '^1.0',
             ],
         ]);
     }
@@ -89,7 +89,7 @@ class AdminPluginDetailTest extends TestCase
 
     public function test_guest_is_redirected_to_login_when_accessing_plugin_detail(): void
     {
-        $response = $this->get('/admin/plugins/acme.base-plugin');
+        $response = $this->get('/admin/plugins/lcmscore.base-plugin');
         $response->assertRedirect('/login');
     }
 
@@ -107,16 +107,16 @@ class AdminPluginDetailTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/admin/plugins/acme.base-plugin');
+        $response = $this->actingAs($user)->get('/admin/plugins/lcmscore.base-plugin');
 
         $response->assertOk();
-        $response->assertSee('Acme Base Plugin');
-        $response->assertSee('acme.base-plugin');
+        $response->assertSee('LCMS Core Base Plugin');
+        $response->assertSee('lcmscore.base-plugin');
         $response->assertSee('1.2.0');
         $response->assertSee('A base foundation plugin for testing.');
-        $response->assertSee('Acme Corp');
-        $response->assertSee('dev@acme.test');
-        $response->assertSee('https://acme.test');
+        $response->assertSee('LCMS Core Team');
+        $response->assertSee('dev@lcmscore.test');
+        $response->assertSee('https://lcmscore.test');
         $response->assertSee('php');
         $response->assertSee('^8.2');
         $response->assertSee('base.view');
@@ -130,11 +130,11 @@ class AdminPluginDetailTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/admin/plugins/acme.broken-deps-plugin');
+        $response = $this->actingAs($user)->get('/admin/plugins/lcmscore.broken-deps-plugin');
 
         $response->assertOk();
-        $response->assertSee('acme.base-plugin');
-        $response->assertSee('acme.missing-plugin');
+        $response->assertSee('lcmscore.base-plugin');
+        $response->assertSee('lcmscore.missing-plugin');
         $response->assertSee('Manquante / Inexistante');
         $response->assertSee('Disponible non installée');
     }
@@ -145,31 +145,31 @@ class AdminPluginDetailTest extends TestCase
         $user = User::factory()->create();
 
         // Activate base plugin and dependent plugin
-        $this->actingAs($user)->post('/admin/plugins/acme.base-plugin/enable');
-        $this->actingAs($user)->post('/admin/plugins/acme.dependent-plugin/enable');
+        $this->actingAs($user)->post('/admin/plugins/lcmscore.base-plugin/enable');
+        $this->actingAs($user)->post('/admin/plugins/lcmscore.dependent-plugin/enable');
 
         // Check base plugin show page
-        $response = $this->actingAs($user)->get('/admin/plugins/acme.base-plugin');
+        $response = $this->actingAs($user)->get('/admin/plugins/lcmscore.base-plugin');
         $response->assertOk();
-        $response->assertSee('Acme Dependent Plugin');
+        $response->assertSee('LCMS Core Dependent Plugin');
         $response->assertSee('Blocage : l\'extension est active', escape: false);
 
         // Attempting to deactivate base-plugin without force should fail due to reverse dependency
-        $disableAttempt = $this->actingAs($user)->post('/admin/plugins/acme.base-plugin/disable');
+        $disableAttempt = $this->actingAs($user)->post('/admin/plugins/lcmscore.base-plugin/disable');
         $disableAttempt->assertSessionHas('error');
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.base-plugin',
+            'id' => 'lcmscore.base-plugin',
             'is_active' => 1,
             'state' => 'ACTIVE',
         ]);
 
         // Deactivating with force=1 should succeed
-        $disableForced = $this->actingAs($user)->post('/admin/plugins/acme.base-plugin/disable', [
+        $disableForced = $this->actingAs($user)->post('/admin/plugins/lcmscore.base-plugin/disable', [
             'force' => 1,
         ]);
         $disableForced->assertSessionHas('success');
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.base-plugin',
+            'id' => 'lcmscore.base-plugin',
             'is_active' => 0,
             'state' => 'DISABLED',
         ]);
@@ -183,8 +183,8 @@ class AdminPluginDetailTest extends TestCase
         $response = $this->actingAs($user)->get('/admin/plugins');
 
         $response->assertOk();
-        $response->assertSee(route('admin.plugins.show', 'acme.base-plugin'));
-        $response->assertSee(route('admin.plugins.show', 'acme.dependent-plugin'));
+        $response->assertSee(route('admin.plugins.show', 'lcmscore.base-plugin'));
+        $response->assertSee(route('admin.plugins.show', 'lcmscore.dependent-plugin'));
     }
 
     /**

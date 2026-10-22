@@ -21,7 +21,7 @@ class ArtisanPluginCommandsTest extends TestCase
         mkdir($this->tempPluginsDir, 0777, true);
         config(['cms.plugins.path' => $this->tempPluginsDir]);
 
-        $this->createTestPlugin('acme.sample-plugin');
+        $this->createTestPlugin('lcmscore.sample-plugin');
     }
 
     protected function tearDown(): void
@@ -40,18 +40,18 @@ class ArtisanPluginCommandsTest extends TestCase
     {
         $this->artisan('cms:plugin:list')
             ->expectsOutputToContain('Name')
-            ->expectsOutputToContain('acme.sample-plugin')
+            ->expectsOutputToContain('lcmscore.sample-plugin')
             ->assertSuccessful();
     }
 
     public function test_cms_plugin_enable_command_installs_and_activates_plugin(): void
     {
-        $this->artisan('cms:plugin:enable', ['id' => 'acme.sample-plugin'])
-            ->expectsOutputToContain("Plugin 'acme.sample-plugin' has been enabled successfully.")
+        $this->artisan('cms:plugin:enable', ['id' => 'lcmscore.sample-plugin'])
+            ->expectsOutputToContain("Plugin 'lcmscore.sample-plugin' has been enabled successfully.")
             ->assertSuccessful();
 
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
             'is_active' => 1,
             'state' => 'ACTIVE',
         ]);
@@ -59,15 +59,15 @@ class ArtisanPluginCommandsTest extends TestCase
 
     public function test_cms_plugin_disable_command_deactivates_active_plugin(): void
     {
-        $this->artisan('cms:plugin:enable', ['id' => 'acme.sample-plugin'])
+        $this->artisan('cms:plugin:enable', ['id' => 'lcmscore.sample-plugin'])
             ->assertSuccessful();
 
-        $this->artisan('cms:plugin:disable', ['id' => 'acme.sample-plugin'])
-            ->expectsOutputToContain("Plugin 'acme.sample-plugin' has been disabled successfully.")
+        $this->artisan('cms:plugin:disable', ['id' => 'lcmscore.sample-plugin'])
+            ->expectsOutputToContain("Plugin 'lcmscore.sample-plugin' has been disabled successfully.")
             ->assertSuccessful();
 
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.sample-plugin',
+            'id' => 'lcmscore.sample-plugin',
             'is_active' => 0,
             'state' => 'DISABLED',
         ]);

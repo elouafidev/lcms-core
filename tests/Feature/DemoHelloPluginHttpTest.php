@@ -42,39 +42,39 @@ class DemoHelloPluginHttpTest extends TestCase
 
     public function test_demo_hello_route_returns_200_with_message_when_plugin_is_active(): void
     {
-        // 1. Install and activate acme.demo-hello
-        $this->pluginManager->install('acme.demo-hello');
-        $this->pluginManager->activate('acme.demo-hello');
+        // 1. Install and activate lcmscore.demo-hello
+        $this->pluginManager->install('lcmscore.demo-hello');
+        $this->pluginManager->activate('lcmscore.demo-hello');
 
         $this->assertTrue(Schema::hasTable('plugin_demo_messages'));
         $this->assertDatabaseHas('plugin_demo_messages', [
-            'content' => 'Hello from ACME Demo Plugin!',
+            'content' => 'Hello from LCMS Core Demo Plugin!',
         ]);
 
         // 2. Request /demo/hello
         $response = $this->get('/demo/hello');
 
         $response->assertOk();
-        $response->assertSee('ACME Demo Plugin');
-        $response->assertSee('Hello from ACME Demo Plugin!');
+        $response->assertSee('LCMS Core Demo Plugin');
+        $response->assertSee('Hello from LCMS Core Demo Plugin!');
         $response->assertSee('Plugin État : ACTIF');
     }
 
     public function test_demo_hello_route_returns_404_when_plugin_is_disabled(): void
     {
         // 1. Install and activate
-        $this->pluginManager->install('acme.demo-hello');
-        $this->pluginManager->activate('acme.demo-hello');
+        $this->pluginManager->install('lcmscore.demo-hello');
+        $this->pluginManager->activate('lcmscore.demo-hello');
 
         $this->assertDatabaseHas('plugin_demo_messages', [
-            'content' => 'Hello from ACME Demo Plugin!',
+            'content' => 'Hello from LCMS Core Demo Plugin!',
         ]);
 
         // 2. Deactivate plugin
-        $this->pluginManager->deactivate('acme.demo-hello');
+        $this->pluginManager->deactivate('lcmscore.demo-hello');
 
         $this->assertDatabaseHas('cms_plugins', [
-            'id' => 'acme.demo-hello',
+            'id' => 'lcmscore.demo-hello',
             'is_active' => 0,
             'state' => 'DISABLED',
         ]);
@@ -87,8 +87,8 @@ class DemoHelloPluginHttpTest extends TestCase
     public function test_demo_hello_route_is_not_registered_when_plugin_is_disabled_at_boot(): void
     {
         // Prepare database with installed and disabled plugin record
-        $this->pluginManager->install('acme.demo-hello');
-        $record = $this->pluginRegistry->find('acme.demo-hello');
+        $this->pluginManager->install('lcmscore.demo-hello');
+        $record = $this->pluginRegistry->find('lcmscore.demo-hello');
         $this->assertNotNull($record);
         $record->state = PluginState::DISABLED;
         $record->is_active = false;

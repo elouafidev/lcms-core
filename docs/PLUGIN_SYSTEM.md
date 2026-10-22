@@ -41,8 +41,8 @@ Le fichier `plugin.json` est le contrat d'identité du plugin. Il est validé pa
 ```json
 {
   "$schema": "https://cms.local/schemas/plugin-v1.json",
-  "id": "acme.demo-hello",
-  "name": "Acme Demo Hello",
+  "id": "lcmscore.demo-hello",
+  "name": "LCMS Core Demo Hello",
   "version": "1.0.0",
   "description": "Démonstration d'un plugin minimal respectant les contrats du noyau.",
   "author": {
@@ -58,7 +58,7 @@ Le fichier `plugin.json` est le contrat d'identité du plugin. Il est validé pa
     "Plugins\\DemoHello\\Providers\\DemoPluginServiceProvider"
   ],
   "dependencies": {
-    "acme.media-library": "^1.0.0"
+    "lcmscore.media-library": "^1.0.0"
   },
   "conflicts": [
     "legacy.hello"

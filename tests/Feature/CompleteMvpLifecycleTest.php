@@ -46,7 +46,7 @@ class CompleteMvpLifecycleTest extends TestCase
      */
     public function test_complete_end_to_end_mvp_lifecycle(): void
     {
-        $pluginId = 'acme.demo-hello';
+        $pluginId = 'lcmscore.demo-hello';
 
         // 1. Initial State: plugin discovered on disk in AVAILABLE state
         $discovered = $this->pluginRegistry->getDiscovered($pluginId);
@@ -68,7 +68,7 @@ class CompleteMvpLifecycleTest extends TestCase
             'migration' => '2026_10_13_000010_create_plugin_demo_messages_table.php',
         ]);
         $this->assertDatabaseHas('plugin_demo_messages', [
-            'content' => 'Hello from ACME Demo Plugin!',
+            'content' => 'Hello from LCMS Core Demo Plugin!',
         ]);
 
         // 3. Activation: boots service providers and mounts routes
@@ -79,8 +79,8 @@ class CompleteMvpLifecycleTest extends TestCase
         // Verification of HTTP route execution
         $httpResponse = $this->get('/demo/hello');
         $httpResponse->assertOk();
-        $httpResponse->assertSee('ACME Demo Plugin');
-        $httpResponse->assertSee('Hello from ACME Demo Plugin!');
+        $httpResponse->assertSee('LCMS Core Demo Plugin');
+        $httpResponse->assertSee('Hello from LCMS Core Demo Plugin!');
         $httpResponse->assertSee('Plugin État : ACTIF');
 
         // 4. Admin Panel GUI Check: /admin/plugins reflects ACTIVE status
@@ -94,7 +94,7 @@ class CompleteMvpLifecycleTest extends TestCase
 
         // 5. Artisan CLI Check: cms:plugin:list output
         $this->artisan('cms:plugin:list')
-            ->expectsOutputToContain('acme.demo-hello')
+            ->expectsOutputToContain('lcmscore.demo-hello')
             ->assertSuccessful();
 
         // 6. Deactivation: preserves all database tables without data loss
