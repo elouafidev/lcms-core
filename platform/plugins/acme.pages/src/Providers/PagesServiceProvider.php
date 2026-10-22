@@ -41,7 +41,7 @@ class PagesServiceProvider extends ServiceProvider
                 id: 'pages-management',
                 label: 'Pages Statiques',
                 url: '/admin/pages',
-                icon: 'file-text',
+                icon: 'bi bi-file-text',
                 priority: 25,
                 permission: 'pages.manage',
                 pluginId: 'acme.pages'

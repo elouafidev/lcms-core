@@ -45,7 +45,7 @@ class MediaLibraryServiceProvider extends ServiceProvider
                 id: 'media-library',
                 label: 'Médiathèque',
                 url: '/admin/media',
-                icon: 'image',
+                icon: 'bi bi-images',
                 priority: 30,
                 permission: 'media.manage',
                 pluginId: 'acme.media-library'
