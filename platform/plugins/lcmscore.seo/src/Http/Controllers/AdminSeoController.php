@@ -72,7 +72,7 @@ class AdminSeoController extends Controller
             ]);
         }
 
-        return redirect('/admin/seo')->with('success', 'Paramètres SEO enregistrés avec succès.');
+        return redirect('/admin/seo')->with('success', __('SEO settings saved successfully.'));
     }
 
     private function ensureActive(): void

@@ -70,7 +70,7 @@ class AdminMenuController extends Controller
             ], 201);
         }
 
-        return redirect()->route('admin.menus.index')->with('success', 'Menu créé avec succès.');
+        return redirect()->route('admin.menus.index')->with('success', __('Menu created successfully.'));
     }
 
     /**
@@ -84,7 +84,8 @@ class AdminMenuController extends Controller
         $menu = Menu::query()->with(['items'])->find($id);
 
         if ($menu === null) {
-            abort(404, 'Menu introuvable.');
+            $msg = __('Menu not found.');
+            abort(404, is_string($msg) ? $msg : 'Menu not found.');
         }
 
         if ($request->wantsJson()) {
@@ -110,7 +111,8 @@ class AdminMenuController extends Controller
         $menu = Menu::query()->find($id);
 
         if ($menu === null) {
-            abort(404, 'Menu introuvable.');
+            $msg = __('Menu not found.');
+            abort(404, is_string($msg) ? $msg : 'Menu not found.');
         }
 
         $validated = $request->validate([
@@ -142,7 +144,7 @@ class AdminMenuController extends Controller
             ], 201);
         }
 
-        return redirect()->route('admin.menus.show', $id)->with('success', 'Élément ajouté.');
+        return redirect()->route('admin.menus.show', $id)->with('success', __('Item added successfully.'));
     }
 
     /**
@@ -156,7 +158,8 @@ class AdminMenuController extends Controller
         $menu = Menu::query()->find($id);
 
         if ($menu === null) {
-            abort(404, 'Menu introuvable.');
+            $msg = __('Menu not found.');
+            abort(404, is_string($msg) ? $msg : 'Menu not found.');
         }
 
         $menu->delete();
@@ -168,7 +171,7 @@ class AdminMenuController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.menus.index')->with('success', 'Menu supprimé avec succès.');
+        return redirect()->route('admin.menus.index')->with('success', __('Menu deleted successfully.'));
     }
 
     /**
@@ -182,7 +185,8 @@ class AdminMenuController extends Controller
         $item = MenuItem::query()->find($id);
 
         if ($item === null) {
-            abort(404, 'Élément de menu introuvable.');
+            $msg = __('Menu item not found.');
+            abort(404, is_string($msg) ? $msg : 'Menu item not found.');
         }
 
         $menuId = $item->menu_id;
@@ -195,7 +199,7 @@ class AdminMenuController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.menus.show', $menuId)->with('success', 'Élément supprimé.');
+        return redirect()->route('admin.menus.show', $menuId)->with('success', __('Item deleted successfully.'));
     }
 
     /**

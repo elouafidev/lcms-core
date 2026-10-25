@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'LCMS Core') }} — Le CMS Modulaire Plugin-First</title>
+    <title>{{ config('app.name', 'LCMS Core') }} — {{ __('The Modular Plugin-First CMS') }}</title>
 
     <!-- Point d'ancrage Hook Core : injection de balises par lcmscore.seo -->
     {!! \App\Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
@@ -26,25 +26,32 @@
 
             <!-- Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-                <a href="#features" class="hover:text-white transition-colors">Piliers d'Architecture</a>
-                <a href="#plugins" class="hover:text-white transition-colors">Extensions Intégrées</a>
-                <a href="#status" class="hover:text-white transition-colors">Statut Système</a>
+                <a href="#features" class="hover:text-white transition-colors">{{ __('Architecture Pillars') }}</a>
+                <a href="#plugins" class="hover:text-white transition-colors">{{ __('Integrated Plugins') }}</a>
+                <a href="#status" class="hover:text-white transition-colors">{{ __('System Status') }}</a>
             </nav>
 
             <div class="flex items-center gap-3">
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-800 bg-slate-900/60 text-xs text-slate-400">
+                    <a href="{{ route('locale.switch', 'fr') }}" class="{{ app()->getLocale() === 'fr' ? 'text-blue-400 font-bold' : 'hover:text-white transition-colors' }}">FR</a>
+                    <span class="text-slate-700">|</span>
+                    <a href="{{ route('locale.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'text-blue-400 font-bold' : 'hover:text-white transition-colors' }}">EN</a>
+                </div>
+
                 @auth
                     <a href="{{ url('/admin/plugins') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-blue-600/30 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
-                        <span>Administration</span>
+                        <span>{{ __('Administration') }}</span>
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold transition-all shadow-md shadow-blue-600/30 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                         </svg>
-                        <span>Connexion</span>
+                        <span>{{ __('Login') }}</span>
                     </a>
                 @endauth
             </div>
@@ -62,12 +69,12 @@
                 <!-- Pill Badge -->
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium bg-blue-950/60 text-blue-300 border border-blue-800/50 shadow-sm mb-6">
                     <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span>Architecture Lean Core Modulaire • Laravel 11/12 & AdminLTE 4</span>
+                    <span>{{ __('Lean Core Architecture & Modularity') }} • Laravel 11/12 & AdminLTE 4</span>
                 </div>
 
                 <!-- Main Title -->
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight">
-                    Le CMS Modulaire <br>
+                    {{ __('The Modular CMS') }} <br>
                     <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-500 bg-clip-text text-transparent">
                         Plugin-First
                     </span>
@@ -75,7 +82,7 @@
 
                 <!-- Subtitle -->
                 <p class="text-base sm:text-xl text-slate-400 mt-6 max-w-2xl mx-auto leading-relaxed">
-                    Isolation logique absolue, ordonnancement topologique déterministe des extensions, et interface d'administration élégante et ergonomique.
+                    {{ __('Absolute logical isolation, deterministic topological ordering of plugins, and an elegant and ergonomic administration interface.') }}
                 </p>
 
                 <!-- CTA Buttons -->
@@ -84,13 +91,13 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        <span>Panneau d'Administration</span>
+                        <span>{{ __('Administration Panel') }}</span>
                     </a>
                     <a href="{{ route('login') }}" class="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold text-sm transition-all flex items-center gap-2">
                         <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
-                        <span>Espace de Connexion</span>
+                        <span>{{ __('Login Space') }}</span>
                     </a>
                 </div>
             </div>
@@ -99,8 +106,8 @@
         <!-- Features Grid -->
         <section id="features" class="py-16 px-6 max-w-7xl mx-auto border-t border-slate-900">
             <div class="text-center mb-12">
-                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">4 Piliers d'Ingénierie Fondamentaux</h2>
-                <p class="text-sm text-slate-400 mt-2">Une architecture respectant les plus hauts standards de modularité et de sécurité logicielle.</p>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">{{ __('4 Core Engineering Pillars') }}</h2>
+                <p class="text-sm text-slate-400 mt-2">{{ __('An architecture respecting the highest standards of software modularity and security.') }}</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -109,9 +116,9 @@
                     <div class="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform">
                         🧩
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Noyau Minimal (Lean Core)</h3>
+                    <h3 class="text-lg font-bold text-white mb-2">{{ __('Lean Core') }}</h3>
                     <p class="text-sm text-slate-400 leading-relaxed">
-                        Aucune logique métier codée en dur dans le core. Le noyau assure uniquement le cycle de vie, la sécurité et les contrats publics.
+                        {{ __('No hardcoded business logic in the core. The core only handles lifecycle, security, and public contracts.') }}
                     </p>
                 </div>
 
@@ -120,9 +127,9 @@
                     <div class="w-12 h-12 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform">
                         ⚡
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Moteur de Plugins & Kahn</h3>
+                    <h3 class="text-lg font-bold text-white mb-2">{{ __('Plugin Engine & Kahn') }}</h3>
                     <p class="text-sm text-slate-400 leading-relaxed">
-                        Ordonnancement déterministe via l'algorithme topologique de Kahn. Migrations de données et tables isolées par extension.
+                        {{ __('Deterministic ordering via Kahn topological algorithm. Isolated database migrations and tables per extension.') }}
                     </p>
                 </div>
 
@@ -131,9 +138,9 @@
                     <div class="w-12 h-12 rounded-xl bg-purple-600/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform">
                         🎨
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Moteur de Thèmes Découplé</h3>
+                    <h3 class="text-lg font-bold text-white mb-2">{{ __('Decoupled Theme Engine') }}</h3>
                     <p class="text-sm text-slate-400 leading-relaxed">
-                        Cascade de surcharge Blade dynamique, importateur ZIP sécurisé et personnalisation du front sans altération du code source.
+                        {{ __('Dynamic Blade overriding cascade, secure ZIP importer and front-end customization without modifying source code.') }}
                     </p>
                 </div>
 
@@ -142,9 +149,9 @@
                     <div class="w-12 h-12 rounded-xl bg-emerald-600/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform">
                         🛡️
                     </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Résilience & Safe Mode</h3>
+                    <h3 class="text-lg font-bold text-white mb-2">{{ __('Resilience & Safe Mode') }}</h3>
                     <p class="text-sm text-slate-400 leading-relaxed">
-                        Protection contre les erreurs fatales : mise en quarantaine ciblée des extensions défaillantes et mode de récupération en ligne de commande.
+                        {{ __('Protection against fatal errors: targeted quarantine of faulty extensions and command-line recovery mode.') }}
                     </p>
                 </div>
             </div>
@@ -153,33 +160,33 @@
         <!-- Extensions intégrées Section -->
         <section id="plugins" class="py-16 px-6 max-w-7xl mx-auto border-t border-slate-900">
             <div class="text-center mb-12">
-                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Extensions Autonomes Prêtes à l'Emploi</h2>
-                <p class="text-sm text-slate-400 mt-2">Chaque fonctionnalité est packagée selon les spécifications strictes de LCMS Core.</p>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">{{ __('Ready-to-Use Core Extensions') }}</h2>
+                <p class="text-sm text-slate-400 mt-2">{{ __('Each feature is packaged according to strict LCMS Core specifications.') }}</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="p-5 rounded-xl bg-slate-900/30 border border-slate-800">
                     <span class="text-xs font-mono text-blue-400">lcmscore.pages</span>
-                    <h4 class="font-bold text-white text-base mt-1">Pages Statiques</h4>
-                    <p class="text-xs text-slate-400 mt-1.5">Gestion de contenu éditorial, publication et routage dynamique avec contrôle de publication.</p>
+                    <h4 class="font-bold text-white text-base mt-1">{{ __('Static Pages') }}</h4>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ __('Editorial content management, publishing and dynamic routing with publication control.') }}</p>
                 </div>
 
                 <div class="p-5 rounded-xl bg-slate-900/30 border border-slate-800">
                     <span class="text-xs font-mono text-indigo-400">lcmscore.menus</span>
-                    <h4 class="font-bold text-white text-base mt-1">Menus Dynamiques</h4>
-                    <p class="text-xs text-slate-400 mt-1.5">Arborescence de navigation multi-niveaux et injection automatique par filtres Hook.</p>
+                    <h4 class="font-bold text-white text-base mt-1">{{ __('Dynamic Menus') }}</h4>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ __('Multi-level navigation tree and automatic injection via Hook filters.') }}</p>
                 </div>
 
                 <div class="p-5 rounded-xl bg-slate-900/30 border border-slate-800">
                     <span class="text-xs font-mono text-emerald-400">lcmscore.media-library</span>
-                    <h4 class="font-bold text-white text-base mt-1">Médiathèque</h4>
-                    <p class="text-xs text-slate-400 mt-1.5">Téléversement sécurisé de fichiers et contrat public MediaStorageInterface.</p>
+                    <h4 class="font-bold text-white text-base mt-1">{{ __('Media Library') }}</h4>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ __('Secure file uploads and public MediaStorageInterface contract.') }}</p>
                 </div>
 
                 <div class="p-5 rounded-xl bg-slate-900/30 border border-slate-800">
                     <span class="text-xs font-mono text-amber-400">lcmscore.seo</span>
-                    <h4 class="font-bold text-white text-base mt-1">Moteur SEO</h4>
-                    <p class="text-xs text-slate-400 mt-1.5">Balises méta, OpenGraph et canonical URLs injectées via le bus d'interception Hook.</p>
+                    <h4 class="font-bold text-white text-base mt-1">{{ __('SEO Engine') }}</h4>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ __('Meta tags, OpenGraph and canonical URLs injected via the Hook interception bus.') }}</p>
                 </div>
             </div>
         </section>
@@ -193,12 +200,12 @@
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                     </span>
                     <div>
-                        <div class="text-sm font-bold text-white">Système Opérationnel & Conforme</div>
-                        <div class="text-xs text-slate-400">PHP 8.3+ • Laravel 13.x • AdminLTE 4 • Tests 100% au Vert</div>
+                        <div class="text-sm font-bold text-white">{{ __('System Operational & Compliant') }}</div>
+                        <div class="text-xs text-slate-400">PHP 8.3+ • Laravel 11/12 • AdminLTE 4 • {{ __('100% Tests Passing') }}</div>
                     </div>
                 </div>
                 <a href="{{ url('/admin/plugins') }}" class="px-4 py-2 rounded-xl bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 text-xs font-semibold border border-blue-500/30 transition-colors whitespace-nowrap">
-                    Ouvrir l'Administration →
+                    {{ __('Open Administration →') }}
                 </a>
             </div>
         </section>
@@ -209,14 +216,14 @@
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2">
                 <img src="{{ asset('imgs/icon-dark.png') }}" alt="LCMS Core" class="w-5 h-5 rounded">
-                <span>&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — Tous droits réservés.</span>
+                <span>&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — {{ __('All rights reserved.') }}</span>
             </div>
             <div class="flex items-center gap-4 text-slate-400">
-                <a href="{{ url('/') }}" class="hover:text-white transition-colors">Accueil</a>
+                <a href="{{ url('/') }}" class="hover:text-white transition-colors">{{ __('Home') }}</a>
                 <span>•</span>
-                <a href="{{ route('login') }}" class="hover:text-white transition-colors">Connexion</a>
+                <a href="{{ route('login') }}" class="hover:text-white transition-colors">{{ __('Login') }}</a>
                 <span>•</span>
-                <a href="{{ url('/admin/plugins') }}" class="hover:text-white transition-colors">Administration</a>
+                <a href="{{ url('/admin/plugins') }}" class="hover:text-white transition-colors">{{ __('Administration') }}</a>
             </div>
         </div>
     </footer>

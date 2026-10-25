@@ -68,7 +68,7 @@ class AdminPageController extends Controller
             ], 201);
         }
 
-        return redirect()->back()->with('success', 'Page créée avec succès.');
+        return redirect()->back()->with('success', __('Page created successfully.'));
     }
 
     public function show(int|string $id): JsonResponse
@@ -106,7 +106,7 @@ class AdminPageController extends Controller
                 ], 404);
             }
 
-            return redirect()->back()->withErrors('Page not found.');
+            return redirect()->back()->withErrors(__('Page not found.'));
         }
 
         $page->delete();
@@ -118,6 +118,6 @@ class AdminPageController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Page supprimée avec succès.');
+        return redirect()->back()->with('success', __('Page deleted successfully.'));
     }
 }

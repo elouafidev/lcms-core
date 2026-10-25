@@ -52,14 +52,14 @@ class AdminThemeController extends Controller
             $uploadError = $rawFile->getError();
             $maxUpload = ini_get('upload_max_filesize') ?: '2M';
             $message = match ($uploadError) {
-                UPLOAD_ERR_INI_SIZE => "Le fichier dépasse la taille maximale autorisée par le serveur PHP (upload_max_filesize = {$maxUpload}).",
-                UPLOAD_ERR_FORM_SIZE => 'Le fichier dépasse la directive de taille maximale du formulaire.',
-                UPLOAD_ERR_PARTIAL => "Le fichier n'a été que partiellement téléversé.",
-                UPLOAD_ERR_NO_FILE => "Aucun fichier d'archive n'a été téléversé.",
-                UPLOAD_ERR_NO_TMP_DIR => 'Le dossier temporaire est manquant sur le serveur PHP.',
-                UPLOAD_ERR_CANT_WRITE => "Échec de l'écriture du fichier sur le disque du serveur.",
-                UPLOAD_ERR_EXTENSION => 'Une extension PHP a interrompu le téléversement du fichier.',
-                default => "Erreur lors du téléversement du fichier (code: {$uploadError}).",
+                UPLOAD_ERR_INI_SIZE => __('The file exceeds the maximum allowed size configured on the PHP server (upload_max_filesize = :size).', ['size' => $maxUpload]),
+                UPLOAD_ERR_FORM_SIZE => __('The file exceeds the form maximum size directive.'),
+                UPLOAD_ERR_PARTIAL => __('The file was only partially uploaded.'),
+                UPLOAD_ERR_NO_FILE => __('No archive file was uploaded.'),
+                UPLOAD_ERR_NO_TMP_DIR => __('The temporary folder is missing on the PHP server.'),
+                UPLOAD_ERR_CANT_WRITE => __('Failed to write file to server disk.'),
+                UPLOAD_ERR_EXTENSION => __('A PHP extension stopped the file upload.'),
+                default => __('Error during file upload (code: :code).', ['code' => $uploadError]),
             };
 
             return redirect()->back(fallback: route('admin.themes.index'))
@@ -75,17 +75,17 @@ class AdminThemeController extends Controller
                 'max:51200',
             ],
         ], [
-            'theme_archive.required' => "Veuillez sélectionner un fichier d'archive ZIP pour le thème.",
-            'theme_archive.file' => 'Le fichier transmis est invalide ou corrompu.',
-            'theme_archive.extensions' => "L'archive doit obligatoirement posséder l'extension .zip.",
-            'theme_archive.mimetypes' => "Le fichier sélectionné n'est pas reconnu comme une archive ZIP valide.",
-            'theme_archive.max' => "L'archive du thème ne doit pas dépasser 50 Mo.",
+            'theme_archive.required' => __('Please select a ZIP archive file for the theme.'),
+            'theme_archive.file' => __('The transmitted file is invalid or corrupted.'),
+            'theme_archive.extensions' => __('The archive must have a .zip extension.'),
+            'theme_archive.mimetypes' => __('The selected file is not recognized as a valid ZIP archive.'),
+            'theme_archive.max' => __('The theme archive must not exceed 50 MB.'),
         ]);
 
         $file = $request->file('theme_archive');
         if (! $file instanceof UploadedFile) {
             return redirect()->back(fallback: route('admin.themes.index'))
-                ->with('error', "Aucun fichier d'archive ZIP valide n'a été transmis.");
+                ->with('error', __('No valid ZIP archive file was submitted.'));
         }
 
         try {
@@ -93,10 +93,13 @@ class AdminThemeController extends Controller
             $manifest = $this->zipInstaller->installArchive($file, $overwrite);
 
             return redirect()->route('admin.themes.index')
-                ->with('success', "Thème '{$manifest->getName()}' ({$manifest->getVersion()}) importé et installé avec succès.");
+                ->with('success', __("Theme ':name' (:version) imported and installed successfully.", [
+                    'name' => $manifest->getName(),
+                    'version' => $manifest->getVersion(),
+                ]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.themes.index'))
-                ->with('error', "Échec de l'importation de l'archive ZIP : ".$e->getMessage());
+                ->with('error', __('Failed to import ZIP archive: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -109,10 +112,10 @@ class AdminThemeController extends Controller
             $theme = $this->themeManager->activate($id);
 
             return redirect()->route('admin.themes.index')
-                ->with('success', "Thème '{$theme->getName()}' activé avec succès.");
+                ->with('success', __("Theme ':name' activated successfully.", ['name' => $theme->getName()]));
         } catch (Throwable $e) {
             return redirect()->route('admin.themes.index')
-                ->with('error', "Échec de l'activation du thème '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to activate theme ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 
@@ -125,10 +128,10 @@ class AdminThemeController extends Controller
             $this->themeManager->deactivate();
 
             return redirect()->route('admin.themes.index')
-                ->with('success', "Thème désactivé avec succès. Rendu d'origine restauré.");
+                ->with('success', __('Theme deactivated successfully. Default rendering restored.'));
         } catch (Throwable $e) {
             return redirect()->route('admin.themes.index')
-                ->with('error', 'Échec de la désactivation du thème: '.$e->getMessage());
+                ->with('error', __('Failed to deactivate theme: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -141,10 +144,10 @@ class AdminThemeController extends Controller
             $this->themeManager->delete($id);
 
             return redirect()->route('admin.themes.index')
-                ->with('success', "Thème '{$id}' supprimé avec succès.");
+                ->with('success', __("Theme ':id' deleted successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.themes.index'))
-                ->with('error', "Échec de la suppression du thème '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to delete theme ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 }

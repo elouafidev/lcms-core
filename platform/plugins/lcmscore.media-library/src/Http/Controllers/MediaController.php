@@ -66,7 +66,7 @@ class MediaController extends Controller
             ], 201);
         }
 
-        return redirect()->back()->with('success', 'File uploaded successfully.');
+        return redirect()->back()->with('success', __('File uploaded successfully.'));
     }
 
     public function show(int|string $id): JsonResponse
@@ -98,7 +98,7 @@ class MediaController extends Controller
                 ], 404);
             }
 
-            return redirect()->back()->withErrors('Media item not found.');
+            return redirect()->back()->withErrors(__('Media item not found or could not be deleted.'));
         }
 
         if ($request->wantsJson()) {
@@ -108,6 +108,6 @@ class MediaController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Media item deleted successfully.');
+        return redirect()->back()->with('success', __('Media item deleted successfully.'));
     }
 }

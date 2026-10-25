@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Connexion Administrateur — ' . config('app.name', 'LCMS Core'))
+@section('title', __('Administrator Login') . ' — ' . config('app.name', 'LCMS Core'))
 
 @section('content')
 <div class="w-full max-w-md mx-auto">
@@ -9,8 +9,8 @@
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600/20 to-indigo-500/20 border border-blue-500/30 shadow-xl shadow-blue-500/10 mb-4">
             <img src="{{ asset('imgs/icon-dark.png') }}" alt="LCMS Core Logo" class="w-10 h-10 object-contain">
         </div>
-        <h1 class="text-2xl font-extrabold text-white tracking-tight">Connexion Administrateur</h1>
-        <p class="text-sm text-slate-400 mt-1.5">Accédez au panneau de contrôle centralisé de LCMS Core</p>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">{{ __('Administrator Login') }}</h1>
+        <p class="text-sm text-slate-400 mt-1.5">{{ __('Access the centralized control panel of LCMS Core') }}</p>
     </div>
 
     <!-- Login Card -->
@@ -21,7 +21,7 @@
             <!-- Email Input -->
             <div>
                 <label for="email" class="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Adresse e-mail de l'administrateur
+                    {{ __('Administrator Email Address') }}
                 </label>
                 <div class="relative">
                     <input 
@@ -50,7 +50,7 @@
             <div>
                 <div class="flex items-center justify-between mb-1.5">
                     <label for="password" class="block text-xs font-semibold text-slate-300">
-                        Mot de passe
+                        {{ __('Password') }}
                     </label>
                 </div>
                 <div class="relative">
@@ -67,7 +67,7 @@
                         type="button" 
                         onclick="const p = document.getElementById('password'); const icon = document.getElementById('eye-icon'); if (p.type === 'password') { p.type = 'text'; icon.classList.add('text-blue-400'); } else { p.type = 'password'; icon.classList.remove('text-blue-400'); }"
                         class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 cursor-pointer focus:outline-none"
-                        aria-label="Afficher ou masquer le mot de passe"
+                        aria-label="{{ __('Show or hide password') }}"
                     >
                         <svg id="eye-icon" class="w-4 h-4 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -95,12 +95,12 @@
                         class="w-4 h-4 rounded bg-[#050914] border border-slate-700 text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer"
                         {{ old('remember') ? 'checked' : '' }}
                     >
-                    <span class="text-xs text-slate-400 hover:text-slate-300">Se souvenir de moi</span>
+                    <span class="text-xs text-slate-400 hover:text-slate-300">{{ __('Remember me') }}</span>
                 </label>
 
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="text-xs text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-                        Mot de passe oublié ?
+                        {{ __('Forgot your password?') }}
                     </a>
                 @endif
             </div>
@@ -113,7 +113,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                 </svg>
-                <span>Se connecter</span>
+                <span>{{ __('Sign In') }}</span>
             </button>
         </form>
 
@@ -124,12 +124,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div class="text-xs text-slate-400 leading-relaxed">
-                    Identifiant racine par défaut : <code class="px-1.5 py-0.5 rounded bg-blue-950/60 text-blue-300 font-mono text-[11px] border border-blue-800/40">admin@lcms.local</code>
+                    {{ __('Default root credential:') }} <code class="px-1.5 py-0.5 rounded bg-blue-950/60 text-blue-300 font-mono text-[11px] border border-blue-800/40">admin@lcms.local</code>
                 </div>
             </div>
             <div class="mt-4 text-center">
                 <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors">
-                    <span>←</span> Retour à l'accueil du site
+                    <span>←</span> {{ __('Back to website home') }}
                 </a>
             </div>
         </div>

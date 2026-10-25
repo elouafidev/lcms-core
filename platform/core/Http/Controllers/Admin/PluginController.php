@@ -77,10 +77,13 @@ class PluginController extends Controller
             $manifest = $this->zipInstaller->installArchive($file, $overwrite);
 
             return redirect()->route('admin.plugins.show', $manifest->getId())
-                ->with('success', "Extension '{$manifest->getName()}' ({$manifest->getVersion()}) importée et installée avec succès.");
+                ->with('success', __("Extension ':name' (:version) imported and installed successfully.", [
+                    'name' => $manifest->getName(),
+                    'version' => $manifest->getVersion(),
+                ]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de l'importation de l'archive ZIP : ".$e->getMessage());
+                ->with('error', __('Failed to import ZIP archive: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -106,7 +109,8 @@ class PluginController extends Controller
         $plugin = $all->get($id);
 
         if ($plugin === null) {
-            abort(404, "Plugin '{$id}' introuvable.");
+            $msg = __("Plugin ':id' not found.", ['id' => $id]);
+            abort(404, is_string($msg) ? $msg : "Plugin '{$id}' not found.");
         }
 
         $manifest = $plugin->getManifest();
@@ -166,10 +170,10 @@ class PluginController extends Controller
             $this->pluginManager->activate($id);
 
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('success', "Plugin '{$id}' activé avec succès.");
+                ->with('success', __("Plugin ':id' activated successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de l'activation du plugin '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to activate plugin ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 
@@ -183,10 +187,10 @@ class PluginController extends Controller
             $this->pluginManager->deactivate($id, $force);
 
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('success', "Plugin '{$id}' désactivé avec succès.");
+                ->with('success', __("Plugin ':id' deactivated successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de la désactivation du plugin '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to deactivate plugin ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 
@@ -199,10 +203,10 @@ class PluginController extends Controller
             $this->pluginManager->install($id);
 
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('success', "Plugin '{$id}' installé avec succès.");
+                ->with('success', __("Plugin ':id' installed successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de l'installation du plugin '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to install plugin ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 
@@ -217,10 +221,10 @@ class PluginController extends Controller
             $this->pluginManager->uninstall($id, $purgeData, $force);
 
             return redirect()->route('admin.plugins.index')
-                ->with('success', "Plugin '{$id}' désinstallé avec succès.");
+                ->with('success', __("Plugin ':id' uninstalled successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de la désinstallation du plugin '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to uninstall plugin ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 
@@ -233,10 +237,10 @@ class PluginController extends Controller
             $this->pluginManager->delete($id);
 
             return redirect()->route('admin.plugins.index')
-                ->with('success', "Extension '{$id}' supprimée avec succès.");
+                ->with('success', __("Extension ':id' deleted successfully.", ['id' => $id]));
         } catch (Throwable $e) {
             return redirect()->back(fallback: route('admin.plugins.index'))
-                ->with('error', "Échec de la suppression de l'extension '{$id}': ".$e->getMessage());
+                ->with('error', __("Failed to delete extension ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
     }
 }

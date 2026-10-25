@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name', 'LCMS Core') . ' — Authentification')</title>
+    <title>@yield('title', config('app.name', 'LCMS Core') . ' — ' . __('Authentication'))</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,28 +30,35 @@
                 </a>
 
                 <div class="flex items-center gap-4 text-sm font-medium">
+                    <!-- Language Switcher -->
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-800 bg-slate-900/60 text-xs text-slate-400">
+                        <a href="{{ route('locale.switch', 'fr') }}" class="{{ app()->getLocale() === 'fr' ? 'text-blue-400 font-bold' : 'hover:text-white transition-colors' }}">FR</a>
+                        <span class="text-slate-700">|</span>
+                        <a href="{{ route('locale.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'text-blue-400 font-bold' : 'hover:text-white transition-colors' }}">EN</a>
+                    </div>
+
                     @guest
                         @if (Route::has('login'))
                             <a href="{{ route('login') }}" class="text-slate-300 hover:text-white transition-colors">
-                                {{ __('Connexion') }}
+                                {{ __('Login') }}
                             </a>
                         @endif
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all">
-                                {{ __('Inscription') }}
+                                {{ __('Register') }}
                             </a>
                         @endif
                     @else
                         <a href="{{ url('/admin/plugins') }}" class="text-slate-300 hover:text-white transition-colors">
-                            Panneau d'administration
+                            {{ __('Administration Panel') }}
                         </a>
                         <span class="text-slate-500">•</span>
                         <span class="text-slate-300">{{ Auth::user()->name }}</span>
                         <a href="{{ route('logout') }}"
                            class="text-rose-400 hover:text-rose-300 transition-colors"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Déconnexion') }}
+                            {{ __('Logout') }}
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                             @csrf
@@ -69,11 +76,11 @@
         <!-- Footer -->
         <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
             <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p>&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — Tous droits réservés.</p>
+                <p>&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — {{ __('All rights reserved.') }}</p>
                 <div class="flex items-center gap-4 text-slate-400">
-                    <a href="{{ url('/') }}" class="hover:text-white transition-colors">Accueil</a>
+                    <a href="{{ url('/') }}" class="hover:text-white transition-colors">{{ __('Home') }}</a>
                     <span>•</span>
-                    <a href="{{ url('/admin/plugins') }}" class="hover:text-white transition-colors">Administration</a>
+                    <a href="{{ url('/admin/plugins') }}" class="hover:text-white transition-colors">{{ __('Administration') }}</a>
                 </div>
             </div>
         </footer>
