@@ -67,7 +67,7 @@
                                 {{ __('Overwrite if existing') }}
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5 shadow-sm">
+                        <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1 shadow-sm">
                             <i class="bi bi-upload"></i> {{ __('Install ZIP') }}
                         </button>
                     </form>

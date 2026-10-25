@@ -246,7 +246,7 @@
         .actions-form {
             display: inline-block;
             margin-right: 0.25rem;
-            margin-bottom: 0;
+            margin-bottom: 0.25rem;
         }
     </style>
 

@@ -25,7 +25,7 @@
         <ul class="navbar-nav ms-auto align-items-center">
             <!-- Language Switcher -->
             <li class="nav-item dropdown me-2">
-                <a class="nav-link dropdown-toggle d-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill border border-slate-200 bg-light text-secondary fs-7 fw-semibold" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-1 px-2.5 py-1 rounded-pill border border-slate-200 bg-light text-secondary fs-7 fw-semibold" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
                     <i class="bi bi-translate text-primary"></i>
                     <span class="text-uppercase">{{ app()->getLocale() }}</span>
                 </a>
