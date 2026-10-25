@@ -1,13 +1,13 @@
 @extends('core::admin.layouts.app')
 
-@section('title', 'Menus de Navigation — Administration')
+@section('title', __('Navigation Menus — Administration'))
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <div>
-            <h1 class="h3 fw-bold mb-1">Menus de Navigation</h1>
+            <h1 class="h3 fw-bold mb-1">{{ __('Navigation Menus') }}</h1>
             <p class="text-muted small mb-0">
-                Configuration des menus arborescents et des liens de navigation
+                {{ __('Configuration of tree menus and navigation links') }}
             </p>
         </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="card card-outline card-primary shadow-sm mb-4">
         <div class="card-header bg-white py-3">
             <h5 class="card-title fw-bold fs-6 mb-0 text-primary">
-                <i class="bi bi-plus-circle me-1"></i> Créer un nouveau menu
+                <i class="bi bi-plus-circle me-1"></i> {{ __('Create New Menu') }}
             </h5>
         </div>
         <div class="card-body">
@@ -24,20 +24,20 @@
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label for="name" class="form-label fw-semibold small">Nom du menu</label>
-                        <input type="text" id="name" name="name" required placeholder="ex: Menu Principal" class="form-control">
+                        <label for="name" class="form-label fw-semibold small">{{ __('Menu Name') }}</label>
+                        <input type="text" id="name" name="name" required placeholder="{{ __('ex: Main Menu') }}" class="form-control">
                     </div>
                     <div class="col-md-6">
-                        <label for="slug" class="form-label fw-semibold small">Identifiant (slug)</label>
+                        <label for="slug" class="form-label fw-semibold small">{{ __('Slug Identifier') }}</label>
                         <input type="text" id="slug" name="slug" required placeholder="ex: main-nav" class="form-control">
                     </div>
                     <div class="col-12">
-                        <label for="description" class="form-label fw-semibold small">Description</label>
-                        <textarea id="description" name="description" rows="2" placeholder="Description optionnelle" class="form-control"></textarea>
+                        <label for="description" class="form-label fw-semibold small">{{ __('Description') }}</label>
+                        <textarea id="description" name="description" rows="2" placeholder="{{ __('Optional description') }}" class="form-control"></textarea>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
-                            <i class="bi bi-check2"></i> Créer le menu
+                            <i class="bi bi-check2"></i> {{ __('Create Menu') }}
                         </button>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
     <div class="card card-outline card-secondary shadow-sm">
         <div class="card-header bg-white py-3">
             <h5 class="card-title fw-bold fs-6 mb-0 text-secondary">
-                <i class="bi bi-list-ul me-1"></i> Menus existants
+                <i class="bi bi-list-ul me-1"></i> {{ __('Existing Menus') }}
             </h5>
         </div>
         <div class="card-body p-0">
@@ -58,11 +58,11 @@
                     <thead class="table-light fs-7 text-uppercase text-muted">
                         <tr>
                             <th style="width: 5%;">ID</th>
-                            <th style="width: 30%;">Nom</th>
-                            <th style="width: 25%;">Slug</th>
-                            <th style="width: 15%;">Éléments</th>
-                            <th style="width: 10%;">Statut</th>
-                            <th style="width: 15%;" class="text-end pe-3">Actions</th>
+                            <th style="width: 30%;">{{ __('Name') }}</th>
+                            <th style="width: 25%;">{{ __('Slug Identifier') }}</th>
+                            <th style="width: 15%;">{{ __('Items') }}</th>
+                            <th style="width: 10%;">{{ __('Status') }}</th>
+                            <th style="width: 15%;" class="text-end pe-3">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,22 +72,22 @@
                                 <td><strong>{{ $menu->name }}</strong></td>
                                 <td><code>{{ $menu->slug }}</code></td>
                                 <td>
-                                    <span class="badge bg-light text-dark border">{{ $menu->items_count }} élément(s)</span>
+                                    <span class="badge bg-light text-dark border">{{ __(':count item(s)', ['count' => $menu->items_count]) }}</span>
                                 </td>
                                 <td>
                                     <span class="badge {{ $menu->is_active ? 'badge-active text-bg-success' : 'badge-disabled text-bg-warning' }} px-2 py-1">
-                                        {{ $menu->is_active ? 'Actif' : 'Inactif' }}
+                                        {{ $menu->is_active ? __('Active') : __('Inactive') }}
                                     </span>
                                 </td>
                                 <td class="text-end pe-3">
                                     <a href="/admin/menus/{{ $menu->id }}" class="btn btn-sm btn-secondary">
-                                        <i class="bi bi-pencil-square me-1"></i> Gérer
+                                        <i class="bi bi-pencil-square me-1"></i> {{ __('Manage') }}
                                     </a>
-                                    <form action="/admin/menus/{{ $menu->id }}" method="POST" class="actions-form" onsubmit="return confirm('Confirmer la suppression ?');">
+                                    <form action="/admin/menus/{{ $menu->id }}" method="POST" class="actions-form" onsubmit="return confirm('{{ __('Confirm deletion?') }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="bi bi-trash me-1"></i> Supprimer
+                                            <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
                                         </button>
                                     </form>
                                 </td>
@@ -95,7 +95,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center text-muted py-4 small">
-                                    Aucun menu de navigation configuré pour le moment.
+                                    {{ __('No navigation menus configured yet.') }}
                                 </td>
                             </tr>
                         @endforelse

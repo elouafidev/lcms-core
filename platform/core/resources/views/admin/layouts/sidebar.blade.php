@@ -8,8 +8,8 @@
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
         <a href="{{ route('admin.dashboard') }}" class="brand-link text-decoration-none d-flex align-items-center gap-2 py-3 px-3">
-            <span class="fs-4">⚡</span>
-            <span class="brand-text fw-bold fs-5 text-white">LCMS Core</span>
+            <img src="{{ asset('imgs/icon-dark.png') }}" alt="LCMS Core Logo" style="width: 2.15rem; height: 2.15rem; border-radius: 0.6rem; border: 1px solid rgba(59, 130, 246, 0.3); object-fit: contain;">
+            <span class="brand-text fw-bold fs-5 text-white tracking-tight">LCMS <span style="color: #3b82f6;">Core</span></span>
         </a>
     </div>
 
@@ -18,24 +18,24 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-header text-uppercase fs-7 text-muted fw-bold px-3 pt-2 pb-1">
-                    Système
+                    {{ __('System') }}
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.plugins.index') }}" class="nav-link {{ request()->routeIs('admin.plugins.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-puzzle"></i>
-                        <p class="mb-0">Gestion des Plugins</p>
+                        <p class="mb-0">{{ __('Plugins Management') }}</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.themes.index') }}" class="nav-link {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-palette"></i>
-                        <p class="mb-0">Gestion des Thèmes</p>
+                        <p class="mb-0">{{ __('Themes Management') }}</p>
                     </a>
                 </li>
 
                 @if(! empty($navItems))
                     <li class="nav-header text-uppercase fs-7 text-muted fw-bold px-3 pt-3 pb-1">
-                        Extensions &amp; Modules
+                        {{ __('Extensions & Modules') }}
                     </li>
                     @foreach($navItems as $item)
                         @php
@@ -51,7 +51,7 @@
                                 @else
                                     <i class="nav-icon bi bi-app-indicator"></i>
                                 @endif
-                                <p class="mb-0">{{ $item->getLabel() }}</p>
+                                <p class="mb-0">{{ __($item->getLabel()) }}</p>
                             </a>
                         </li>
                     @endforeach

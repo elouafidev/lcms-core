@@ -1,23 +1,23 @@
 @extends('core::admin.layouts.app')
 
-@section('title', 'Administration - Gestion des Thèmes')
+@section('title', __('Administration') . ' - ' . __('Themes Management'))
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <div>
-            <h1 class="h3 fw-bold mb-1">Gestion des Thèmes CMS</h1>
+            <h1 class="h3 fw-bold mb-1">{{ __('CMS Themes Management') }}</h1>
             <p class="text-muted small mb-0">
-                Moteur de thèmes découplé, hiérarchie de vues et personnalisation du front
+                {{ __('Decoupled theme engine, view hierarchy and front-end customization') }}
             </p>
         </div>
         <div>
             @if($activeTheme)
                 <span class="badge badge-active text-bg-success fs-6 px-3 py-2 shadow-sm">
-                    <i class="bi bi-check2-circle me-1"></i> Thème actif : {{ $activeTheme->getName() }}
+                    <i class="bi bi-check2-circle me-1"></i> {{ __('Active Theme:') }} {{ $activeTheme->getName() }}
                 </span>
             @else
                 <span class="badge badge-available text-bg-secondary fs-6 px-3 py-2 shadow-sm">
-                    <i class="bi bi-info-circle me-1"></i> Aucun thème actif (Rendu par défaut)
+                    <i class="bi bi-info-circle me-1"></i> {{ __('No active theme (Default rendering)') }}
                 </span>
             @endif
         </div>
@@ -29,10 +29,10 @@
             <div class="row align-items-center g-3">
                 <div class="col-lg-6">
                     <h5 class="fw-bold mb-1 text-primary">
-                        <i class="bi bi-file-earmark-zip me-1"></i> Importer un thème (.zip)
+                        <i class="bi bi-file-earmark-zip me-1"></i> {{ __('Import a theme (.zip)') }}
                     </h5>
                     <p class="text-muted small mb-0">
-                        Sélectionnez une archive ZIP contenant un thème LCMS conforme avec son fichier <code>theme.json</code> (max 50 Mo).
+                        {{ __('Select a compliant LCMS ZIP archive containing its theme.json file (max 50 MB).') }}
                     </p>
                 </div>
                 <div class="col-lg-6">
@@ -42,11 +42,11 @@
                         <div class="form-check me-2">
                             <input class="form-check-input" type="checkbox" name="overwrite" value="1" id="overwriteTheme">
                             <label class="form-check-label small text-muted" for="overwriteTheme">
-                                Écraser si existant
+                                {{ __('Overwrite if existing') }}
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
-                            <i class="bi bi-upload"></i> Installer le ZIP
+                            <i class="bi bi-upload"></i> {{ __('Install ZIP') }}
                         </button>
                     </form>
                 </div>
@@ -58,26 +58,26 @@
     <div class="card card-outline card-secondary shadow-sm">
         <div class="card-header bg-white py-3">
             <h3 class="card-title fw-bold fs-6 mb-0 text-secondary">
-                <i class="bi bi-palette me-1"></i> Thèmes disponibles sur le système
+                <i class="bi bi-palette me-1"></i> {{ __('Themes available on system') }}
             </h3>
         </div>
         <div class="card-body p-0">
             @if(empty($themes))
                 <div class="text-center text-muted py-5">
                     <i class="bi bi-palette2 fs-1 d-block mb-2 text-muted"></i>
-                    <h4>Aucun thème détecté</h4>
-                    <p class="small">Déposez un dossier de thème conforme dans <code>platform/themes/</code> avec son fichier <code>theme.json</code> ou importez une archive ZIP ci-dessus.</p>
+                    <h4>{{ __('No theme detected') }}</h4>
+                    <p class="small">{{ __('Deposit compliant themes in platform/themes/ with their theme.json manifest or import a ZIP archive above.') }}</p>
                 </div>
             @else
                 <div class="table-responsive">
                     <table class="table table-hover table-striped align-middle mb-0">
                         <thead class="table-light text-uppercase fs-7 text-muted">
                             <tr>
-                                <th style="width: 40%;">Thème</th>
-                                <th style="width: 15%;">Version</th>
-                                <th style="width: 15%;">Auteur</th>
-                                <th style="width: 15%;">Statut</th>
-                                <th style="width: 15%;" class="text-end pe-3">Actions</th>
+                                <th style="width: 40%;">{{ __('Theme') }}</th>
+                                <th style="width: 15%;">{{ __('Version') }}</th>
+                                <th style="width: 15%;">{{ __('Author') }}</th>
+                                <th style="width: 15%;">{{ __('Status') }}</th>
+                                <th style="width: 15%;" class="text-end pe-3">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +86,7 @@
                                     $manifest = $theme->getManifest();
                                     $themeId = $theme->getId();
                                     $isActive = ($themeId === $activeThemeId);
-                                    $author = $manifest->getAuthor()['name'] ?? 'Inconnu';
+                                    $author = $manifest->getAuthor()['name'] ?? __('Unknown');
                                 @endphp
                                 <tr>
                                     <td>
@@ -104,9 +104,9 @@
                                     </td>
                                     <td>
                                         @if($isActive)
-                                            <span class="badge badge-active text-bg-success px-2 py-1">Actif</span>
+                                            <span class="badge badge-active text-bg-success px-2 py-1">{{ __('Active') }}</span>
                                         @else
-                                            <span class="badge badge-available text-bg-secondary px-2 py-1">Disponible</span>
+                                            <span class="badge badge-available text-bg-secondary px-2 py-1">{{ __('Available') }}</span>
                                         @endif
                                     </td>
                                     <td class="text-end pe-3">
@@ -114,20 +114,20 @@
                                             <form method="POST" action="{{ route('admin.themes.deactivate') }}" class="actions-form">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-secondary">
-                                                    <i class="bi bi-stop-circle me-1"></i> Désactiver
+                                                    <i class="bi bi-stop-circle me-1"></i> {{ __('Deactivate') }}
                                                 </button>
                                             </form>
                                         @else
                                             <form method="POST" action="{{ route('admin.themes.activate', $themeId) }}" class="actions-form">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-primary">
-                                                    <i class="bi bi-check-circle me-1"></i> Activer
+                                                    <i class="bi bi-check-circle me-1"></i> {{ __('Activate') }}
                                                 </button>
                                             </form>
-                                            <form method="POST" action="{{ route('admin.themes.delete', $themeId) }}" class="actions-form" onsubmit="return confirm('Confirmer la suppression définitive des fichiers du thème \'{{ $theme->getName() }}\' ?');">
+                                            <form method="POST" action="{{ route('admin.themes.delete', $themeId) }}" class="actions-form" onsubmit="return confirm('{{ __('Are you sure you want to permanently delete this theme and all its files? This action is irreversible.', ['name' => $theme->getName()]) }}');">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash me-1"></i> Supprimer
+                                                    <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
                                                 </button>
                                             </form>
                                         @endif

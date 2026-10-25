@@ -1,13 +1,13 @@
 @extends('core::admin.layouts.app')
 
-@section('title', 'Gestion des Pages — Administration')
+@section('title', __('Pages Management — Administration'))
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <div>
-            <h1 class="h3 fw-bold mb-1">Pages Statiques</h1>
+            <h1 class="h3 fw-bold mb-1">{{ __('Static Pages') }}</h1>
             <p class="text-muted small mb-0">
-                Création et gestion des pages de contenu publiables
+                {{ __('Creation and management of publishable content pages') }}
             </p>
         </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="card card-outline card-primary shadow-sm mb-4">
         <div class="card-header bg-white py-3">
             <h5 class="card-title fw-bold fs-6 mb-0 text-primary">
-                <i class="bi bi-file-earmark-plus me-1"></i> Créer une nouvelle page
+                <i class="bi bi-file-earmark-plus me-1"></i> {{ __('Create New Page') }}
             </h5>
         </div>
         <div class="card-body">
@@ -24,28 +24,28 @@
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label for="title" class="form-label fw-semibold small">Titre :</label>
-                        <input type="text" id="title" name="title" required class="form-control" placeholder="Titre de la page">
+                        <label for="title" class="form-label fw-semibold small">{{ __('Title:') }}</label>
+                        <input type="text" id="title" name="title" required class="form-control" placeholder="{{ __('Page Title') }}">
                     </div>
                     <div class="col-md-6">
-                        <label for="slug" class="form-label fw-semibold small">Slug (optionnel) :</label>
-                        <input type="text" id="slug" name="slug" placeholder="ex: a-propos" class="form-control">
+                        <label for="slug" class="form-label fw-semibold small">{{ __('Slug (optional):') }}</label>
+                        <input type="text" id="slug" name="slug" placeholder="{{ __('ex: about-us') }}" class="form-control">
                     </div>
                     <div class="col-12">
-                        <label for="content" class="form-label fw-semibold small">Contenu :</label>
-                        <textarea id="content" name="content" rows="5" class="form-control" placeholder="Contenu HTML ou texte de la page..."></textarea>
+                        <label for="content" class="form-label fw-semibold small">{{ __('Content:') }}</label>
+                        <textarea id="content" name="content" rows="5" class="form-control" placeholder="{{ __('HTML or text content of the page...') }}"></textarea>
                     </div>
                     <div class="col-12">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="is_published" value="1" id="isPublishedSwitch">
                             <label class="form-check-label fw-semibold small" for="isPublishedSwitch">
-                                Publier immédiatement
+                                {{ __('Publish immediately') }}
                             </label>
                         </div>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
-                            <i class="bi bi-save"></i> Enregistrer la page
+                            <i class="bi bi-save"></i> {{ __('Save Page') }}
                         </button>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
     <div class="card card-outline card-secondary shadow-sm">
         <div class="card-header bg-white py-3">
             <h5 class="card-title fw-bold fs-6 mb-0 text-secondary">
-                <i class="bi bi-files me-1"></i> Pages existantes
+                <i class="bi bi-files me-1"></i> {{ __('Existing Pages') }}
             </h5>
         </div>
         <div class="card-body p-0">
@@ -65,10 +65,10 @@
                 <table class="table table-hover table-striped align-middle mb-0">
                     <thead class="table-light fs-7 text-uppercase text-muted">
                         <tr>
-                            <th style="width: 40%;">Titre</th>
-                            <th style="width: 35%;">Slug / URL</th>
-                            <th style="width: 15%;">Statut</th>
-                            <th style="width: 10%;" class="text-end pe-3">Actions</th>
+                            <th style="width: 40%;">{{ __('Title') }}</th>
+                            <th style="width: 35%;">{{ __('Slug / URL') }}</th>
+                            <th style="width: 15%;">{{ __('Status') }}</th>
+                            <th style="width: 10%;" class="text-end pe-3">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,15 +86,15 @@
                                 </td>
                                 <td>
                                     <span class="badge {{ $page->is_published ? 'badge-active text-bg-success' : 'badge-disabled text-bg-warning' }} px-2 py-1">
-                                        {{ $page->is_published ? 'Publié' : 'Brouillon' }}
+                                        {{ $page->is_published ? __('Published') : __('Draft') }}
                                     </span>
                                 </td>
                                 <td class="text-end pe-3">
-                                    <form action="/admin/pages/{{ $page->id }}" method="POST" class="actions-form" onsubmit="return confirm('Supprimer cette page ?');">
+                                    <form action="/admin/pages/{{ $page->id }}" method="POST" class="actions-form" onsubmit="return confirm('{{ __('Delete this page?') }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="bi bi-trash me-1"></i> Supprimer
+                                            <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
                                         </button>
                                     </form>
                                 </td>
@@ -102,7 +102,7 @@
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center text-muted py-4 small">
-                                    Aucune page créée pour le moment.
+                                    {{ __('No pages created yet.') }}
                                 </td>
                             </tr>
                         @endforelse

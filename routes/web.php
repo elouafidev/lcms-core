@@ -14,4 +14,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/admin/locale/{lang}', function (string $lang) {
+    if (in_array($lang, ['fr', 'en'], true)) {
+        session(['admin_locale' => $lang]);
+    }
+
+    return redirect()->back();
+})->name('admin.locale');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
