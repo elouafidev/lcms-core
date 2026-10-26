@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Technique — LCMS Core (Laravel Plugin-First CMS)</title>
+    <meta name="description" content="Documentation technique officielle de LCMS Core : installation, architecture globale, guide de création de plugins, moteur de thèmes et référence CLI.">
+
+    <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            dark: '#050914',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar matching dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050914;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        .code-block {
+            background: #030712;
+            border: 1px solid #1f2937;
+            position: relative;
+        }
+
+        .nav-link.active {
+            color: #60a5fa;
+            background: rgba(37, 99, 235, 0.15);
+            border-left: 3px solid #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-[#050914] text-slate-100 font-sans antialiased selection:bg-blue-600 selection:text-white min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 bg-[#050914]/90 backdrop-blur-md border-b border-slate-800/80 px-6 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-slate-400 hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600/30 to-indigo-600/30 border border-blue-500/40 flex items-center justify-center shadow-lg shadow-blue-500/10">
+                        <span class="text-blue-400 font-black text-sm tracking-wider">LC</span>
+                    </div>
+                    <span class="text-lg font-bold tracking-tight text-white">
+                        LCMS <span class="text-blue-500">Core</span>
+                        <span class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-md bg-blue-950/80 border border-blue-800 text-blue-300">Docs</span>
+                    </span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>v1.0.0 • Laravel 11/12</span>
+                </div>
+                <a href="https://github.com/elouafidev/lcms-core" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col lg:flex-row px-4 sm:px-6 py-8 gap-8">
+
+        <!-- Left Sidebar Navigation -->
+        <aside id="sidebarNav" class="hidden lg:block w-72 shrink-0 sticky top-24 self-start max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+            <div class="mb-4">
+                <input id="searchInput" type="text" placeholder="Rechercher dans la doc..." class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors">
+            </div>
+
+            <nav class="space-y-6 text-sm">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Démarrage</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#overview" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Vue d'ensemble & Philosophie</a></li>
+                        <li><a href="#installation" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Installation Rapide (Packagist)</a></li>
+                        <li><a href="#prerequisites" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Prérequis & Démarrage</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Architecture Globale</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#lean-core" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Noyau Minimal (Lean Core)</a></li>
+                        <li><a href="#contracts" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Contrats Publics Stricts</a></li>
+                        <li><a href="#dependency-resolver" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Résolution des Dépendances (Kahn)</a></li>
+                        <li><a href="#hooks" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Système de Hooks (Actions & Filtres)</a></li>
+                        <li><a href="#resilience" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Résilience & Mode de Secours</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Guide des Plugins</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#plugin-anatomy" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Anatomie d'une Extension</a></li>
+                        <li><a href="#plugin-manifest" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Manifeste `plugin.json`</a></li>
+                        <li><a href="#plugin-creation" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Créer un Plugin pas-à-pas</a></li>
+                        <li><a href="#plugin-database" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Migrations & Seeders Isolés</a></li>
+                        <li><a href="#plugin-assets" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Publication d'Assets & ZIP</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Moteur de Thèmes</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#theme-overview" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Fonctionnement & `theme.json`</a></li>
+                        <li><a href="#view-overriding" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Surcharge de Vues (View Overriding)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Référence CLI</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#cli-reference" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Commandes Artisan `cms:*`</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Documentation Content -->
+        <main class="flex-1 max-w-4xl space-y-16">
+
+            <!-- Hero Intro -->
+            <section id="overview" class="pt-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-blue-950/70 text-blue-300 border border-blue-800/60 mb-4">
+                    <span>Architecture Lean Core & Plugin-First</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+                    LCMS Core — Documentation Technique
+                </h1>
+                <p class="text-lg text-slate-300 leading-relaxed">
+                    <strong>LCMS Core</strong> est un système de gestion de contenu fondé sur Laravel 11/12 conçu selon le paradigme <strong>Plugin-First</strong>.
+                    Le noyau n'héberge aucune logique métier : l'intégralité des fonctionnalités éditoriales (pages, navigation, médiathèque, méta-tags SEO) est portée par des extensions autonomes régies par des contrats publics et un ordonnancement topologique strict.
+                </p>
+
+                <!-- Comparison Cards -->
+                <div class="grid sm:grid-cols-2 gap-4 mt-8">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5">
+                        <div class="flex items-center gap-2 text-rose-400 font-bold text-sm mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            CMS Monolithiques Traditionnels
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Modèles de données rigides codés en dur dans le noyau (articles, pages, boutiques forcés). Fort couplage horizontal entre extensions menant aux régressions silencieuses.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/60 border border-blue-900/50 rounded-xl p-5 shadow-lg shadow-blue-950/20">
+                        <div class="flex items-center gap-2 text-blue-400 font-bold text-sm mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Approche LCMS Core
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Noyau minimaliste d'infrastructure technique pure. Extensions totalement isolées, migrations indépendantes, résolution déterministe des dépendances et bus de hooks priorisé.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Installation -->
+            <section id="installation" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-sm font-bold">1</span>
+                        Installation Rapide (Packagist)
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-2">
+                        La méthode officielle recommandée pour démarrer un nouveau projet est d'utiliser Composer avec le template de projet Packagist.
+                    </p>
+                </div>
+
+                <div class="code-block rounded-xl p-4 font-mono text-sm text-slate-200">
+                    <button onclick="copyCode(this)" class="absolute top-3 right-3 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded border border-slate-700 transition">Copier</button>
+                    <pre><code># Créer une nouvelle instance de LCMS Core
+composer create-project elouafidev/lcms-core mon-site-lcms
+
+# Accéder au dossier du projet
+cd mon-site-lcms
+
+# Démarrer le serveur local
+php artisan serve</code></pre>
+                </div>
+
+                <!-- Callout Box -->
+                <div class="bg-blue-950/30 border border-blue-800/50 rounded-xl p-4 text-xs text-blue-200 leading-relaxed flex gap-3">
+                    <svg class="w-5 h-5 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div>
+                        <strong class="font-semibold text-white">Automatisation complète :</strong>
+                        Composer génère automatiquement le fichier <code>.env</code>, calcule la clé applicative <code>APP_KEY</code>, crée la base de données SQLite (<code>database/database.sqlite</code>), applique les migrations du noyau et initialise le compte Super Administrateur racine.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Prerequisites & Getting Started -->
+            <section id="prerequisites" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-sm font-bold">2</span>
+                    Prérequis & Démarrage
+                </h2>
+
+                <div class="grid sm:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-blue-400 font-bold block mb-1">Moteur PHP</span>
+                        <span class="text-slate-300">PHP 8.2 ou 8.3 avec extensions <code>sqlite3</code>, <code>zip</code>, <code>curl</code>, <code>mbstring</code>.</span>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-blue-400 font-bold block mb-1">Gestionnaire Composer</span>
+                        <span class="text-slate-300">Composer 2.x pour le chargement dynamique PSR-4 des extensions.</span>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-blue-400 font-bold block mb-1">Base de Données</span>
+                        <span class="text-slate-300">SQLite (par défaut en développement), compatible MySQL et PostgreSQL.</span>
+                    </div>
+                </div>
+
+                <!-- Admin Credentials Card -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5">
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        Identifiants par défaut du Super Administrateur
+                    </h3>
+                    <div class="overflow-x-auto text-xs">
+                        <table class="w-full text-left">
+                            <tr class="border-b border-slate-800"><td class="py-2 text-slate-400 font-medium">URL d'accès :</td><td class="py-2 text-blue-400 font-mono">http://localhost:8000/login ou /admin</td></tr>
+                            <tr class="border-b border-slate-800"><td class="py-2 text-slate-400 font-medium">Email :</td><td class="py-2 text-slate-200 font-mono">admin@lcms.local</td></tr>
+                            <tr class="border-b border-slate-800"><td class="py-2 text-slate-400 font-medium">Mot de passe :</td><td class="py-2 text-slate-200 font-mono">Password123!</td></tr>
+                            <tr><td class="py-2 text-slate-400 font-medium">Réinitialisation CLI :</td><td class="py-2 text-slate-300 font-mono">php artisan db:seed --class=UserSeeder</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Architecture Globale -->
+            <section id="lean-core" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-sm font-bold">3</span>
+                    Architecture Globale & Monolithe Modulaire
+                </h2>
+
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    LCMS Core adopte une séparation stricte en 3 couches distinctes, garantissant l'intégrité du noyau et l'indépendance de chaque composant :
+                </p>
+
+                <div class="space-y-3 text-xs">
+                    <div class="border-l-2 border-blue-500 pl-4 py-1">
+                        <h4 class="text-white font-bold text-sm">1. Le Noyau Minimal (Lean Core — <code>app/Core/</code>)</h4>
+                        <p class="text-slate-400 mt-1">Démarrage système, injection de dépendances IoC, validation stricte de manifestes JSON, tri topologique des dépendances, registre dynamique de navigation, tolérance aux crashs et bus d'interception (Hooks).</p>
+                    </div>
+                    <div class="border-l-2 border-indigo-500 pl-4 py-1">
+                        <h4 class="text-white font-bold text-sm">2. Le Panneau d'Administration Système (<code>platform/core/</code>)</h4>
+                        <p class="text-slate-400 mt-1">Layout d'administration unifié sous AdminLTE 4 et Tailwind CSS (<code>core::admin.layouts.app</code>), persistance inaltérable de la barre latérale sombre, contrôle d'authentification et gestion visuelle du cycle de vie des extensions et thèmes.</p>
+                    </div>
+                    <div class="border-l-2 border-emerald-500 pl-4 py-1">
+                        <h4 class="text-white font-bold text-sm">3. Les Extensions Autonomes (<code>platform/plugins/*</code>)</h4>
+                        <p class="text-slate-400 mt-1">Unités fonctionnelles étanches possédant leur propre espace de noms PSR-4, migrations isolées, modèles Eloquent, routes, contrôleurs et seeders dédiés.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Contrats Publics Stricts -->
+            <section id="contracts" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Contrats Publics Stricts (`app/Core/Contracts`)</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Pour préserver l'isolation logique, <strong>deux plugins ne communiquent jamais directement entre leurs implémentations privées</strong>. Tout échange de service s'opère via les interfaces publiques définies dans le Core :
+                </p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-800 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Interface</th>
+                                <th class="p-3">Rôle & Responsabilité</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-slate-400">
+                            <tr>
+                                <td class="p-3 font-mono text-blue-400">PluginInterface</td>
+                                <td class="p-3">Contrat de base définissant l'identifiant, le nom, la version et le cycle de vie du plugin.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-400">PluginManifestInterface</td>
+                                <td class="p-3">Contrat d'accès immuable aux métadonnées validées du fichier <code>plugin.json</code>.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-400">HookSubscriberInterface</td>
+                                <td class="p-3">Permet à un plugin de déclarer ses écouteurs d'actions et de filtres sur le bus d'interception.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-400">ThemeInterface</td>
+                                <td class="p-3">Contrat pour le moteur de présentation et la hiérarchie de surcharge de vues Blade.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-400">MediaStorageInterface</td>
+                                <td class="p-3">Contrat d'abstraction du stockage de fichiers (implémenté par <code>lcmscore.media-library</code>).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Résolution des Dépendances (Kahn) -->
+            <section id="dependency-resolver" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Résolution Topologique des Dépendances (Algorithme de Kahn)</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Lors du démarrage de l'application, le composant <code>DependencyResolver</code> ordonnance les plugins actifs selon un tri topologique déterministe fondé sur l'algorithme de Kahn :
+                </p>
+
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-white font-bold mb-1">Détection Préventive des Cycles</h4>
+                        <p class="text-slate-400">Si le plugin A dépend de B et B dépend de A, une exception typée <code>CircularDependencyException</code> est immédiatement levée, évitant tout blocage mémoire infini.</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-white font-bold mb-1">Gardes de Dépendances Inverses</h4>
+                        <p class="text-slate-400">Avant de désactiver ou désinstaller un plugin (ex: <code>media-library</code>), le noyau vérifie via <code>getDependents()</code> si d'autres plugins actifs en dépendent pour bloquer l'action destructrice.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Hooks -->
+            <section id="hooks" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Système de Hooks (Actions & Filtres)</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Le bus de hooks (<code>HookManager</code> / façade <code>Hook</code>) permet aux extensions de modifier le comportement ou le rendu du CMS sans modifier le code source :
+                </p>
+
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="space-y-2">
+                        <h4 class="text-blue-400 font-bold uppercase tracking-wider">Filtres (`Hook::filter`)</h4>
+                        <p class="text-slate-400">Transforme une valeur ou un flux HTML à travers une chaîne priorisée de souscripteurs :</p>
+                        <div class="code-block rounded-lg p-3 font-mono text-slate-200">
+<pre><code>// Injection de métadonnées dans la balise &lt;head&gt;
+Hook::addFilter('cms.head', function ($html) {
+    return $html . '&lt;meta name="author" content="LCMS"&gt;';
+}, priority: 10);
+
+// Déclenchement dans le template Blade
+{!! Hook::filter('cms.head', '') !!}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-indigo-400 font-bold uppercase tracking-wider">Actions (`Hook::action`)</h4>
+                        <p class="text-slate-400">Déclenche des événements d'exécution sans attendre de valeur de retour :</p>
+                        <div class="code-block rounded-lg p-3 font-mono text-slate-200">
+<pre><code>// Déclenchement lors d'une action
+Hook::action('cms.page.published', $page);
+
+// Écouteur abonné dans un plugin
+Hook::addAction('cms.page.published', function ($page) {
+    Log::info("Page publiée : " . $page->title);
+});</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Résilience & Safe Mode -->
+            <section id="resilience" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Résilience & Mode de Secours (Emergency Safe Mode)</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    LCMS Core garantit la disponibilité ininterrompue de la plateforme même en cas de panne critique d'un plugin défaillant :
+                </p>
+
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-amber-400 font-bold mb-1">Mise en Quarantaine Automatique</h4>
+                        <p class="text-slate-400">Si le <code>ServiceProvider</code> d'une extension déclenche une exception non interceptée au boot, elle est isolée en base (table <code>cms_plugin_errors</code>) et désactivée sans impacter les autres modules.</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-rose-400 font-bold mb-1">Bypass CLI d'Urgence</h4>
+                        <p class="text-slate-400">En cas d'incident bloquant l'accès Web, la commande <code>php artisan cms:recovery:safe-mode --on</code> neutralise le chargement de toutes les extensions pour rétablir l'accès admin racine.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Guide Développeur — Création de Plugins -->
+            <section id="plugin-anatomy" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm font-bold">4</span>
+                    Guide Développeur : Créer un Plugin
+                </h2>
+
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Chaque extension réside dans un sous-répertoire isolé sous <code>platform/plugins/{vendor}.{nom}/</code> et suit une structure de type package Laravel PSR-4 :
+                </p>
+
+                <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+<pre><code>platform/plugins/lcmscore.mon-plugin/
+├── plugin.json                 # Manifeste JSON validé obligatoirement
+├── database/
+│   ├── migrations/             # Migrations isolées (table cms_plugin_migrations)
+│   └── seeders/                # Données initiales (exécutées via cms:plugin:seed)
+├── resources/
+│   ├── assets/                 # CSS/JS publiés vers public/vendor/plugins/{id}/
+│   └── views/                  # Vues Blade (surchargeables par le thème actif)
+├── routes/
+│   ├── web.php                 # Routes Web (montées uniquement à l'état ACTIVE)
+│   └── api.php                 # Routes API
+└── src/
+    ├── Http/Controllers/       # Contrôleurs du plugin
+    ├── Models/                 # Modèles Eloquent isolés
+    └── Providers/              # ServiceProviders enregistrés au boot</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: Manifeste plugin.json -->
+            <section id="plugin-manifest" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Le Manifeste `plugin.json`</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Le manifeste est le document contractuel immuable inspecté par <code>ManifestValidator</code> (protection anti-traversée de répertoire, schéma JSON strict) :
+                </p>
+
+                <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+                    <button onclick="copyCode(this)" class="absolute top-3 right-3 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded border border-slate-700 transition">Copier</button>
+<pre><code>{
+    "id": "lcmscore.mon-plugin",
+    "name": "Mon Extension Métier",
+    "version": "1.0.0",
+    "description": "Exemple d'extension autonome pour LCMS Core",
+    "author": {
+        "name": "Équipe de Développement",
+        "email": "dev@mon-domaine.com"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\MonPlugin\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\MonPlugin\\Providers\\MonPluginServiceProvider"
+    ],
+    "dependencies": {
+        "lcmscore.media-library": "^1.0"
+    },
+    "conflicts": [],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "mon_plugin.manage",
+            "label": "Gérer Mon Plugin"
+        }
+    ]
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: Créer un Plugin pas-à-pas -->
+            <section id="plugin-creation" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Exemple Pas-à-Pas : Création d'un Plugin</h2>
+
+                <div class="space-y-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-blue-400 font-bold text-sm block mb-1">Étape 1 : Le ServiceProvider du Plugin</span>
+                        <p class="text-slate-400 mb-2">Déclarez les routes, les vues Blade et injectez l'entrée dans la barre latérale admin :</p>
+                        <div class="code-block rounded-lg p-3 font-mono text-slate-200">
+<pre><code>namespace Plugins\MonPlugin\Providers;
+
+use App\Core\Admin\NavigationRegistry;
+use Illuminate\Support\ServiceProvider;
+
+class MonPluginServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        // Enregistrement des services IoC propres au plugin
+    }
+
+    public function boot(NavigationRegistry $navigation): void
+    {
+        // Chargement des vues Blade sous l'espace de noms mon-plugin::
+        $this->loadViewsFrom(dirname(__DIR__, 2).'/resources/views', 'mon-plugin');
+
+        // Ajout d'une entrée dans la barre latérale AdminLTE de LCMS Core
+        $navigation->registerItem(
+            id: 'mon-plugin-manage',
+            label: 'Mon Plugin',
+            url: '/admin/mon-plugin',
+            icon: 'bi bi-stars',
+            priority: 40,
+            pluginId: 'lcmscore.mon-plugin'
+        );
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Migrations & Seeders Isolés -->
+            <section id="plugin-database" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Migrations & Seeders Isolés</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Chaque extension possède son propre dossier <code>database/migrations/</code> et <code>database/seeders/</code>. La gestion de persistance suit des règles précises :
+                </p>
+
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-emerald-400 font-bold mb-1">Cycle des Migrations</h4>
+                        <ul class="space-y-1.5 text-slate-400 list-disc list-inside">
+                            <li>À l'activation : les migrations en attente sont jouées dans une transaction.</li>
+                            <li>À la désactivation : les tables et données sont strictement préservées.</li>
+                            <li>À la suppression : possibilité de purger complètement les données via rollback.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-blue-400 font-bold mb-1">Exécution des Seeders</h4>
+                        <p class="text-slate-400 mb-2">Les seeders de plugins sont découverts et exécutés automatiquement via le moteur <code>PluginSeederManager</code> :</p>
+                        <div class="code-block rounded-lg p-2 font-mono text-slate-200">
+<pre><code># Seeder un plugin précis
+php artisan cms:plugin:seed lcmscore.mon-plugin
+
+# Seeder tous les plugins actifs
+php artisan cms:plugin:seed --all</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Publication d'Assets & ZIP -->
+            <section id="plugin-assets" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Publication d'Assets & Installation ZIP Sécurisée</h2>
+
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Les assets publics situés dans <code>resources/assets/</code> sont publiés automatiquement dans <code>public/vendor/plugins/{id}/</code> via la commande :
+                </p>
+                <div class="code-block rounded-xl p-3 font-mono text-xs text-slate-200">
+<pre><code>php artisan cms:plugin:publish-assets lcmscore.mon-plugin --force</code></pre>
+                </div>
+
+                <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 text-xs">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        Protection contre les Attaques Zip Slip lors du Téléversement
+                    </h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Le pipeline <code>PluginZipInstaller</code> vérifie chaque chemin d'archive avant extraction : rejet formel de tout segment parent (<code>..</code>), des chemins absolus, et interdiction stricte de tout fichier exécutable binaire (<code>.exe</code>, <code>.sh</code>, <code>.phar</code>, <code>.bat</code>).
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section: Moteur de Thèmes & View Overriding -->
+            <section id="theme-overview" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center text-sm font-bold">5</span>
+                    Moteur de Thèmes & Surcharge Blade (View Overriding)
+                </h2>
+
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Le système de présentation de LCMS Core permet de redéfinir l'apparence des pages publiques et des vues de plugins sans jamais modifier le code source de ces derniers :
+                </p>
+
+                <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+<pre><code>platform/themes/default-modern/
+├── theme.json                  # Manifeste du thème
+├── resources/
+│   ├── assets/css/theme.css    # Styles compilés publiés vers public/vendor/themes/{id}/
+│   └── views/
+│       ├── layouts/app.blade.php
+│       └── plugins/            # Surcharges des vues de plugins
+│           └── lcmscore.pages/
+│               └── page.blade.php  # Surcharge la vue du plugin de pages</code></pre>
+                </div>
+
+                <div class="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-4 text-xs text-indigo-200 leading-relaxed">
+                    <strong class="font-semibold text-white">Hiérarchie de Résolution Blade :</strong>
+                    Lorsqu'une vue est appelée, <code>ThemeManager</code> inspecte en priorité le dossier <code>platform/themes/{theme-actif}/views/plugins/{plugin-id}/*</code>. Si aucune surcharge n'est définie, la vue originale de l'extension est utilisée en repli transparent.
+                </div>
+            </section>
+
+            <!-- Section: Référence CLI -->
+            <section id="cli-reference" class="space-y-6 pt-8 border-t border-slate-800/80 pb-16">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 text-purple-400 flex items-center justify-center text-sm font-bold">6</span>
+                    Référence des Commandes Artisan `cms:*`
+                </h2>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-800 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Commande</th>
+                                <th class="p-3">Arguments / Options</th>
+                                <th class="p-3">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 font-mono text-slate-400">
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:plugin:list</td>
+                                <td class="p-3 text-slate-500">—</td>
+                                <td class="p-3 font-sans text-slate-300">Affiche le tableau des extensions découvertes, leur statut et état d'activation.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:plugin:enable</td>
+                                <td class="p-3 text-amber-300">{id}</td>
+                                <td class="p-3 font-sans text-slate-300">Installe (si nécessaire), exécute les migrations et active une extension.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:plugin:disable</td>
+                                <td class="p-3 text-amber-300">{id}</td>
+                                <td class="p-3 font-sans text-slate-300">Désactive une extension tout en préservant ses tables et données en base.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:plugin:seed</td>
+                                <td class="p-3 text-amber-300">{id?} {--all} {--class=}</td>
+                                <td class="p-3 font-sans text-slate-300">Exécute les seeders d'une extension spécifique ou de tous les plugins actifs.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:plugin:publish-assets</td>
+                                <td class="p-3 text-amber-300">{id?} {--all} {--force}</td>
+                                <td class="p-3 font-sans text-slate-300">Publie les fichiers statiques de l'extension vers <code>public/vendor/plugins/</code>.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:theme:list</td>
+                                <td class="p-3 text-slate-500">—</td>
+                                <td class="p-3 font-sans text-slate-300">Liste les thèmes disponibles et identifie le thème actif.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:theme:activate</td>
+                                <td class="p-3 text-amber-300">{id}</td>
+                                <td class="p-3 font-sans text-slate-300">Active le thème spécifié pour le rendu public et publie ses assets.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:theme:publish-assets</td>
+                                <td class="p-3 text-amber-300">{id} {--force}</td>
+                                <td class="p-3 font-sans text-slate-300">Publie les assets du thème vers <code>public/vendor/themes/</code>.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:recovery:safe-mode</td>
+                                <td class="p-3 text-amber-300">{--on} {--off}</td>
+                                <td class="p-3 font-sans text-slate-300">Active ou désactive le mode de secours pour bypasser toutes les extensions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-[#050914] px-6 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span>© 2026 <strong>LCMS Core</strong> — Architecture Plugin-First sous licence open-source MIT.</span>
+            <div class="flex items-center gap-4">
+                <a href="https://packagist.org/packages/elouafidev/lcms-core" class="text-blue-400 hover:text-blue-300 transition">Packagist</a>
+                <span class="text-slate-700">•</span>
+                <a href="https://github.com/elouafidev/lcms-core" class="text-blue-400 hover:text-blue-300 transition">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script: Search & Copy to Clipboard -->
+    <script>
+        function copyCode(btn) {
+            const pre = btn.parentElement.querySelector('pre');
+            if (pre) {
+                navigator.clipboard.writeText(pre.innerText).then(() => {
+                    const original = btn.innerText;
+                    btn.innerText = 'Copié !';
+                    btn.classList.add('bg-blue-600', 'text-white');
+                    setTimeout(() => {
+                        btn.innerText = original;
+                        btn.classList.remove('bg-blue-600', 'text-white');
+                    }, 2000);
+                });
+            }
+        }
+
+        // Search in Documentation
+        document.getElementById('searchInput')?.addEventListener('input', function(e) {
+            const val = e.target.value.toLowerCase();
+            document.querySelectorAll('main section').forEach(section => {
+                const text = section.innerText.toLowerCase();
+                section.style.display = text.includes(val) ? '' : 'none';
+            });
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebarNav');
+            sidebar.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+

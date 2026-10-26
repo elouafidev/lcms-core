@@ -367,19 +367,16 @@ composer run format
 
 ---
 
-## 📚 Documentation Technique Approfondie
+## 📚 Documentation Technique
 
-Les spécifications détaillées et l'historique architectural sont disponibles dans le dossier [`docs/`](docs/) :
+La documentation technique interactive officielle au format HTML est disponible dans le dossier [`docs/`](docs/) :
 
-- 🏛️ [Spécifications de l'Architecture](docs/ARCHITECTURE.md) : Modèle conceptuel à trois couches et flux d'exécution.
-- ⚙️ [Fonctionnement du Système de Plugins](docs/PLUGIN_SYSTEM.md) : Machine à états, cycle de vie et conventions.
-- 🛡️ [Politique de Sécurité](docs/SECURITY.md) & [Modèle de Menaces STRIDE](docs/THREAT_MODEL.md) : Analyse des vecteurs d'attaque et contre-mesures.
-- 🧪 [Stratégie de Test](docs/TESTING.md) : Pyramide de tests, tests unitaires, d'intégration et d'architecture.
-- 📋 [Plan de Travail Opérationnel](docs/PLAN.md) : Suivi des tâches, critères d'acceptation et jalons des phases 0 à 5.
-- 📐 [Dossier des Décisions Architecturales (ADR)](docs/decisions/README.md) :
-  - [ADR-0001 : Monolithe Modulaire](docs/decisions/ADR-0001-modular-monolith.md)
-  - [ADR-0002 : Manifestes et Contrats Publics](docs/decisions/ADR-0002-plugin-manifest-and-contracts.md)
-  - [ADR-0003 : Layout d'Administration Unifié, Gestion Détaillée et Import Sécurisé ZIP](docs/decisions/ADR-0003-unified-admin-layout-and-secure-plugin-management.md)
+- 🌐 **[Portail de Documentation Technique Complète (docs/index.html)](docs/index.html)** :
+  - **🚀 Installation & Démarrage Rapide :** Déploiement Packagist via `composer create-project`, configuration `.env`, gestion du compte Super Administrateur.
+  - **🏛️ Architecture Globale :** Philosophie Lean Core, Contrats Publics Stricts, ordonnancement topologique (Kahn), Bus de Hooks et Mode de Secours.
+  - **🧩 Guide de Création de Plugins :** Anatomie, manifeste `plugin.json`, migrations isolées, seeders automatiques et publication d'assets.
+  - **🎨 Moteur de Thèmes :** Système de présentation autonome et surcharge hiérarchique des vues Blade (*View Overriding*).
+  - **💻 Référence Complète des Commandes Artisan :** Tableau exhaustif des commandes CLI `cms:*`.
 
 ---
 
