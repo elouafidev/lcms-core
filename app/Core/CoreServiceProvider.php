@@ -10,6 +10,7 @@ use App\Core\Console\Commands\PluginDisableCommand;
 use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
 use App\Core\Console\Commands\PluginPublishAssetsCommand;
+use App\Core\Console\Commands\PluginSeedCommand;
 use App\Core\Console\Commands\SafeModeCommand;
 use App\Core\Console\Commands\ThemeActivateCommand;
 use App\Core\Console\Commands\ThemeListCommand;
@@ -17,6 +18,7 @@ use App\Core\Console\Commands\ThemePublishAssetsCommand;
 use App\Core\DependencyResolver\DependencyResolver;
 use App\Core\Hooks\HookManager;
 use App\Core\Lifecycle\PluginMigrationManager;
+use App\Core\Lifecycle\PluginSeederManager;
 use App\Core\Permissions\PermissionRegistry;
 use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
 use App\Core\PluginDiscovery\ManifestValidator;
@@ -51,6 +53,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(DependencyResolver::class);
         $this->app->singleton(HookManager::class);
         $this->app->singleton(PluginMigrationManager::class);
+        $this->app->singleton(PluginSeederManager::class);
         $this->app->singleton(PluginRegistry::class);
         $this->app->singleton(PermissionRegistry::class);
         $this->app->singleton(NavigationRegistry::class);
@@ -88,6 +91,7 @@ class CoreServiceProvider extends ServiceProvider
                 PluginDisableCommand::class,
                 SafeModeCommand::class,
                 PluginPublishAssetsCommand::class,
+                PluginSeedCommand::class,
                 ThemePublishAssetsCommand::class,
                 ThemeListCommand::class,
                 ThemeActivateCommand::class,

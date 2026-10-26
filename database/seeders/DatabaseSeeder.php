@@ -27,5 +27,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
         ]);
+
+        if ($this->command !== null) {
+            $this->command->call('cms:plugin:seed', ['--all' => true]);
+        }
     }
 }
