@@ -1,10 +1,31 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "elouafidev/lcms-core",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "LCMS Core — Modular, extensible, and resilient Plugin-First Content Management System built on Laravel.",
+    "keywords": [
+        "laravel",
+        "cms",
+        "plugin-first",
+        "modular",
+        "lcms",
+        "lcms-core",
+        "extensible",
+        "adminlte"
+    ],
+    "homepage": "https://github.com/elouafidev/lcms-core",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "elouafidev",
+            "email": "elouafi.dev@gmail.com",
+            "role": "Lead Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/elouafidev/lcms-core/issues",
+        "source": "https://github.com/elouafidev/lcms-core"
+    },
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",
@@ -39,7 +60,9 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --force",
+            "@php artisan db:seed --force",
             "npm install --ignore-scripts",
             "npm run build"
         ],
@@ -72,7 +95,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+            "@php artisan migrate --graceful --ansi",
+            "@php artisan db:seed --force"
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"

@@ -9,12 +9,13 @@
 </p>
 
 <p align="center">
+  <a href="https://packagist.org/packages/elouafidev/lcms-core"><img src="https://img.shields.io/packagist/v/elouafidev/lcms-core.svg?style=flat&color=2563eb&logo=packagist&logoColor=white" alt="Packagist Version"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-244%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
-  <a href="https://github.com/elouafidev/lcms-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
 </p>
 
 ---
@@ -135,24 +136,47 @@ flowchart TD
 - **Composer** : `2.x`.
 - **Base de données** : SQLite (par défaut pour le développement) ou PostgreSQL / MySQL.
 
-### 1. Cloner le Dépôt
+### Option 1 (Recommandée) : Créer un projet via Composer (Packagist)
+
+Vous pouvez initialiser une nouvelle instance de LCMS Core en une seule commande grâce à Composer et Packagist :
+
+```bash
+composer create-project elouafidev/lcms-core mon-projet-lcms
+cd mon-projet-lcms
+php artisan serve
+```
+
+> [!TIP]
+> **Ce que Composer exécute automatiquement pour vous :**
+> - Téléchargement du template et installation des dépendances PHP.
+> - Création du fichier `.env` et génération de la clé de chiffrement `APP_KEY`.
+> - Création du fichier de base de données SQLite `database/database.sqlite`.
+> - Exécution automatique des migrations du noyau et des extensions initiales.
+> - Seeding automatique du compte Super Administrateur racine.
+> 
+> Votre CMS est opérationnel instantanément sans configuration manuelle !
+
+---
+
+### Option 2 : Cloner depuis GitHub
+
+#### Initialisation Automatique
 ```bash
 git clone https://github.com/elouafidev/lcms-core.git
 cd lcms-core
-```
 
-### 2. Initialisation Automatique
-Le projet intègre une routine d'initialisation complète via Composer :
-```bash
+# Routine complète (installation, .env, clé, migration, seed, build)
 composer run setup
 
-# Peupler la base de données (création du Super Administrateur)
-php artisan db:seed
+# Lancer le serveur local
+php artisan serve
 ```
-*Cette commande installe les dépendances, génère le fichier `.env` depuis `.env.example`, calcule la clé applicative `APP_KEY`, exécute les migrations du noyau, peuple le super administrateur et compile les assets frontend.*
 
-### 3. Alternative : Initialisation Manuelle
+#### Initialisation Manuelle
 ```bash
+git clone https://github.com/elouafidev/lcms-core.git
+cd lcms-core
+
 # Copier la configuration
 cp .env.example .env
 
@@ -170,6 +194,9 @@ php artisan db:seed
 
 # Installer et compiler les dépendances front-end (optionnel)
 npm install && npm run build
+
+# Démarrer le serveur local
+php artisan serve
 ```
 
 ### 4. Démarrer le Serveur Local
