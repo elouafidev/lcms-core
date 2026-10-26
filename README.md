@@ -1,7 +1,7 @@
 # LCMS Core — Laravel Plugin-First CMS
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="320" alt="LCMS Core Logo">
+  <img src="docs/logo/banner.png" width="100%" alt="LCMS Core Banner">
 </p>
 
 <p align="center">
@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
-  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-213%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-238%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
   <a href="https://github.com/elouafidev/lcms-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
@@ -40,8 +40,29 @@ Contrairement aux CMS traditionnels qui intègrent nativement des modèles de do
 - 📦 **Installation Sécurisée d'Extensions ZIP :** Import direct depuis le tableau de bord avec protection stricte contre le **Zip Slip**, rejet des extensions exécutables interdites (`.exe`, `.sh`, `.phar`, etc.), extraction sandboxée et validation de schéma JSON.
 - 🪝 **Bus de Hooks Extensible :** Système d'actions et de filtres priorisés (`Hook::action()`, `Hook::filter()`) pour personnaliser le comportement du CMS sans modifier le code source.
 - 🎨 **Moteur de Thèmes & Surcharge Blade :** Thème de référence `default-modern` responsive avec surcharge hiérarchique des vues de plugins (`platform/themes/{theme}/views/plugins/{plugin-id}/*`).
-- 🖥️ **Panneau d'Administration Unifié :** Layout canonique (`core::admin.layouts.app`) assurant l'affichage permanent et inaltérable de la barre latérale (`admin-sidebar`) sur l'ensemble des modules d'administration.
+- 🖥️ **Panneau d'Administration Unifié & Ergonomique :** Interface moderne basée sur AdminLTE 4 et Tailwind CSS avec barre latérale sombre (`#050914`), header harmonisé, et layout canonique (`core::admin.layouts.app`) assurant l'affichage permanent et inaltérable de la barre latérale (`admin-sidebar`) sur l'ensemble des modules d'administration.
+- 🌐 **Internationalisation & Multilingue (i18n) :** Prise en charge native du français (`fr`) et de l'anglais (`en`), sélecteur de langue dynamique en front et dans le panneau d'administration, architecture de localisation JSON centralisée (`lang/fr.json`).
 - 💾 **Propriété Stricte des Données :** Migrations isolées par extension avec journalisation dédiée (`cms_plugin_migrations`). La désactivation conserve les tables ; la désinstallation propose une purge optionnelle et explicite.
+
+---
+
+## 📸 Aperçu du Panneau d'Administration
+
+LCMS Core offre une interface d'administration épurée, responsive et cohérente, facilitant la supervision globale des extensions et des thèmes :
+
+### 🧩 Gestion et Cycle de Vie des Extensions (Plugins)
+*Supervision en temps réel des extensions, activation/désactivation sécurisée, résolution des dépendances et téléversement d'archives ZIP.*
+
+<p align="center">
+  <img src="docs/screencapture/screencapture-admin-plugins-index.png" alt="LCMS Core - Gestion des Extensions" width="100%">
+</p>
+
+### 🎨 Gestion et Activation des Thèmes
+*Activation instantanée du thème de rendu public, prévisualisation, gestion des métadonnées et surcharge automatique des vues Blade.*
+
+<p align="center">
+  <img src="docs/screencapture/screencapture-admin-themes-index.png" alt="LCMS Core - Gestion des Thèmes" width="100%">
+</p>
 
 ---
 
@@ -124,8 +145,11 @@ cd lcms-core
 Le projet intègre une routine d'initialisation complète via Composer :
 ```bash
 composer run setup
+
+# Peupler la base de données (création du Super Administrateur)
+php artisan db:seed
 ```
-*Cette commande installe les dépendances, génère le fichier `.env` depuis `.env.example`, calcule la clé applicative `APP_KEY`, exécute les migrations du noyau et compile les assets frontend.*
+*Cette commande installe les dépendances, génère le fichier `.env` depuis `.env.example`, calcule la clé applicative `APP_KEY`, exécute les migrations du noyau, peuple le super administrateur et compile les assets frontend.*
 
 ### 3. Alternative : Initialisation Manuelle
 ```bash
@@ -141,6 +165,9 @@ php artisan key:generate
 # Exécuter les migrations de base de données
 php artisan migrate
 
+# Peupler la base de données avec le compte Super Administrateur
+php artisan db:seed
+
 # Installer et compiler les dépendances front-end (optionnel)
 npm install && npm run build
 ```
@@ -151,6 +178,23 @@ php artisan serve
 ```
 - **Site public :** [http://localhost:8000](http://localhost:8000)
 - **Panneau d'administration :** [http://localhost:8000/admin](http://localhost:8000/admin)
+
+### 🔐 Identifiants par Défaut (Super Administrateur)
+
+Le seeder du projet ([`database/seeders/UserSeeder.php`](database/seeders/UserSeeder.php)) préconfigure un compte super administrateur racine avec les identifiants d'accès suivants :
+
+| Paramètre | Valeur par défaut |
+|---|---|
+| **URL de connexion** | [`http://localhost:8000/login`](http://localhost:8000/login) ou [`http://localhost:8000/admin`](http://localhost:8000/admin) |
+| **Email** | `admin@lcms.local` |
+| **Mot de passe** | `Password123!` |
+| **Rôle / Droits** | `SuperAdmin` (accès complet aux modules d'administration, thèmes et extensions) |
+
+> [!TIP]
+> Si la base de données a été réinitialisée ou migrée sans seed, vous pouvez générer ou réinitialiser ce compte super administrateur à tout moment avec la commande :
+> ```bash
+> php artisan db:seed --class=UserSeeder
+> ```
 
 ---
 
@@ -272,7 +316,7 @@ Le projet applique les principes de défense en profondeur documentés dans nos 
 
 ## 🧪 Assurance Qualité & Tests
 
-Le projet est couvert par une suite rigoureuse de **213 tests automatisés** sans aucun contournement :
+Le projet est couvert par une suite rigoureuse de **238 tests automatisés** (1 396 assertions) sans aucun contournement :
 
 ```bash
 # Exécuter l'intégralité de la suite de tests
