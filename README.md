@@ -1,7 +1,7 @@
 # LCMS Core — Laravel Plugin-First CMS
 
 <p align="center">
-  <img src="docs/logo/banner.png" width="100%" alt="LCMS Core Banner">
+  <img src="public/imgs/banner.png" width="100%" alt="LCMS Core Banner">
 </p>
 
 <p align="center">
@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
-  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-238%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-244%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
   <a href="https://github.com/elouafidev/lcms-core/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
@@ -215,6 +215,12 @@ php artisan cms:plugin:disable lcmscore.pages
 
 # Publier les assets publics d'une extension vers public/vendor/plugins/
 php artisan cms:plugin:publish-assets lcmscore.pages
+
+# Exécuter les seeders d'une extension spécifique
+php artisan cms:plugin:seed lcmscore.demo-hello
+
+# Exécuter les seeders de toutes les extensions actives
+php artisan cms:plugin:seed --all
 ```
 
 ### Gestion des Thèmes (`cms:theme:*`)
@@ -316,7 +322,7 @@ Le projet applique les principes de défense en profondeur documentés dans nos 
 
 ## 🧪 Assurance Qualité & Tests
 
-Le projet est couvert par une suite rigoureuse de **238 tests automatisés** (1 396 assertions) sans aucun contournement :
+Le projet est couvert par une suite rigoureuse de **244 tests automatisés** (1 427 assertions) sans aucun contournement :
 
 ```bash
 # Exécuter l'intégralité de la suite de tests
