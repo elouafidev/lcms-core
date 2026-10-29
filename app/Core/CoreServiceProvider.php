@@ -6,6 +6,8 @@ namespace App\Core;
 
 use App\Core\Admin\NavigationRegistry;
 use App\Core\Assets\PluginAssetManager;
+use App\Core\Console\Commands\DisableTwoFactorCommand;
+use App\Core\Console\Commands\EnableTwoFactorCommand;
 use App\Core\Console\Commands\PluginDisableCommand;
 use App\Core\Console\Commands\PluginEnableCommand;
 use App\Core\Console\Commands\PluginListCommand;
@@ -26,8 +28,14 @@ use App\Core\PluginDiscovery\PluginDiscovery;
 use App\Core\PluginDiscovery\PluginZipInstaller;
 use App\Core\PluginManager\PluginManager;
 use App\Core\PluginRegistry\PluginRegistry;
+use App\Core\RBAC\Services\RbacManager;
 use App\Core\Recovery\PluginQuarantineHandler;
 use App\Core\Recovery\SafeModeManager;
+use App\Core\Security\Audit\AuditLogger;
+use App\Core\Security\Services\RecoveryCodeService;
+use App\Core\Security\Services\TotpService;
+use App\Core\Settings\Services\MailTesterService;
+use App\Core\Settings\SettingManager;
 use App\Core\Themes\ThemeAssetManager;
 use App\Core\Themes\ThemeDiscovery;
 use App\Core\Themes\ThemeManager;
@@ -65,6 +73,14 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeAssetManager::class);
         $this->app->singleton(ThemeManager::class);
         $this->app->singleton(ThemeZipInstaller::class);
+
+        // Security & Settings & RBAC Services
+        $this->app->singleton(SettingManager::class);
+        $this->app->singleton(TotpService::class);
+        $this->app->singleton(RecoveryCodeService::class);
+        $this->app->singleton(AuditLogger::class);
+        $this->app->singleton(RbacManager::class);
+        $this->app->singleton(MailTesterService::class);
     }
 
     /**
@@ -95,6 +111,8 @@ class CoreServiceProvider extends ServiceProvider
                 ThemePublishAssetsCommand::class,
                 ThemeListCommand::class,
                 ThemeActivateCommand::class,
+                EnableTwoFactorCommand::class,
+                DisableTwoFactorCommand::class,
             ]);
         }
 
@@ -106,6 +124,8 @@ class CoreServiceProvider extends ServiceProvider
             icon: 'palette',
             priority: 15
         );
+
+        $this->app->make(SettingManager::class)->loadAndApplyConfigOverrides();
 
         $this->app->booted(function (): void {
             $this->app->make(PluginManager::class)->boot();

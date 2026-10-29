@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Core\CoreServiceProvider;
+use App\Core\RBAC\Middleware\EnsureUserHasPermission;
+use App\Core\Settings\Middleware\CheckMaintenanceMode;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             App\Http\Middleware\SetLocale::class,
+            CheckMaintenanceMode::class,
+        ]);
+
+        $middleware->alias([
+            'permission' => EnsureUserHasPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
