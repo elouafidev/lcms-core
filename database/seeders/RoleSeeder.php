@@ -32,6 +32,11 @@ class RoleSeeder extends Seeder
             ['name' => 'Voir les plugins', 'slug' => 'plugins.view', 'group' => 'plugins', 'description' => 'Consulter la liste des plugins installés'],
             ['name' => 'Gérer les plugins', 'slug' => 'plugins.manage', 'group' => 'plugins', 'description' => 'Activer, désactiver ou installer des plugins'],
             ['name' => 'Consulter les journaux d’audit', 'slug' => 'audit.logs.view', 'group' => 'security', 'description' => 'Consulter l’historique des actions d’audit'],
+
+            // Appearance & Themes permissions
+            ['name' => 'Consulter les thèmes', 'slug' => 'themes.view', 'group' => 'appearance', 'description' => 'Consulter la liste et les détails des thèmes installés'],
+            ['name' => 'Gérer les thèmes', 'slug' => 'themes.manage', 'group' => 'appearance', 'description' => 'Activer, désactiver, importer, supprimer des thèmes et publier leurs assets'],
+            ['name' => 'Personnaliser l’apparence', 'slug' => 'appearance.customize', 'group' => 'appearance', 'description' => 'Personnaliser le CSS, le JavaScript et les balises head publiques'],
         ];
 
         $permissionModels = [];
@@ -74,6 +79,7 @@ class RoleSeeder extends Seeder
             'settings.users.view', 'settings.users.manage',
             'settings.update.view',
             'plugins.view', 'plugins.manage',
+            'themes.view', 'themes.manage', 'appearance.customize',
             'audit.logs.view',
         ];
         $admin->permissions()->sync(
