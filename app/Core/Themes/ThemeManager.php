@@ -138,7 +138,7 @@ class ThemeManager
 
         $this->activeTheme = $theme;
         $this->applyThemeViews($theme);
-        $this->assetManager->publish($theme->getId(), $theme->getPath());
+        $this->assetManager->publish($theme->getId(), $theme->getPath(), force: true);
 
         return $theme;
     }

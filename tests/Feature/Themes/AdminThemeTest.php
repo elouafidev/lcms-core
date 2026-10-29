@@ -242,6 +242,42 @@ class AdminThemeTest extends TestCase
         $response->assertSee(route('admin.themes.index'));
     }
 
+    public function test_admin_can_publish_theme_assets_via_http(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->post(route('admin.themes.publish-assets', 'default-modern'));
+
+        $response->assertRedirect(route('admin.themes.index'));
+        $response->assertSessionHas('success');
+        $this->assertTrue($this->assetManager->hasPublished('default-modern'));
+    }
+
+    public function test_admin_can_publish_all_theme_assets_via_http(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->post(route('admin.themes.publish-all-assets'));
+
+        $response->assertRedirect(route('admin.themes.index'));
+        $response->assertSessionHas('success');
+        $this->assertTrue($this->assetManager->hasPublished('default-modern'));
+    }
+
+    public function test_theme_details_modal_and_actions_are_rendered_in_index(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->get(route('admin.themes.index'));
+        $response->assertOk();
+        $response->assertSee('themeModal-default-modern');
+        $response->assertSee(route('admin.themes.publish-assets', 'default-modern'));
+        $response->assertSee(route('admin.themes.publish-all-assets'));
+    }
+
     private function deleteDirectory(string $dir): void
     {
         if (! is_dir($dir)) {

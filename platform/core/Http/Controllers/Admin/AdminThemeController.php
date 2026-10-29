@@ -39,6 +39,7 @@ class AdminThemeController extends Controller
             'themes' => $themes,
             'activeTheme' => $activeTheme,
             'activeThemeId' => $activeTheme?->getId(),
+            'assetManager' => $this->themeManager->getAssetManager(),
         ]);
     }
 
@@ -149,5 +150,53 @@ class AdminThemeController extends Controller
             return redirect()->back(fallback: route('admin.themes.index'))
                 ->with('error', __("Failed to delete theme ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
         }
+    }
+
+    /**
+     * Publish static assets for a specific theme.
+     */
+    public function publishAssets(string $id): RedirectResponse
+    {
+        $this->discovery->discover();
+        $theme = $this->discovery->get($id);
+
+        if ($theme === null) {
+            return redirect()->route('admin.themes.index')
+                ->with('error', __("Theme ':id' not found.", ['id' => $id]));
+        }
+
+        try {
+            $published = $this->themeManager->getAssetManager()->publish($theme->getId(), $theme->getPath(), force: true);
+
+            if ($published) {
+                return redirect()->route('admin.themes.index')
+                    ->with('success', __("Assets for theme ':name' published successfully.", ['name' => $theme->getName()]));
+            }
+
+            return redirect()->route('admin.themes.index')
+                ->with('error', __("No assets directory found or assets publishing failed for theme ':name'.", ['name' => $theme->getName()]));
+        } catch (Throwable $e) {
+            return redirect()->route('admin.themes.index')
+                ->with('error', __("Failed to publish assets for theme ':id': :message", ['id' => $id, 'message' => $e->getMessage()]));
+        }
+    }
+
+    /**
+     * Publish static assets for all discovered themes.
+     */
+    public function publishAllAssets(): RedirectResponse
+    {
+        $this->discovery->discover();
+        $themes = $this->discovery->all();
+        $count = 0;
+
+        foreach ($themes as $theme) {
+            if ($this->themeManager->getAssetManager()->publish($theme->getId(), $theme->getPath(), force: true)) {
+                $count++;
+            }
+        }
+
+        return redirect()->route('admin.themes.index')
+            ->with('success', __('Assets published successfully for :count theme(s).', ['count' => $count]));
     }
 }
