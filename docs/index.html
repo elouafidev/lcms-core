@@ -94,7 +94,7 @@
             <div class="flex items-center gap-4">
                 <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-lg">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>v1.0.0 • Laravel 11/12</span>
+                    <span>v1.1.0 • Laravel 11/12 • 283 Tests (100%)</span>
                 </div>
                 <a href="https://github.com/elouafidev/lcms-core" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -152,6 +152,17 @@
                     <ul class="space-y-1">
                         <li><a href="#theme-overview" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Fonctionnement & `theme.json`</a></li>
                         <li><a href="#view-overriding" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Surcharge de Vues (View Overriding)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Administration & Sécurité</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#settings-general-2fa" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Profil & Sécurité 2FA (TOTP)</a></li>
+                        <li><a href="#settings-site-smtp" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Configuration Site, SMTP & Mode 503</a></li>
+                        <li><a href="#settings-rbac" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Rôles & Permissions (RBAC)</a></li>
+                        <li><a href="#settings-users" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Gestion des Comptes & Sessions</a></li>
+                        <li><a href="#settings-core-update" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Mises à Jour Core par Archive ZIP</a></li>
                     </ul>
                 </div>
 
@@ -616,16 +627,204 @@ php artisan cms:plugin:seed --all</code></pre>
 │               └── page.blade.php  # Surcharge la vue du plugin de pages</code></pre>
                 </div>
 
-                <div class="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-4 text-xs text-indigo-200 leading-relaxed">
+                <div id="view-overriding" class="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-4 text-xs text-indigo-200 leading-relaxed">
                     <strong class="font-semibold text-white">Hiérarchie de Résolution Blade :</strong>
                     Lorsqu'une vue est appelée, <code>ThemeManager</code> inspecte en priorité le dossier <code>platform/themes/{theme-actif}/views/plugins/{plugin-id}/*</code>. Si aucune surcharge n'est définie, la vue originale de l'extension est utilisée en repli transparent.
+                </div>
+            </section>
+
+            <!-- Section: Administration Système, Sécurité & Paramètres -->
+            <section id="settings-general-2fa" class="space-y-8 pt-8 border-t border-slate-800/80">
+                <div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm font-bold">6</span>
+                        Administration Système, Sécurité & Paramètres
+                    </h2>
+                    <p class="text-sm text-slate-300 leading-relaxed mt-2">
+                        LCMS Core intègre un module complet d'administration dédié à la gestion des préférences, de la sécurité d'accès, du contrôle des rôles et des mises à jour applicatives. Conçu selon les principes de sécurité <em>defense-in-depth</em>, ce module offre un contrôle granulaire tout en préservant l'isolation stricte du noyau minimal.
+                    </p>
+                </div>
+
+                <!-- 6.1 Profil & 2FA -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        Profil Utilisateur & Double Facteur (TOTP RFC 6238)
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Accessible via <code class="text-blue-400">/admin/settings/general</code>, l'espace profil permet à l'administrateur connecté de mettre à jour son identité, de modifier son adresse e-mail avec validation d'unicité, de renouveler son mot de passe avec exigence de confirmation de l'ancien, et d'invalider ses autres sessions actives via <code class="text-blue-400">Auth::logoutOtherDevices()</code>.
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                Stockage Cryptographique & QR Autonome
+                            </h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Les clés secrètes TOTP et codes de récupération sont chiffrés au repos via le casting Laravel <code>encrypted</code>. Le QR Code est généré localement au format SVG vectoriel pur, sans aucun appel externe (100% hors-ligne, zéro fuite de métadonnées vers des services tiers).
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                Validation Obligatoire & Codes de Secours
+                            </h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                L'activation n'est effective qu'après la validation d'un premier code TOTP à 6 chiffres. 8 codes de secours d'urgence sont délivrés pour pallier la perte d'appareil, consommés de manière destructive à chaque utilisation et protégés contre les attaques par force brute (Rate Limiting).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6.2 Paramètres du Site, Passerelle SMTP & 503 -->
+                <div id="settings-site-smtp" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                        Paramètres du Site, Passerelle SMTP & Mode Maintenance (503)
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Le gestionnaire <code class="text-blue-400">SettingManager</code> centralise la persistance clé-valeur typée en base de données (<code class="text-slate-300">settings</code>) avec mise en cache automatique et invalidation instantanée lors des mutations :
+                    </p>
+
+                    <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+<pre><code>// Injection de SettingManager dans les services ou contrôleurs
+$settings = app(\App\Core\Settings\Services\SettingManager::class);
+
+// Lecture typée avec valeur par défaut de repli
+$siteName    = $settings->get('site_name', 'LCMS Core');
+$maintenance = (bool) $settings->get('site_maintenance', false);
+
+// Écriture atomique et synchronisation du cache
+$settings->set('site_name', 'Mon Portail LCMS');</code></pre>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-4 mt-3">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Passerelle SMTP & Test Direct</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Configuration des serveurs de messagerie (hôte, port 25/465/587, TLS/SSL, identifiants chiffrés). Le service <code>MailTesterService</code> déclenche l'envoi d'un e-mail de diagnostic (<code>SmtpTestMail</code>) en direct depuis l'administration pour valider la connectivité réseau et les identifiants sans quitter l'interface.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wider mb-2">Mode Maintenance & Admin Bypass</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Le middleware <code>CheckMaintenanceMode</code> intercepte toute requête publique avec une réponse HTTP 503 et la vue dédiée <code>resources/views/errors/503.blade.php</code>. Les administrateurs authentifiés ainsi que toutes les routes <code>/admin/*</code> bénéficient d'un contournement (Bypass) pour administrer et désactiver la maintenance sans interruption.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6.3 Contrôle d'Accès RBAC -->
+                <div id="settings-rbac" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                        Contrôle d'Accès Basé sur les Rôles (RBAC)
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Le système RBAC de LCMS Core offre une séparation stricte des privilèges via une matrice de rôles et de permissions relationnelles (<code class="text-slate-300">roles</code>, <code class="text-slate-300">permissions</code>, <code class="text-slate-300">permission_role</code>, <code class="text-slate-300">role_user</code>).
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-slate-800 rounded-xl overflow-hidden">
+                            <thead class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">Rôle Système</th>
+                                    <th class="p-3">Identifiant</th>
+                                    <th class="p-3">Périmètre & Permissions Accordées</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 text-slate-400">
+                                <tr>
+                                    <td class="p-3 font-semibold text-rose-400">Super Admin</td>
+                                    <td class="p-3 font-mono text-xs text-slate-300">super_admin</td>
+                                    <td class="p-3 font-sans text-slate-300">Privilèges complets absolus. Immunisé contre la suppression et la perte de droits critiques.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-blue-400">Administrateur</td>
+                                    <td class="p-3 font-mono text-xs text-slate-300">admin</td>
+                                    <td class="p-3 font-sans text-slate-300">Gestion des extensions, thèmes, utilisateurs et paramètres système globaux.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-emerald-400">Éditeur</td>
+                                    <td class="p-3 font-mono text-xs text-slate-300">editor</td>
+                                    <td class="p-3 font-sans text-slate-300">Gestion des contenus éditoriaux et consultation des extensions autorisées.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-slate-400">Utilisateur</td>
+                                    <td class="p-3 font-mono text-xs text-slate-300">user</td>
+                                    <td class="p-3 font-sans text-slate-300">Compte membre standard avec accès en lecture seule ou périmètre restreint.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 text-xs text-slate-400">
+                        <strong class="font-semibold text-slate-200">Permissions Granulaires du Noyau :</strong>
+                        <code>manage_plugins</code>, <code>manage_themes</code>, <code>manage_roles</code>, <code>manage_users</code>, <code>manage_settings</code>, <code>manage_updates</code>. L'autorisation s'opère directement via les directives Blade <code>@can('manage_plugins')</code> ou les middlewares de routes Laravel <code>can:manage_settings</code>.
+                    </div>
+                </div>
+
+                <!-- 6.4 Gestion des Comptes & Sessions -->
+                <div id="settings-users" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        Gestion des Comptes & Révocation de Session
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        L'interface <code class="text-blue-400">/admin/settings/users</code> offre une console d'administration complète des comptes utilisateurs avec filtrage dynamique, pagination et indicateurs d'état de sécurité :
+                    </p>
+
+                    <ul class="space-y-2 text-xs text-slate-300 list-disc list-inside">
+                        <li><strong class="text-white">Création & Affectation :</strong> Attribution d'un rôle système ou sur-mesure dès la création du compte.</li>
+                        <li><strong class="text-white">Bascule Actif / Inactif :</strong> La désactivation d'un compte révoque instantanément toutes ses sessions actives en base de données et bloque toute tentative de reconnexion ultérieure.</li>
+                        <li><strong class="text-white">Réinitialisation Administrative 2FA :</strong> En cas de perte du terminal TOTP ou des codes de secours par un collaborateur, un administrateur habilité peut réinitialiser le second facteur du compte ciblé en un clic.</li>
+                    </ul>
+                </div>
+
+                <!-- 6.5 Mises à Jour Core par Archive ZIP -->
+                <div id="settings-core-update" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        Moteur de Mises à Jour Core par Archive ZIP
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Le service <code class="text-blue-400">CoreZipUpdater</code> permet de mettre à niveau le CMS directement depuis l'interface d'administration (<code class="text-slate-300">/admin/settings/updates</code>) sans exiger d'accès SSH ni de commande Git en production :
+                    </p>
+
+                    <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+<pre><code>// Structure attendue d'un package de mise à jour ZIP
+update-v1.1.0.zip
+├── update.json                 # Manifeste de validation de version et checksums
+└── files/                      # Fichiers de remplacement confinés au noyau
+    ├── app/Core/
+    ├── resources/
+    └── database/migrations/</code></pre>
+                    </div>
+
+                    <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-rose-400 block mb-1">1. Confinement Strict</span>
+                            <span class="text-slate-400 leading-relaxed">Interdiction absolue de modifier <code>.env</code>, <code>platform/plugins/</code>, <code>platform/themes/</code>, <code>storage/</code> ou <code>database/database.sqlite</code>. Rejet immédiat de tout chemin relatif suspect (Zip Slip).</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-amber-400 block mb-1">2. Sauvegarde Préventive</span>
+                            <span class="text-slate-400 leading-relaxed">Le <code>BackupService</code> génère un snapshot complet horodaté dans <code>storage/app/backups/</code> avant toute écriture sur le système de fichiers.</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-emerald-400 block mb-1">3. Rollback Automatique</span>
+                            <span class="text-slate-400 leading-relaxed">En cas d'exception durant l'extraction ou les migrations, l'état initial est restauré intégralement et l'incident consigné dans les logs d'audit.</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- Section: Référence CLI -->
             <section id="cli-reference" class="space-y-6 pt-8 border-t border-slate-800/80 pb-16">
                 <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 text-purple-400 flex items-center justify-center text-sm font-bold">6</span>
+                    <span class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 text-purple-400 flex items-center justify-center text-sm font-bold">7</span>
                     Référence des Commandes Artisan `cms:*`
                 </h2>
 
@@ -683,6 +882,16 @@ php artisan cms:plugin:seed --all</code></pre>
                                 <td class="p-3 text-blue-400">cms:recovery:safe-mode</td>
                                 <td class="p-3 text-amber-300">{--on} {--off}</td>
                                 <td class="p-3 font-sans text-slate-300">Active ou désactive le mode de secours pour bypasser toutes les extensions.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:security:enable-2fa</td>
+                                <td class="p-3 text-amber-300">{email?}</td>
+                                <td class="p-3 font-sans text-slate-300">Génère un secret TOTP, affiche l'URI/QR code en console et provisionne la 2FA pour un compte via CLI.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-blue-400">cms:recovery:disable-2fa</td>
+                                <td class="p-3 text-amber-300">{email}</td>
+                                <td class="p-3 font-sans text-slate-300">Commande d'urgence pour désactiver immédiatement la 2FA d'un compte en cas de perte de terminal (CLI emergency bypass).</td>
                             </tr>
                         </tbody>
                     </table>
