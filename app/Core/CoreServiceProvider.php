@@ -127,6 +127,35 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->app->make(SettingManager::class)->loadAndApplyConfigOverrides();
 
+        $hookManager = $this->app->make(HookManager::class);
+
+        $hookManager->addFilter('cms.head', function (string $content): string {
+            $settings = app(SettingManager::class);
+            $headTags = (string) $settings->get('appearance_custom_head_tags', '');
+            $customCss = (string) $settings->get('appearance_custom_css', '');
+
+            $injected = '';
+            if (trim($headTags) !== '') {
+                $injected .= "\n".$headTags;
+            }
+            if (trim($customCss) !== '') {
+                $injected .= "\n<style type=\"text/css\" id=\"lcms-custom-css\">\n".$customCss."\n</style>";
+            }
+
+            return $content.$injected;
+        }, priority: 100);
+
+        $hookManager->addFilter('cms.footer', function (string $content): string {
+            $settings = app(SettingManager::class);
+            $customJs = (string) $settings->get('appearance_custom_js', '');
+
+            if (trim($customJs) !== '') {
+                return $content."\n<script id=\"lcms-custom-js\">\n".$customJs."\n</script>";
+            }
+
+            return $content;
+        }, priority: 100);
+
         $this->app->booted(function (): void {
             $this->app->make(PluginManager::class)->boot();
             $this->app->make(ThemeManager::class)->boot();

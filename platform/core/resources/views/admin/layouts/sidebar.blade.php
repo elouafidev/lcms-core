@@ -27,11 +27,32 @@
                         <p class="mb-0">{{ __('Gestion des Plugins') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.themes.index') }}" class="nav-link {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
+                <!-- Appearance Treeview Menu -->
+                @php
+                    $isAppearanceActive = request()->routeIs('admin.themes.*') || request()->routeIs('admin.appearance.*');
+                @endphp
+                <li class="nav-item {{ $isAppearanceActive ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ $isAppearanceActive ? 'active' : '' }}">
                         <i class="nav-icon bi bi-palette"></i>
-                        <p class="mb-0">{{ __('Gestion des Thèmes') }}</p>
+                        <p class="mb-0">
+                            {{ __('Apparence') }}
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview {{ $isAppearanceActive ? 'd-block' : '' }}">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.themes.index') }}" class="nav-link {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-collection"></i>
+                                <p class="mb-0">{{ __('Gestion des Thèmes') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.appearance.customize') }}" class="nav-link {{ request()->routeIs('admin.appearance.customize*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-brush"></i>
+                                <p class="mb-0">{{ __('Personnaliser apparence') }}</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- Settings Treeview Menu -->

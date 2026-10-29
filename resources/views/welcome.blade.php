@@ -227,5 +227,7 @@
             </div>
         </div>
     </footer>
+
+    {!! \App\Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
 </body>
 </html>

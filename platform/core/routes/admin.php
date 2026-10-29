@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Platform\Core\Http\Controllers\Admin\AdminThemeController;
+use Platform\Core\Http\Controllers\Admin\AppearanceCustomizerController;
 use Platform\Core\Http\Controllers\Admin\CoreUpdateController;
 use Platform\Core\Http\Controllers\Admin\GeneralSettingsController;
 use Platform\Core\Http\Controllers\Admin\PluginController;
@@ -25,9 +26,17 @@ Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(funct
     // Themes management routes
     Route::get('/themes', [AdminThemeController::class, 'index'])->name('themes.index');
     Route::post('/themes/upload', [AdminThemeController::class, 'upload'])->name('themes.upload');
+    Route::post('/themes/publish-all-assets', [AdminThemeController::class, 'publishAllAssets'])->name('themes.publish-all-assets');
     Route::post('/themes/{id}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
     Route::post('/themes/deactivate', [AdminThemeController::class, 'deactivate'])->name('themes.deactivate');
+    Route::post('/themes/{id}/publish-assets', [AdminThemeController::class, 'publishAssets'])->name('themes.publish-assets');
     Route::post('/themes/{id}/delete', [AdminThemeController::class, 'delete'])->name('themes.delete');
+
+    // Appearance customization routes
+    Route::prefix('appearance')->name('appearance.')->group(function (): void {
+        Route::get('/customize', [AppearanceCustomizerController::class, 'index'])->name('customize');
+        Route::post('/customize', [AppearanceCustomizerController::class, 'update'])->name('customize.update');
+    });
 
     // 1. General Settings (Profile & 2FA)
     Route::prefix('settings/general')->name('settings.general')->group(function (): void {
