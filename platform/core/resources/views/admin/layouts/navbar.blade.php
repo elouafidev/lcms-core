@@ -65,6 +65,11 @@
                             <small class="text-muted text-truncate d-block">{{ Auth::user()->email }}</small>
                         </li>
                         <li>
+                            <a class="dropdown-item py-2" href="{{ route('admin.settings.general') }}">
+                                <i class="bi bi-person-gear me-2 text-primary"></i> {{ __('Mon compte') }}
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item py-2" href="{{ route('admin.plugins.index') }}">
                                 <i class="bi bi-puzzle me-2 text-primary"></i> {{ __('Plugins') }}
                             </a>
