@@ -94,7 +94,7 @@
             <div class="flex items-center gap-4">
                 <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-lg">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>v1.1.0 • Laravel 11/12 • 283 Tests (100%)</span>
+                    <span>v1.1.0 • Laravel 11/12 • 291 Tests (100%)</span>
                 </div>
                 <a href="https://github.com/elouafidev/lcms-core" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -148,10 +148,12 @@
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Moteur de Thèmes</h3>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Moteur de Thèmes & Apparence</h3>
                     <ul class="space-y-1">
                         <li><a href="#theme-overview" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Fonctionnement & `theme.json`</a></li>
                         <li><a href="#view-overriding" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Surcharge de Vues (View Overriding)</a></li>
+                        <li><a href="#theme-assets-publishing" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Publication Directe des Assets</a></li>
+                        <li><a href="#appearance-customize" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Personnalisation (CSS / JS / Head)</a></li>
                     </ul>
                 </div>
 
@@ -631,6 +633,43 @@ php artisan cms:plugin:seed --all</code></pre>
                     <strong class="font-semibold text-white">Hiérarchie de Résolution Blade :</strong>
                     Lorsqu'une vue est appelée, <code>ThemeManager</code> inspecte en priorité le dossier <code>platform/themes/{theme-actif}/views/plugins/{plugin-id}/*</code>. Si aucune surcharge n'est définie, la vue originale de l'extension est utilisée en repli transparent.
                 </div>
+
+                <!-- 5.1 Publication Directe des Assets & Modals -->
+                <div id="theme-assets-publishing" class="space-y-4 pt-4 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                        Publication Directe des Assets & Inspection Modale
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        L'interface d'administration des thèmes intègre un bouton direct de publication des assets (équivalent à la commande <code>cms:theme:publish-assets --force</code>) permettant d'écraser et copier instantanément les fichiers statiques (CSS, images, fonts) vers <code class="text-indigo-400">public/vendor/themes/{id}</code>. Un modal d'inspection détaillée affiche les métadonnées de l'auteur, la licence, les paramètres de configuration et l'état de publication en temps réel.
+                    </p>
+                </div>
+
+                <!-- 5.2 Personnalisation Apparence (CSS, JS, Head Tags) -->
+                <div id="appearance-customize" class="space-y-4 pt-4 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                        Personnalisation de l'Apparence Publique (CSS / JS / Head)
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Le module <strong>Personnaliser apparence</strong> (<code class="text-blue-400">/admin/appearance/customize</code>) permet aux administrateurs autorisés d'injecter du code personnalisé sur l'ensemble des pages publiques sans jamais modifier le code source du thème actif :
+                    </p>
+
+                    <div class="grid sm:grid-cols-3 gap-3 text-xs mt-3">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-primary block mb-1">1. CSS Personnalisé</span>
+                            <span class="text-slate-400 leading-relaxed">Injecté dans une balise <code>&lt;style id="lcms-custom-css"&gt;</code> via le hook <code>cms.head</code> juste avant la fermeture de l'en-tête.</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-warning block mb-1">2. JavaScript Public</span>
+                            <span class="text-slate-400 leading-relaxed">Injecté dans une balise <code>&lt;script id="lcms-custom-js"&gt;</code> via le hook <code>cms.footer</code> avant la fermeture de <code>&lt;/body&gt;</code>.</span>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
+                            <span class="font-bold text-info block mb-1">3. Balises &lt;head&gt; &amp; Meta</span>
+                            <span class="text-slate-400 leading-relaxed">Insertion de balises HTML brutes (Google Tag Manager, favicons, meta de vérification de domaine, polices Web).</span>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Section: Administration Système, Sécurité & Paramètres -->
@@ -763,7 +802,7 @@ $settings->set('site_name', 'Mon Portail LCMS');</code></pre>
 
                     <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 text-xs text-slate-400">
                         <strong class="font-semibold text-slate-200">Permissions Granulaires du Noyau :</strong>
-                        <code>manage_plugins</code>, <code>manage_themes</code>, <code>manage_roles</code>, <code>manage_users</code>, <code>manage_settings</code>, <code>manage_updates</code>. L'autorisation s'opère directement via les directives Blade <code>@can('manage_plugins')</code> ou les middlewares de routes Laravel <code>can:manage_settings</code>.
+                        <code>themes.view</code>, <code>themes.manage</code>, <code>appearance.customize</code>, <code>plugins.view</code>, <code>plugins.manage</code>, <code>settings.roles.manage</code>, <code>settings.users.manage</code>, <code>settings.site.manage</code>, <code>settings.update.manage</code>. L'autorisation s'opère directement via les directives Blade <code>@can(...)</code> ou les middlewares de routes Laravel <code>permission:...</code>.
                     </div>
                 </div>
 
