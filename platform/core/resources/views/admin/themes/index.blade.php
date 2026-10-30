@@ -148,10 +148,6 @@
                                     </td>
                                     <td class="text-end pe-3">
                                         <div class="d-flex align-items-center justify-content-end gap-1 flex-wrap">
-                                            <!-- Details Modal Button -->
-                                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#themeModal-{{ $themeId }}" title="{{ __('Voir les informations détaillées') }}">
-                                                <i class="bi bi-info-circle"></i>
-                                            </button>
 
                                             <!-- Publish Assets Button -->
                                             <form method="POST" action="{{ route('admin.themes.publish-assets', $themeId) }}" class="actions-form d-inline">
