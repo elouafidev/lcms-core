@@ -12,7 +12,7 @@
   <a href="https://packagist.org/packages/elouafidev/lcms-core"><img src="https://img.shields.io/packagist/v/elouafidev/lcms-core.svg?style=flat&color=2563eb&logo=packagist&logoColor=white" alt="Packagist Version"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
-  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-244%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-291%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
@@ -35,14 +35,18 @@ Contrairement aux CMS traditionnels qui intègrent nativement des modèles de do
 
 - 🧩 **Architecture 100% Modulaire :** Activez, désactivez ou supprimez des fonctionnalités sans altérer le noyau.
 - 📐 **Résolution Topologique des Dépendances (Algorithme de Kahn) :** Ordonnancement déterministe au démarrage, détection préventive des cycles (`CircularDependencyException`) et gardes de dépendances inverses pour interdire les désactivations en cascade non confirmées.
+- 🛡️ **Sécurité Renforcée & Double Authentification (2FA TOTP) :** Protection des comptes avec TOTP native (Google/Microsoft Authenticator), QR-code SVG vectoriel autonome sans API tierce, codes de récupération chiffrés et commandes d'urgence CLI.
+- 👥 **Gestion des Rôles & Permissions (RBAC) :** Matrice d'autorisations fine, protection des rôles système (`super_admin`), assignations multiples et administration centralisée des utilisateurs avec révocation de sessions distantes.
+- ⚙️ **Paramètres & Configuration Runtime :** Moteur `SettingManager` avec stockage typé/chiffré en base (`cms_settings`), surcharges dynamiques, testeur SMTP interactif en temps réel et mode maintenance HTTP 503 avec contournement administrateur.
+- 📦 **Moteur de Mise à Jour Core par Archive ZIP :** Déploiement simplifié des mises à jour du noyau sans accès SSH avec validation anti-Zip-Slip, sauvegarde préalable automatique (`BackupService`), tolérance aux pannes et rollback instantané.
+- 🎨 **Moteur de Thèmes & Personnalisation d'Apparence :** Thème de référence `default-modern`, publication directe des assets depuis l'admin (`cms:theme:publish-assets --all`), inspecteur modal de thèmes et éditeur en direct pour injecter balises `<head>`, CSS et scripts JS publics.
 - 🧯 **Résilience & Tolérance aux Pannes :**
   - **Mise en Quarantaine Automatique :** Si une extension déclenche une exception fatale au boot, elle est isolée en base (`cms_plugin_errors`) sans bloquer le reste de l'application.
-  - **Mode de Secours (*Emergency Safe Mode*) :** Bypass immédiat de toutes les extensions tierces via drapeau fichier ou commande CLI (`cms:recovery:safe-mode --on`) pour restaurer l'accès administrateur en cas d'urgence.
+  - **Mode de Secours (*Emergency Safe Mode*) :** Bypass immédiat de toutes les extensions tierces via commande CLI (`cms:recovery:safe-mode --on`) ou désactivation d'urgence du 2FA (`cms:recovery:disable-2fa`) pour restaurer l'accès administrateur en cas d'incident critique.
 - 📦 **Installation Sécurisée d'Extensions ZIP :** Import direct depuis le tableau de bord avec protection stricte contre le **Zip Slip**, rejet des extensions exécutables interdites (`.exe`, `.sh`, `.phar`, etc.), extraction sandboxée et validation de schéma JSON.
 - 🪝 **Bus de Hooks Extensible :** Système d'actions et de filtres priorisés (`Hook::action()`, `Hook::filter()`) pour personnaliser le comportement du CMS sans modifier le code source.
-- 🎨 **Moteur de Thèmes & Surcharge Blade :** Thème de référence `default-modern` responsive avec surcharge hiérarchique des vues de plugins (`platform/themes/{theme}/views/plugins/{plugin-id}/*`).
-- 🖥️ **Panneau d'Administration Unifié & Ergonomique :** Interface moderne basée sur AdminLTE 4 et Tailwind CSS avec barre latérale sombre (`#050914`), header harmonisé, et layout canonique (`core::admin.layouts.app`) assurant l'affichage permanent et inaltérable de la barre latérale (`admin-sidebar`) sur l'ensemble des modules d'administration.
-- 🌐 **Internationalisation & Multilingue (i18n) :** Prise en charge native du français (`fr`) et de l'anglais (`en`), sélecteur de langue dynamique en front et dans le panneau d'administration, architecture de localisation JSON centralisée (`lang/fr.json`).
+- 🖥️ **Panneau d'Administration Unifié & Ergonomique :** Interface moderne basée sur AdminLTE 4 et Tailwind CSS avec arborescences treeview pour les paramètres et l'apparence, barre latérale sombre (`#050914`), header épuré et badge `SuperAdmin`.
+- 🌐 **Internationalisation & Multilingue (i18n) :** Prise en charge native du français (`fr`) et de l'anglais (`en`), architecture de localisation JSON centralisée (`lang/fr.json`).
 - 💾 **Propriété Stricte des Données :** Migrations isolées par extension avec journalisation dédiée (`cms_plugin_migrations`). La désactivation conserve les tables ; la désinstallation propose une purge optionnelle et explicite.
 
 ---
@@ -225,6 +229,34 @@ Le seeder du projet ([`database/seeders/UserSeeder.php`](database/seeders/UserSe
 
 ---
 
+### 🔄 Procédure de Mise à Niveau (v1.0.0 ➔ v1.1.0)
+
+Si vous mettez à jour une installation existante vers la version 1.1.0 :
+
+```bash
+# 1. Récupérer les dernières sources
+git pull origin main
+
+# 2. Mettre à jour les dépendances Composer (pragmarx/google2fa, bacon/bacon-qr-code)
+composer install --no-dev --optimize-autoloader
+
+# 3. Exécuter les nouvelles migrations du noyau (sécurité, RBAC, settings, audit, mises à jour)
+php artisan migrate --force
+
+# 4. Initialiser la matrice des rôles et autorisations par défaut
+php artisan db:seed --class=RoleSeeder --force
+
+# 5. Publier les assets des thèmes
+php artisan cms:theme:publish-assets --all
+
+# 6. Rafraîchir les caches applicatifs
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+---
+
 ## 💻 Référence des Commandes Artisan
 
 LCMS Core fournit un ensemble complet de commandes CLI pour piloter les extensions, les thèmes et la résilience :
@@ -258,13 +290,25 @@ php artisan cms:theme:list
 # Activer un thème pour le rendu public
 php artisan cms:theme:activate default-modern
 
-# Publier les assets d'un thème vers public/vendor/themes/
+# Publier les assets d'un thème spécifique vers public/vendor/themes/
 php artisan cms:theme:publish-assets default-modern
+
+# Publier / forcer la copie des assets de tous les thèmes installés
+php artisan cms:theme:publish-assets --all
+```
+
+### Sécurité & Authentification à Deux Facteurs (`cms:security:*` / `cms:recovery:*`)
+```bash
+# Activer le 2FA TOTP pour un utilisateur administrateur via CLI
+php artisan cms:security:enable-2fa admin@lcms.local
+
+# Désactiver d'urgence le 2FA d'un compte bloqué
+php artisan cms:recovery:disable-2fa admin@lcms.local
 ```
 
 ### Mode de Récupération d'Urgence (`cms:recovery:*`)
 ```bash
-# Activer le Safe Mode (désactive l'exécution de toutes les extensions tierces)
+# Activer le Safe Mode (désactive temporairement toutes les extensions tierces)
 php artisan cms:recovery:safe-mode --on
 
 # Désactiver le Safe Mode et restaurer le démarrage normal
@@ -349,7 +393,7 @@ Le projet applique les principes de défense en profondeur documentés dans nos 
 
 ## 🧪 Assurance Qualité & Tests
 
-Le projet est couvert par une suite rigoureuse de **244 tests automatisés** (1 427 assertions) sans aucun contournement :
+Le projet est couvert par une suite rigoureuse de **291 tests automatisés** (1 811 assertions) sans aucun contournement :
 
 ```bash
 # Exécuter l'intégralité de la suite de tests
@@ -375,7 +419,10 @@ La documentation technique interactive officielle au format HTML est disponible 
   - **🚀 Installation & Démarrage Rapide :** Déploiement Packagist via `composer create-project`, configuration `.env`, gestion du compte Super Administrateur.
   - **🏛️ Architecture Globale :** Philosophie Lean Core, Contrats Publics Stricts, ordonnancement topologique (Kahn), Bus de Hooks et Mode de Secours.
   - **🧩 Guide de Création de Plugins :** Anatomie, manifeste `plugin.json`, migrations isolées, seeders automatiques et publication d'assets.
-  - **🎨 Moteur de Thèmes :** Système de présentation autonome et surcharge hiérarchique des vues Blade (*View Overriding*).
+  - **🎨 Moteur de Thèmes & Personnalisation :** Système de présentation autonome, surcharge hiérarchique des vues Blade (*View Overriding*) et injection de CSS/JS/`<head>`.
+  - **⚙️ Paramètres, Sécurité 2FA & Maintenance :** Double authentification TOTP sans API tierce, passerelle SMTP avec tests en direct, diagnostics serveur et mode maintenance HTTP 503.
+  - **👥 Contrôle d'Accès RBAC & Utilisateurs :** Matrice de permissions catégorisée, protection des rôles système et gestion avancée des sessions distantes.
+  - **📦 Mises à Jour Core par Archive ZIP :** Moteur de déploiement sécurisé sans SSH, backups automatiques avec rétention et rollback instantané.
   - **💻 Référence Complète des Commandes Artisan :** Tableau exhaustif des commandes CLI `cms:*`.
 
 ---
