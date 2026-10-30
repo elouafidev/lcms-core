@@ -1,7 +1,7 @@
 @inject('navigationRegistry', 'App\Core\Admin\NavigationRegistry')
 
 @php
-    $navItems = array_filter($navigationRegistry->getItems(), fn ($item) => $item->getId() !== 'themes-management' && ! str_starts_with($item->getId(), 'settings-'));
+    $navItems = $navigationRegistry->getItems();
     $isSettingsActive = request()->routeIs('admin.settings.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.users.*');
 @endphp
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Themes;
 
-use App\Core\Admin\NavigationRegistry;
 use App\Core\Themes\ThemeAssetManager;
 use App\Core\Themes\ThemeDiscovery;
 use App\Core\Themes\ThemeManager;
@@ -223,23 +222,18 @@ class AdminThemeTest extends TestCase
         $response->assertSessionHas('error');
     }
 
-    public function test_navigation_registry_registers_themes_management_and_sidebar_renders_it(): void
+    public function test_sidebar_renders_appearance_and_themes_management_menu(): void
     {
-        $navRegistry = $this->app->make(NavigationRegistry::class);
-
-        $this->assertTrue($navRegistry->has('themes-management'));
-        $item = $navRegistry->get('themes-management');
-        $this->assertNotNull($item);
-        $this->assertSame('Gestion des Thèmes', $item->getLabel());
-        $this->assertSame('/admin/themes', $item->getUrl());
-
         /** @var User $admin */
         $admin = User::factory()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.plugins.index'));
         $response->assertOk();
+        $response->assertSee('Apparence');
         $response->assertSee('Gestion des Thèmes');
         $response->assertSee(route('admin.themes.index'));
+        $response->assertSee('Personnaliser apparence');
+        $response->assertSee(route('admin.appearance.customize'));
     }
 
     public function test_admin_can_publish_theme_assets_via_http(): void

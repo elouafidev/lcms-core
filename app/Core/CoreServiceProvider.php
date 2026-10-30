@@ -116,15 +116,6 @@ class CoreServiceProvider extends ServiceProvider
             ]);
         }
 
-        $navigation = $this->app->make(NavigationRegistry::class);
-        $navigation->registerItem(
-            id: 'themes-management',
-            label: 'Gestion des Thèmes',
-            url: '/admin/themes',
-            icon: 'palette',
-            priority: 15
-        );
-
         $this->app->make(SettingManager::class)->loadAndApplyConfigOverrides();
 
         $hookManager = $this->app->make(HookManager::class);
