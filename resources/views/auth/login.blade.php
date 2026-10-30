@@ -24,15 +24,14 @@
                     {{ __('Administrator Email Address') }}
                 </label>
                 <div class="relative">
-                    <input 
+                    <input
                         id="email"
                         name="email"
                         type="email"
                         required
                         autofocus
                         autocomplete="email"
-                        placeholder="admin@lcms.local" 
-                        value="{{ old('email', 'admin@lcms.local') }}"
+                        value="{{ old('email') }}"
                         class="w-full px-4 py-2.5 rounded-xl bg-[#050914] border @error('email') border-rose-500 @else border-slate-800 @enderror text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
                     >
                 </div>
@@ -54,17 +53,17 @@
                     </label>
                 </div>
                 <div class="relative">
-                    <input 
+                    <input
                         id="password"
                         name="password"
                         type="password"
                         required
                         autocomplete="current-password"
-                        placeholder="••••••••••••" 
+                        placeholder="••••••••••••"
                         class="w-full px-4 py-2.5 rounded-xl bg-[#050914] border @error('password') border-rose-500 @else border-slate-800 @enderror text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors pr-11"
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onclick="const p = document.getElementById('password'); const icon = document.getElementById('eye-icon'); if (p.type === 'password') { p.type = 'text'; icon.classList.add('text-blue-400'); } else { p.type = 'password'; icon.classList.remove('text-blue-400'); }"
                         class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 cursor-pointer focus:outline-none"
                         aria-label="{{ __('Show or hide password') }}"
@@ -88,10 +87,10 @@
             <!-- Remember me & Forgot Password -->
             <div class="flex items-center justify-between pt-1">
                 <label for="remember" class="flex items-center gap-2 cursor-pointer select-none">
-                    <input 
-                        id="remember" 
-                        name="remember" 
-                        type="checkbox" 
+                    <input
+                        id="remember"
+                        name="remember"
+                        type="checkbox"
                         class="w-4 h-4 rounded bg-[#050914] border border-slate-700 text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer"
                         {{ old('remember') ? 'checked' : '' }}
                     >
@@ -106,8 +105,8 @@
             </div>
 
             <!-- Submit Button -->
-            <button 
-                type="submit" 
+            <button
+                type="submit"
                 class="w-full mt-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 shadow-lg shadow-blue-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,14 +118,7 @@
 
         <!-- Admin Helper Note -->
         <div class="mt-6 pt-5 border-t border-slate-800/80">
-            <div class="p-3 rounded-xl bg-blue-950/20 border border-blue-900/30 flex items-start gap-2.5 text-left">
-                <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div class="text-xs text-slate-400 leading-relaxed">
-                    {{ __('Default root credential:') }} <code class="px-1.5 py-0.5 rounded bg-blue-950/60 text-blue-300 font-mono text-[11px] border border-blue-800/40">admin@lcms.local</code>
-                </div>
-            </div>
+
             <div class="mt-4 text-center">
                 <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors">
                     <span>←</span> {{ __('Back to website home') }}
