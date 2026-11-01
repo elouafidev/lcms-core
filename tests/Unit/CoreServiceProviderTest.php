@@ -19,7 +19,7 @@ class CoreServiceProviderTest extends TestCase
         $this->assertArrayHasKey('safe_mode', $cmsConfig);
         $this->assertArrayHasKey('table_prefix', $cmsConfig);
 
-        $this->assertEquals(base_path('platform/plugins'), config('cms.plugins.path'));
+        $this->assertEquals(base_path('Plugins'), config('cms.plugins.path'));
         $this->assertFalse(config('cms.safe_mode.enabled'));
         $this->assertEquals('cms_', config('cms.table_prefix'));
     }

@@ -28,7 +28,7 @@ class CompleteMvpLifecycleTest extends TestCase
         $this->pluginManager = $this->app->make(PluginManager::class);
         $this->pluginRegistry = $this->app->make(PluginRegistry::class);
 
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        config(['cms.plugins.path' => base_path('Plugins')]);
     }
 
     protected function tearDown(): void

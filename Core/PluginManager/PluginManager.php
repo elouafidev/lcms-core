@@ -357,7 +357,7 @@ class PluginManager
         $path = $discovered !== null ? $discovered->getPath() : null;
 
         if ($path === null) {
-            $pluginsBasePath = (string) config('cms.plugins.path', base_path('platform/plugins'));
+            $pluginsBasePath = (string) config('cms.plugins.path', base_path('Plugins'));
             $candidatePath = $pluginsBasePath.DIRECTORY_SEPARATOR.$pluginId;
             if (is_dir($candidatePath)) {
                 $path = $candidatePath;
@@ -368,7 +368,7 @@ class PluginManager
             throw new RuntimeException("Dossier introuvable sur le disque pour l'extension '{$pluginId}'.");
         }
 
-        $pluginsBasePath = realpath((string) config('cms.plugins.path', base_path('platform/plugins')));
+        $pluginsBasePath = realpath((string) config('cms.plugins.path', base_path('Plugins')));
         $realPath = realpath($path);
 
         if ($realPath === false || $pluginsBasePath === false || ! str_starts_with($realPath, $pluginsBasePath.DIRECTORY_SEPARATOR)) {

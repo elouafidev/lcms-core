@@ -37,7 +37,7 @@ class ThemeManagerTest extends TestCase
 
         $this->themeManager->getDiscovery()->setThemesPath($this->tempThemesDir);
 
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        config(['cms.plugins.path' => base_path('Plugins')]);
     }
 
     protected function tearDown(): void

@@ -100,7 +100,7 @@ class PluginRecord extends Model implements PluginInterface
 
     public function getPath(): string
     {
-        return (string) config('cms.plugins.path', base_path('platform/plugins')).'/'.$this->id;
+        return (string) config('cms.plugins.path', base_path('Plugins')).'/'.$this->id;
     }
 
     public function getState(): string

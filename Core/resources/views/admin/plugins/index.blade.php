@@ -88,7 +88,7 @@
                 <div class="text-center text-muted py-5">
                     <i class="bi bi-folder-x fs-1 d-block mb-2 text-muted"></i>
                     <h4>{{ __('No plugins detected') }}</h4>
-                    <p class="small">{{ __('Deposit compliant plugins in platform/plugins/ with their plugin.json manifest.') }}</p>
+                    <p class="small">{{ __('Deposit compliant plugins in Plugins/ with their plugin.json manifest.') }}</p>
                 </div>
             @else
                 <div class="table-responsive">

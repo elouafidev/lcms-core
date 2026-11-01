@@ -37,8 +37,8 @@ class SeoPluginTest extends TestCase
         $this->navigationRegistry = $this->app->make(NavigationRegistry::class);
         $this->hookManager = $this->app->make(HookManager::class);
 
-        // Ensure plugins path points to native platform/plugins directory
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        // Ensure plugins path points to native Plugins directory
+        config(['cms.plugins.path' => base_path('Plugins')]);
     }
 
     private function getSeoManager(): SeoMetaManager

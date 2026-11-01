@@ -14,7 +14,7 @@ return [
     */
 
     'plugins' => [
-        'path' => env('CMS_PLUGINS_PATH', base_path('platform/plugins')),
+        'path' => env('CMS_PLUGINS_PATH', base_path('Plugins')),
         'cache_path' => env('CMS_PLUGINS_CACHE', storage_path('framework/cache/cms_plugins.php')),
         'autoload' => env('CMS_PLUGINS_AUTOLOAD', true),
     ],

@@ -32,8 +32,8 @@ class PagesPluginTest extends TestCase
         $this->pluginRegistry = $this->app->make(PluginRegistry::class);
         $this->navigationRegistry = $this->app->make(NavigationRegistry::class);
 
-        // Ensure plugins path points to native platform/plugins directory
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        // Ensure plugins path points to native Plugins directory
+        config(['cms.plugins.path' => base_path('Plugins')]);
     }
 
     public function test_plugin_is_discoverable_and_inactive_initially(): void

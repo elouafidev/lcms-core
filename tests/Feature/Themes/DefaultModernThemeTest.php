@@ -32,7 +32,7 @@ class DefaultModernThemeTest extends TestCase
     {
         parent::setUp();
 
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        config(['cms.plugins.path' => base_path('Plugins')]);
         config(['cms.themes.path' => base_path('themes')]);
 
         $this->pluginManager = $this->app->make(PluginManager::class);

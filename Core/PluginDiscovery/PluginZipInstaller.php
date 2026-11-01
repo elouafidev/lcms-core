@@ -101,7 +101,7 @@ class PluginZipInstaller
             $manifest = $this->validator->validateFile($manifestPath);
             $pluginId = $manifest->getId();
 
-            $pluginsBasePath = (string) config('cms.plugins.path', base_path('platform/plugins'));
+            $pluginsBasePath = (string) config('cms.plugins.path', base_path('Plugins'));
             $targetDir = $pluginsBasePath.DIRECTORY_SEPARATOR.$pluginId;
 
             if (is_dir($targetDir) && ! $overwrite) {

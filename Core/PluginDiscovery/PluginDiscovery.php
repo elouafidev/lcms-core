@@ -26,7 +26,7 @@ class PluginDiscovery
      */
     public function discover(?string $basePath = null): Collection
     {
-        $targetPath = $basePath ?? (string) config('cms.plugins.path', base_path('platform/plugins'));
+        $targetPath = $basePath ?? (string) config('cms.plugins.path', base_path('Plugins'));
 
         if (! is_dir($targetPath) || ! is_readable($targetPath)) {
             return collect();

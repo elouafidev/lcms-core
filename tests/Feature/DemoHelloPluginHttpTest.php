@@ -27,8 +27,8 @@ class DemoHelloPluginHttpTest extends TestCase
         $this->pluginManager = $this->app->make(PluginManager::class);
         $this->pluginRegistry = $this->app->make(PluginRegistry::class);
 
-        // Ensure plugins path points to native platform/plugins directory
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        // Ensure plugins path points to native Plugins directory
+        config(['cms.plugins.path' => base_path('Plugins')]);
     }
 
     public function test_demo_hello_route_returns_404_when_plugin_is_not_active(): void

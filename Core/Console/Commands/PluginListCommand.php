@@ -28,7 +28,7 @@ class PluginListCommand extends Command
         $plugins = $registry->getAll();
 
         if ($plugins->isEmpty()) {
-            $this->info('No plugins found in platform/plugins.');
+            $this->info('No plugins found in Plugins directory.');
 
             return self::SUCCESS;
         }

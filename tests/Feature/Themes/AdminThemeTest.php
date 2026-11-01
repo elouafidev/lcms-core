@@ -25,7 +25,7 @@ class AdminThemeTest extends TestCase
     {
         parent::setUp();
 
-        config(['cms.plugins.path' => base_path('platform/plugins')]);
+        config(['cms.plugins.path' => base_path('Plugins')]);
         config(['cms.themes.path' => base_path('themes')]);
 
         $this->themeManager = $this->app->make(ThemeManager::class);

@@ -119,7 +119,7 @@ class PluginDiscoveryTest extends TestCase
         // Empty folder
         mkdir($this->tempPluginsDir.'/empty-folder', 0777, true);
 
-        // Nested vendor folder: platform/plugins/lcmscore/nested-tool/plugin.json
+        // Nested vendor folder: Plugins/lcmscore/nested-tool/plugin.json
         $nestedPluginDir = $this->tempPluginsDir.'/lcmscore/nested-tool';
         mkdir($nestedPluginDir, 0777, true);
         file_put_contents($nestedPluginDir.'/plugin.json', json_encode([
