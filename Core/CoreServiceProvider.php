@@ -115,6 +115,7 @@ class CoreServiceProvider extends ServiceProvider
         $viewsPath = __DIR__.'/resources/views';
         if (is_dir($viewsPath)) {
             $this->loadViewsFrom($viewsPath, 'core');
+            config(['view.paths' => array_values(array_unique(array_merge([$viewsPath], (array) config('view.paths', []))))]);
         }
 
         $adminRoutes = __DIR__.'/routes/admin.php';
