@@ -49,12 +49,14 @@ Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(funct
         Route::post('/sessions/logout-others', [GeneralSettingsController::class, 'logoutOtherDevices'])->name('.sessions.logout-others');
     });
 
-    // 2. Site Settings & SMTP
+    // 2. Site Settings, Storage, Cache & SMTP
     Route::prefix('settings/site')->name('settings.site')->group(function (): void {
         Route::get('/', [SiteSettingsController::class, 'index']);
         Route::post('/general', [SiteSettingsController::class, 'updateGeneral'])->name('.general');
         Route::post('/smtp', [SiteSettingsController::class, 'updateSmtp'])->name('.smtp');
         Route::post('/smtp/test', [SiteSettingsController::class, 'testSmtp'])->name('.smtp.test');
+        Route::post('/storage/link', [SiteSettingsController::class, 'linkStorage'])->name('.storage.link');
+        Route::post('/cache/clear', [SiteSettingsController::class, 'clearCache'])->name('.cache.clear');
     });
 
     // 3. Roles & Permissions Management (RBAC)

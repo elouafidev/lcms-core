@@ -154,4 +154,85 @@ class SiteSettingsTest extends TestCase
         $response = $this->actingAs($admin)->get('/');
         $response->assertOk();
     }
+
+    public function test_site_settings_displays_storage_and_cache_tab(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/admin/settings/site');
+        $response->assertOk();
+        $response->assertSee('Stockage &amp; Cache', false);
+        $response->assertSee('Espace de Stockage &amp; Lien Public', false);
+        $response->assertSee('Nettoyage du Cache du Site');
+        $response->assertSee('storage:link');
+        $response->assertSee('optimize:clear');
+    }
+
+    public function test_admin_can_link_storage_via_web_post(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/admin/settings/site/storage/link', [
+            'force' => '1',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+    }
+
+    public function test_admin_can_link_storage_via_ajax_json(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/admin/settings/site/storage/link', [
+            'force' => true,
+        ]);
+
+        $response->assertOk();
+        $response->assertJson(['success' => true]);
+    }
+
+    public function test_admin_can_clear_all_caches_via_web_post(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/admin/settings/site/cache/clear', [
+            'type' => 'all',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+    }
+
+    public function test_admin_can_clear_specific_caches_via_ajax(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        foreach (['cache', 'views', 'routes', 'config'] as $type) {
+            $response = $this->actingAs($user)->postJson('/admin/settings/site/cache/clear', [
+                'type' => $type,
+            ]);
+
+            $response->assertOk();
+            $response->assertJson(['success' => true]);
+        }
+    }
+
+    public function test_clear_cache_with_invalid_type_fails_validation(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/admin/settings/site/cache/clear', [
+            'type' => 'unsupported_type',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['type']);
+    }
 }

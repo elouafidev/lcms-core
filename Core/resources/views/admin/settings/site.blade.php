@@ -39,6 +39,11 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill px-4 py-2 d-flex align-items-center gap-2 fw-semibold" id="tab-storage-cache" data-bs-toggle="pill" data-bs-target="#content-storage-cache" type="button" role="tab">
+                <i class="bi bi-hdd-network"></i> {{ __('Stockage & Cache') }}
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill px-4 py-2 d-flex align-items-center gap-2 fw-semibold" id="tab-diagnostics" data-bs-toggle="pill" data-bs-target="#content-diagnostics" type="button" role="tab">
                 <i class="bi bi-cpu"></i> {{ __('Diagnostic & Versions') }}
             </button>
@@ -273,10 +278,250 @@
                 </div>
             </div>
         </div>
+        <!-- Tab 4: Storage & Cache -->
+        <div class="tab-pane fade" id="content-storage-cache" role="tabpanel">
+            <div class="row g-4">
+                <!-- 1. Stockage & Storage Link -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm border-0 h-100" style="border-radius: 1rem;">
+                        <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                            <h5 class="card-title fw-bold mb-0 text-dark">
+                                <i class="bi bi-hdd-stack text-primary me-2"></i> {{ __('Espace de Stockage & Lien Public') }}
+                            </h5>
+                            @if($storageStatus['is_linked'])
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 rounded-pill">
+                                    <i class="bi bi-check-circle-fill me-1"></i> {{ __('Lien Actif') }}
+                                </span>
+                            @else
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1.5 rounded-pill">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ __('Lien Non Connecté') }}
+                                </span>
+                            @endif
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <p class="text-muted small mb-3">
+                                    {{ __('Pour rendre les fichiers médias, téléversements et ressources publiques accessibles aux navigateurs (via /storage/...), le dossier public doit être relié au disque de stockage local via un lien symbolique.') }}
+                                </p>
+
+                                <div class="bg-light p-3 rounded border mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                        <span class="small text-muted">{{ __('Emplacement Public') }}</span>
+                                        <code class="small text-dark">{{ $storageStatus['public_storage_path'] }}</code>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                        <span class="small text-muted">{{ __('Dossier Cible') }}</span>
+                                        <code class="small text-dark">{{ $storageStatus['target_storage_path'] }}</code>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                        <span class="small text-muted">{{ __('Espace disque libre') }}</span>
+                                        <span class="fw-semibold small text-dark">{{ $storageStatus['free_space_human'] }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="small text-muted">{{ __('Droits d\'écriture') }}</span>
+                                        @if($storageStatus['storage_writable'])
+                                            <span class="badge bg-success-subtle text-success"><i class="bi bi-check me-1"></i> Inscriptible</span>
+                                        @else
+                                            <span class="badge bg-danger-subtle text-danger"><i class="bi bi-x me-1"></i> Lecture seule</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-top">
+                                <form method="POST" action="{{ route('admin.settings.site.storage.link') }}" class="storage-action-form">
+                                    @csrf
+                                    @if($storageStatus['is_linked'])
+                                        <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                            <div class="small text-muted">
+                                                <i class="bi bi-info-circle text-info me-1"></i> {{ __('Le lien symbolique est déjà opérationnel.') }}
+                                            </div>
+                                            <button type="submit" name="force" value="1" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1.5">
+                                                <i class="bi bi-arrow-repeat"></i> {{ __('Regénérer le lien (storage:link --force)') }}
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                            <div class="small text-danger fw-semibold">
+                                                <i class="bi bi-exclamation-circle me-1"></i> {{ __('Les fichiers médias ne sont pas encore exposés publiquement.') }}
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1.5 shadow-sm">
+                                                <i class="bi bi-link-45deg"></i> {{ __('Créer le lien public (storage:link)') }}
+                                            </button>
+                                        </div>
+                                    @endif
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Gestion et Nettoyage du Cache -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm border-0 h-100" style="border-radius: 1rem;">
+                        <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                            <h5 class="card-title fw-bold mb-0 text-dark">
+                                <i class="bi bi-lightning-charge text-warning me-2"></i> {{ __('Nettoyage du Cache du Site') }}
+                            </h5>
+                            <span class="badge bg-secondary-subtle text-dark border px-2.5 py-1 rounded-pill small">
+                                Driver : {{ $cacheStatus['driver'] }}
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <p class="text-muted small mb-3">
+                                    {{ __('Nettoyez les différents niveaux de cache du site pour appliquer immédiatement les modifications de templates, de routes, de configurations ou de données applicatives.') }}
+                                </p>
+
+                                <!-- Action principale: Vider Tous les Caches -->
+                                <div class="bg-warning-subtle border border-warning-subtle rounded-3 p-3 mb-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                    <div>
+                                        <div class="fw-bold text-dark small mb-0.5">
+                                            <i class="bi bi-stars text-warning me-1"></i> {{ __('Nettoyage Complet de l\'Application') }}
+                                        </div>
+                                        <div class="text-muted" style="font-size: 0.8rem;">
+                                            {{ __('Exécute artisan optimize:clear (cache, vues, routes, config).') }}
+                                        </div>
+                                    </div>
+                                    <form method="POST" action="{{ route('admin.settings.site.cache.clear') }}" class="cache-action-form">
+                                        @csrf
+                                        <input type="hidden" name="type" value="all">
+                                        <button type="submit" class="btn btn-warning text-dark fw-bold btn-sm rounded-pill px-3 py-2 shadow-sm d-inline-flex align-items-center gap-1.5">
+                                            <i class="bi bi-trash3-fill"></i> {{ __('Vider tous les caches') }}
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Grille des Caches Granulaires -->
+                                <div class="row g-2">
+                                    <!-- Cache Applicatif -->
+                                    <div class="col-sm-6">
+                                        <div class="p-2.5 border rounded bg-light h-100 d-flex flex-column justify-content-between">
+                                            <div class="mb-2">
+                                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                                    <span class="fw-bold small text-dark"><i class="bi bi-database me-1 text-primary"></i> {{ __('Données & Objets') }}</span>
+                                                </div>
+                                                <p class="text-muted mb-0" style="font-size: 0.75rem;">
+                                                    {{ __('Cache général des données applicatives.') }}
+                                                </p>
+                                            </div>
+                                            <form method="POST" action="{{ route('admin.settings.site.cache.clear') }}" class="cache-action-form">
+                                                @csrf
+                                                <input type="hidden" name="type" value="cache">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm w-100 rounded-pill py-1 d-flex align-items-center justify-content-center gap-1" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('cache:clear') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cache des Vues Blade -->
+                                    <div class="col-sm-6">
+                                        <div class="p-2.5 border rounded bg-light h-100 d-flex flex-column justify-content-between">
+                                            <div class="mb-2">
+                                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                                    <span class="fw-bold small text-dark"><i class="bi bi-window-stack me-1 text-success"></i> {{ __('Vues Blade') }}</span>
+                                                    <span class="badge bg-secondary-subtle text-secondary" style="font-size: 0.7rem;">{{ $cacheStatus['views_count'] }} vues</span>
+                                                </div>
+                                                <p class="text-muted mb-0" style="font-size: 0.75rem;">
+                                                    {{ __('Templates Blade compilés dans storage.') }}
+                                                </p>
+                                            </div>
+                                            <form method="POST" action="{{ route('admin.settings.site.cache.clear') }}" class="cache-action-form">
+                                                @csrf
+                                                <input type="hidden" name="type" value="views">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm w-100 rounded-pill py-1 d-flex align-items-center justify-content-center gap-1" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('view:clear') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cache des Routes -->
+                                    <div class="col-sm-6">
+                                        <div class="p-2.5 border rounded bg-light h-100 d-flex flex-column justify-content-between">
+                                            <div class="mb-2">
+                                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                                    <span class="fw-bold small text-dark"><i class="bi bi-signpost-split me-1 text-info"></i> {{ __('Routes URL') }}</span>
+                                                    @if($cacheStatus['is_routes_cached'])
+                                                        <span class="badge bg-success-subtle text-success" style="font-size: 0.7rem;">Compilé</span>
+                                                    @else
+                                                        <span class="badge bg-light text-muted border" style="font-size: 0.7rem;">À la volée</span>
+                                                    @endif
+                                                </div>
+                                                <p class="text-muted mb-0" style="font-size: 0.75rem;">
+                                                    {{ __('Fichier de compilation des routes.') }}
+                                                </p>
+                                            </div>
+                                            <form method="POST" action="{{ route('admin.settings.site.cache.clear') }}" class="cache-action-form">
+                                                @csrf
+                                                <input type="hidden" name="type" value="routes">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm w-100 rounded-pill py-1 d-flex align-items-center justify-content-center gap-1" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('route:clear') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cache de Configuration -->
+                                    <div class="col-sm-6">
+                                        <div class="p-2.5 border rounded bg-light h-100 d-flex flex-column justify-content-between">
+                                            <div class="mb-2">
+                                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                                    <span class="fw-bold small text-dark"><i class="bi bi-gear me-1 text-danger"></i> {{ __('Configuration') }}</span>
+                                                    @if($cacheStatus['is_config_cached'])
+                                                        <span class="badge bg-success-subtle text-success" style="font-size: 0.7rem;">Compilé</span>
+                                                    @else
+                                                        <span class="badge bg-light text-muted border" style="font-size: 0.7rem;">À la volée</span>
+                                                    @endif
+                                                </div>
+                                                <p class="text-muted mb-0" style="font-size: 0.75rem;">
+                                                    {{ __('Variables d\'environnement et fichiers config.') }}
+                                                </p>
+                                            </div>
+                                            <form method="POST" action="{{ route('admin.settings.site.cache.clear') }}" class="cache-action-form">
+                                                @csrf
+                                                <input type="hidden" name="type" value="config">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm w-100 rounded-pill py-1 d-flex align-items-center justify-content-center gap-1" style="font-size: 0.8rem;">
+                                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('config:clear') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 mt-3 border-top text-muted small d-flex align-items-center justify-content-between">
+                                <span><i class="bi bi-terminal me-1"></i> Commandes Artisan directes</span>
+                                <span class="badge bg-light text-secondary border">PHP {{ PHP_VERSION }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Hash tab activation
+            const currentHash = window.location.hash;
+            if (currentHash) {
+                const activeBtn = document.querySelector(`button[data-bs-target="${currentHash}"]`);
+                if (activeBtn) {
+                    bootstrap.Tab.getOrCreateInstance(activeBtn).show();
+                }
+            }
+            document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(btn => {
+                btn.addEventListener('shown.bs.tab', e => {
+                    const target = e.target.getAttribute('data-bs-target');
+                    if (target) {
+                        history.replaceState(null, null, target);
+                    }
+                });
+            });
+
+            // SMTP Test Handler
             const btnTest = document.getElementById('btn-test-smtp');
             const resultAlert = document.getElementById('test-smtp-result');
 
@@ -324,6 +569,56 @@
                     });
                 });
             }
+
+            // AJAX handlers for Cache and Storage forms
+            document.querySelectorAll('.cache-action-form, .storage-action-form').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalHtml = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Exécution...';
+
+                    const formData = new FormData(form);
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHtml;
+
+                        const alertBox = document.createElement('div');
+                        alertBox.className = `alert ${data.success ? 'alert-success' : 'alert-danger'} alert-dismissible fade show shadow-sm mb-3`;
+                        alertBox.innerHTML = `
+                            <i class="bi ${data.success ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2"></i>
+                            ${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+
+                        const container = document.getElementById('content-storage-cache');
+                        container.insertBefore(alertBox, container.firstChild);
+                        alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                        setTimeout(() => {
+                            alertBox.classList.remove('show');
+                            setTimeout(() => alertBox.remove(), 300);
+                        }, 5000);
+                    })
+                    .catch(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHtml;
+                        form.submit();
+                    });
+                });
+            });
         });
     </script>
 @endsection

@@ -8,6 +8,7 @@ use Core\Http\Controllers\Controller;
 use Core\Recovery\SafeModeManager;
 use Core\Security\Audit\AuditLogger;
 use Core\Settings\Services\MailTesterService;
+use Core\Settings\Services\StorageCacheService;
 use Core\Settings\SettingManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -21,8 +22,11 @@ class SiteSettingsController extends Controller
     /**
      * Display the site settings and environment diagnostics.
      */
-    public function index(SettingManager $settingManager, SafeModeManager $safeModeManager): View
-    {
+    public function index(
+        SettingManager $settingManager,
+        SafeModeManager $safeModeManager,
+        StorageCacheService $storageCacheService
+    ): View {
         $settings = $settingManager->all();
 
         // System Health & Diagnostics
@@ -49,6 +53,8 @@ class SiteSettingsController extends Controller
         return view('core::admin.settings.site', [
             'settings' => $settings,
             'diagnostics' => $diagnostics,
+            'storageStatus' => $storageCacheService->getStorageStatus(),
+            'cacheStatus' => $storageCacheService->getCacheStatus(),
         ]);
     }
 
@@ -142,5 +148,65 @@ class SiteSettingsController extends Controller
         $result = $mailTester->sendTestMail((string) $request->input('test_email'));
 
         return response()->json($result);
+    }
+
+    /**
+     * Create or re-create the storage:link public symbolic link.
+     */
+    public function linkStorage(
+        Request $request,
+        StorageCacheService $storageCacheService,
+        AuditLogger $auditLogger
+    ): RedirectResponse|JsonResponse {
+        $force = $request->boolean('force', false);
+        $result = $storageCacheService->linkStorage($force);
+
+        $auditLogger->log(
+            action: 'settings.storage.link',
+            resourceType: 'Storage',
+            newValues: ['force' => $force, 'result' => $result]
+        );
+
+        if ($request->wantsJson()) {
+            return response()->json($result, $result['success'] ? 200 : 422);
+        }
+
+        if ($result['success']) {
+            return back()->with('success', $result['message']);
+        }
+
+        return back()->with('error', $result['message']);
+    }
+
+    /**
+     * Clear application or system cache (artisan cache:clear, view:clear, etc.).
+     */
+    public function clearCache(
+        Request $request,
+        StorageCacheService $storageCacheService,
+        AuditLogger $auditLogger
+    ): RedirectResponse|JsonResponse {
+        $validated = $request->validate([
+            'type' => ['nullable', 'string', 'in:all,cache,views,routes,config'],
+        ]);
+
+        $type = $validated['type'] ?? 'all';
+        $result = $storageCacheService->clearCache($type);
+
+        $auditLogger->log(
+            action: 'settings.cache.cleared',
+            resourceType: 'Cache',
+            newValues: ['type' => $type, 'result' => $result]
+        );
+
+        if ($request->wantsJson()) {
+            return response()->json($result, $result['success'] ? 200 : 422);
+        }
+
+        if ($result['success']) {
+            return back()->with('success', $result['message']);
+        }
+
+        return back()->with('error', $result['message']);
     }
 }
