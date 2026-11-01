@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\CoreServiceProvider;
+use Core\CoreServiceProvider;
 use Tests\TestCase;
 
 class CoreServiceProviderTest extends TestCase

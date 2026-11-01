@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\DTO\DiscoveredPlugin;
-use App\Core\PluginDiscovery\ManifestValidator;
-use App\Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\DTO\DiscoveredPlugin;
+use Core\PluginDiscovery\ManifestValidator;
+use Core\PluginDiscovery\PluginDiscovery;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 

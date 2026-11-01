@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\Themes\ThemeDiscovery;
-use App\Core\Themes\ThemeManager;
-use App\Core\Themes\ThemeZipInstaller;
+use Core\Themes\ThemeDiscovery;
+use Core\Themes\ThemeManager;
+use Core\Themes\ThemeZipInstaller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

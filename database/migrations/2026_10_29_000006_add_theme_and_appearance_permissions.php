@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Core\RBAC\Models\Permission;
-use App\Core\RBAC\Models\Role;
+use Core\RBAC\Models\Permission;
+use Core\RBAC\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Plugins\MediaLibrary\Services;
 
-use App\Core\Contracts\MediaStorageInterface;
+use Core\Contracts\MediaStorageInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Plugins\MediaLibrary\Models\MediaItem;

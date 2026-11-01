@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Auth;
+namespace Core\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use Core\Http\Controllers\Controller;
+use Core\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

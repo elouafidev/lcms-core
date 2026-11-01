@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery;
+namespace Core\PluginDiscovery;
 
-use App\Core\PluginDiscovery\DTO\PluginManifest;
-use App\Core\PluginDiscovery\Exceptions\InvalidManifestException;
+use Core\PluginDiscovery\DTO\PluginManifest;
+use Core\PluginDiscovery\Exceptions\InvalidManifestException;
 
 class ManifestValidator
 {

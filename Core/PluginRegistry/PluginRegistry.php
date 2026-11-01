@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginRegistry;
+namespace Core\PluginRegistry;
 
-use App\Core\Contracts\PluginInterface;
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginDiscovery\DTO\DiscoveredPlugin;
-use App\Core\PluginDiscovery\PluginDiscovery;
-use App\Core\PluginRegistry\Models\PluginRecord;
+use Core\Contracts\PluginInterface;
+use Core\Lifecycle\PluginState;
+use Core\PluginDiscovery\DTO\DiscoveredPlugin;
+use Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginRegistry\Models\PluginRecord;
 use Illuminate\Support\Collection;
 
 class PluginRegistry

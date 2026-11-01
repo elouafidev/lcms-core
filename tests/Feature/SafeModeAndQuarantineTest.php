@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\Models\PluginRecord;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Core\Recovery\Models\PluginErrorRecord;
-use App\Core\Recovery\PluginQuarantineHandler;
-use App\Core\Recovery\SafeModeManager;
-use App\Models\User;
+use Core\Lifecycle\PluginState;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\Models\PluginRecord;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Recovery\Models\PluginErrorRecord;
+use Core\Recovery\PluginQuarantineHandler;
+use Core\Recovery\SafeModeManager;
+use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;

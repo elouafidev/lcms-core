@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Admin\NavigationItem;
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Lifecycle\PluginState;
-use App\Core\Permissions\PermissionRegistry;
-use App\Core\PluginDiscovery\DTO\PluginManifest;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\Models\PluginRecord;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Models\User;
+use Core\Admin\NavigationItem;
+use Core\Admin\NavigationRegistry;
+use Core\Lifecycle\PluginState;
+use Core\Permissions\PermissionRegistry;
+use Core\PluginDiscovery\DTO\PluginManifest;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\Models\PluginRecord;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

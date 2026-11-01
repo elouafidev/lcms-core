@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes;
+namespace Core\Themes;
 
 use Illuminate\Filesystem\Filesystem;
 use Throwable;

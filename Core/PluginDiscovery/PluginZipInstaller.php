@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery;
+namespace Core\PluginDiscovery;
 
-use App\Core\PluginDiscovery\DTO\PluginManifest;
-use App\Core\PluginDiscovery\Exceptions\InvalidPluginArchiveException;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\PluginDiscovery\DTO\PluginManifest;
+use Core\PluginDiscovery\Exceptions\InvalidPluginArchiveException;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;

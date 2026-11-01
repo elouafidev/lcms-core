@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery\Autoload;
+namespace Core\PluginDiscovery\Autoload;
 
 use Composer\Autoload\ClassLoader;
 

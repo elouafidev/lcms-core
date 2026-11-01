@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Platform\Core\Http\Controllers\Admin\AdminThemeController;
-use Platform\Core\Http\Controllers\Admin\AppearanceCustomizerController;
-use Platform\Core\Http\Controllers\Admin\CoreUpdateController;
-use Platform\Core\Http\Controllers\Admin\GeneralSettingsController;
-use Platform\Core\Http\Controllers\Admin\PluginController;
-use Platform\Core\Http\Controllers\Admin\RoleController;
-use Platform\Core\Http\Controllers\Admin\SiteSettingsController;
-use Platform\Core\Http\Controllers\Admin\UserController;
+use Core\Http\Controllers\Admin\AdminThemeController;
+use Core\Http\Controllers\Admin\AppearanceCustomizerController;
+use Core\Http\Controllers\Admin\CoreUpdateController;
+use Core\Http\Controllers\Admin\GeneralSettingsController;
+use Core\Http\Controllers\Admin\PluginController;
+use Core\Http\Controllers\Admin\RoleController;
+use Core\Http\Controllers\Admin\SiteSettingsController;
+use Core\Http\Controllers\Admin\UserController;
 
 Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/', [PluginController::class, 'index'])->name('dashboard');

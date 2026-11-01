@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\Updater\CoreZipUpdater;
-use App\Core\Updater\Models\UpdateHistory;
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use Core\Updater\CoreZipUpdater;
+use Core\Updater\Models\UpdateHistory;
+use Core\Http\Controllers\Controller;
+use Core\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

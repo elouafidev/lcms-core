@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Plugins\MediaLibrary\Providers;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Contracts\MediaStorageInterface;
+use Core\Admin\NavigationRegistry;
+use Core\Contracts\MediaStorageInterface;
 use Illuminate\Support\ServiceProvider;
 use Plugins\MediaLibrary\Services\MediaStorageService;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Console\Command;
 use Throwable;
 

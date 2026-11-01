@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\DependencyResolver\Exceptions;
+namespace Core\DependencyResolver\Exceptions;
 
 use RuntimeException;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Plugins\Seo\Providers;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Hooks\HookManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Admin\NavigationRegistry;
+use Core\Hooks\HookManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Support\ServiceProvider;
 use Plugins\Seo\Services\SeoMetaManager;
 use Plugins\Seo\Subscribers\SeoHookSubscriber;

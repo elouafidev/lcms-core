@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\RBAC\Models\Role;
-use App\Core\RBAC\Services\RbacManager;
-use App\Core\Security\Audit\AuditLogger;
-use App\Http\Controllers\Controller;
+use Core\RBAC\Models\Role;
+use Core\RBAC\Services\RbacManager;
+use Core\Security\Audit\AuditLogger;
+use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

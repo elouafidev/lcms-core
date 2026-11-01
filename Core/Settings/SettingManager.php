@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Settings;
+namespace Core\Settings;
 
-use App\Core\Settings\Models\SettingRecord;
+use Core\Settings\Models\SettingRecord;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Throwable;

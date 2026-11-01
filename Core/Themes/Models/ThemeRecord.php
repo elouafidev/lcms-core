@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes\Models;
+namespace Core\Themes\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

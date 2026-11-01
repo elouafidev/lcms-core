@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes\DTO;
+namespace Core\Themes\DTO;
 
-use App\Core\Contracts\ThemeManifestInterface;
+use Core\Contracts\ThemeManifestInterface;
 use InvalidArgumentException;
 
 class ThemeManifest implements ThemeManifestInterface

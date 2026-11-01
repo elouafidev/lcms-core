@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\RBAC\Services;
+namespace Core\RBAC\Services;
 
-use App\Core\RBAC\Models\Permission;
-use App\Core\RBAC\Models\Role;
-use App\Models\User;
+use Core\RBAC\Models\Permission;
+use Core\RBAC\Models\Role;
+use Core\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use InvalidArgumentException;
 

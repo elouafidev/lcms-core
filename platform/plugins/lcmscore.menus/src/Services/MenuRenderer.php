@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Plugins\Menus\Services;
 
-use App\Core\Hooks\HookManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Hooks\HookManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Database\Eloquent\Collection;
 use Plugins\Menus\Models\Menu;
 use Plugins\Menus\Models\MenuItem;

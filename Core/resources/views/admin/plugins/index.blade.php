@@ -132,7 +132,7 @@
                                             </a>
                                         </div>
                                         <div class="font-monospace small text-muted">{{ $pluginId }}</div>
-                                        @if($state === 'ERROR' && $plugin instanceof \App\Core\PluginRegistry\Models\PluginRecord && $plugin->error_message)
+                                        @if($state === 'ERROR' && $plugin instanceof \Core\PluginRegistry\Models\PluginRecord && $plugin->error_message)
                                             <div class="text-danger small font-monospace mt-1">
                                                 <i class="bi bi-x-circle me-1"></i> {{ $plugin->error_message }}
                                             </div>

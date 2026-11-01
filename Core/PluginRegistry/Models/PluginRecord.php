@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginRegistry\Models;
+namespace Core\PluginRegistry\Models;
 
-use App\Core\Contracts\PluginInterface;
-use App\Core\Contracts\PluginManifestInterface;
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginDiscovery\DTO\PluginManifest;
+use Core\Contracts\PluginInterface;
+use Core\Contracts\PluginManifestInterface;
+use Core\Lifecycle\PluginState;
+use Core\PluginDiscovery\DTO\PluginManifest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 

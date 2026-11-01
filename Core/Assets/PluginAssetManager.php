@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Assets;
+namespace Core\Assets;
 
 use Illuminate\Filesystem\Filesystem;
 

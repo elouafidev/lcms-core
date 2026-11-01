@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Plugins\Seo\Subscribers;
 
-use App\Core\Contracts\HookSubscriberInterface;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Contracts\HookSubscriberInterface;
+use Core\PluginRegistry\PluginRegistry;
 use Plugins\Seo\Services\SeoMetaManager;
 
 class SeoHookSubscriber implements HookSubscriberInterface

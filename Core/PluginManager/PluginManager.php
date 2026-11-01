@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginManager;
+namespace Core\PluginManager;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Assets\PluginAssetManager;
-use App\Core\Contracts\PluginInterface;
-use App\Core\DependencyResolver\DependencyResolver;
-use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\Lifecycle\PluginState;
-use App\Core\Permissions\PermissionRegistry;
-use App\Core\PluginRegistry\Models\PluginRecord;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Core\Recovery\PluginQuarantineHandler;
-use App\Core\Recovery\SafeModeManager;
+use Core\Admin\NavigationRegistry;
+use Core\Assets\PluginAssetManager;
+use Core\Contracts\PluginInterface;
+use Core\DependencyResolver\DependencyResolver;
+use Core\Lifecycle\Exceptions\InvalidStateTransitionException;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\Lifecycle\PluginState;
+use Core\Permissions\PermissionRegistry;
+use Core\PluginRegistry\Models\PluginRecord;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Recovery\PluginQuarantineHandler;
+use Core\Recovery\SafeModeManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
 use InvalidArgumentException;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\DependencyResolver;
+namespace Core\DependencyResolver;
 
-use App\Core\Contracts\PluginInterface;
-use App\Core\DependencyResolver\Exceptions\CircularDependencyException;
-use App\Core\DependencyResolver\Exceptions\MissingDependencyException;
+use Core\Contracts\PluginInterface;
+use Core\DependencyResolver\Exceptions\CircularDependencyException;
+use Core\DependencyResolver\Exceptions\MissingDependencyException;
 
 class DependencyResolver
 {

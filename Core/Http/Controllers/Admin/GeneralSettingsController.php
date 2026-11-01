@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\Security\Audit\AuditLogger;
-use App\Core\Security\Services\RecoveryCodeService;
-use App\Core\Security\Services\TotpService;
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use Core\Security\Audit\AuditLogger;
+use Core\Security\Services\RecoveryCodeService;
+use Core\Security\Services\TotpService;
+use Core\Http\Controllers\Controller;
+use Core\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

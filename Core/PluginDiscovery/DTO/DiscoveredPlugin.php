@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery\DTO;
+namespace Core\PluginDiscovery\DTO;
 
-use App\Core\Contracts\PluginInterface;
-use App\Core\Contracts\PluginManifestInterface;
+use Core\Contracts\PluginInterface;
+use Core\Contracts\PluginManifestInterface;
 
 readonly class DiscoveredPlugin implements PluginInterface
 {

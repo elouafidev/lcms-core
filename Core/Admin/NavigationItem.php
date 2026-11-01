@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Admin;
+namespace Core\Admin;
 
-use App\Core\Contracts\NavigationItemContract;
+use Core\Contracts\NavigationItemContract;
 
 class NavigationItem implements NavigationItemContract
 {

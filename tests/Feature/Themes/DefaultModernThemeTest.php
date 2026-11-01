@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Themes;
 
-use App\Core\PluginManager\PluginManager;
-use App\Core\Themes\ThemeAssetManager;
-use App\Core\Themes\ThemeDiscovery;
-use App\Core\Themes\ThemeManager;
+use Core\PluginManager\PluginManager;
+use Core\Themes\ThemeAssetManager;
+use Core\Themes\ThemeDiscovery;
+use Core\Themes\ThemeManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Plugins\Menus\Models\Menu;
 use Plugins\Menus\Models\MenuItem;

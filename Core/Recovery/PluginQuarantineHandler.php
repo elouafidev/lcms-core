@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Recovery;
+namespace Core\Recovery;
 
-use App\Core\PluginRegistry\Models\PluginRecord;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Core\Recovery\Models\PluginErrorRecord;
+use Core\PluginRegistry\Models\PluginRecord;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Recovery\Models\PluginErrorRecord;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Schema;
 use Psr\Log\LoggerInterface;

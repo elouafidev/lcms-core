@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Hooks\Facades;
+namespace Core\Hooks\Facades;
 
-use App\Core\Contracts\HookSubscriberInterface;
-use App\Core\Hooks\HookManager;
+use Core\Contracts\HookSubscriberInterface;
+use Core\Hooks\HookManager;
 use Illuminate\Support\Facades\Facade;
 
 /**

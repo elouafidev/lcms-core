@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\RBAC\Middleware;
+namespace Core\RBAC\Middleware;
 
-use App\Models\User;
+use Core\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

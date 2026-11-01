@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Plugins\Menus\Providers;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Hooks\HookManager;
+use Core\Admin\NavigationRegistry;
+use Core\Hooks\HookManager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Plugins\Menus\Services\MenuRenderer;

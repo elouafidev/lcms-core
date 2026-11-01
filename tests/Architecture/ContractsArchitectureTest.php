@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Architecture;
 
-use App\Core\Contracts\HookSubscriberInterface;
-use App\Core\Contracts\MediaStorageInterface;
-use App\Core\Contracts\NavigationItemContract;
-use App\Core\Contracts\PluginInterface;
-use App\Core\Contracts\PluginLifecycleListenerInterface;
-use App\Core\Contracts\PluginManifestInterface;
-use App\Core\Contracts\ThemeInterface;
-use App\Core\Contracts\ThemeManifestInterface;
+use Core\Contracts\HookSubscriberInterface;
+use Core\Contracts\MediaStorageInterface;
+use Core\Contracts\NavigationItemContract;
+use Core\Contracts\PluginInterface;
+use Core\Contracts\PluginLifecycleListenerInterface;
+use Core\Contracts\PluginManifestInterface;
+use Core\Contracts\ThemeInterface;
+use Core\Contracts\ThemeManifestInterface;
 use DirectoryIterator;
 use ReflectionClass;
 use ReflectionMethod;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Settings\Middleware;
+namespace Core\Settings\Middleware;
 
-use App\Core\Settings\SettingManager;
-use App\Models\User;
+use Core\Settings\SettingManager;
+use Core\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

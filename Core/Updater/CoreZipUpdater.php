@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Updater;
+namespace Core\Updater;
 
-use App\Core\Security\Audit\AuditLogger;
-use App\Core\Updater\Models\UpdateHistory;
-use App\Core\Updater\Services\BackupService;
-use App\Models\User;
+use Core\Security\Audit\AuditLogger;
+use Core\Updater\Models\UpdateHistory;
+use Core\Updater\Services\BackupService;
+use Core\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use RuntimeException;

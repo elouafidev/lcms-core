@@ -6,7 +6,7 @@
     <title>{{ config('app.name', 'LCMS Core') }} — {{ __('The Modular Plugin-First CMS') }}</title>
 
     <!-- Point d'ancrage Hook Core : injection de balises par lcmscore.seo -->
-    {!! \App\Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
+    {!! \Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -228,6 +228,6 @@
         </div>
     </footer>
 
-    {!! \App\Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
+    {!! \Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
 </body>
 </html>

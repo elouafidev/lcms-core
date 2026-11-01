@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Themes;
 
-use App\Core\RBAC\Models\Permission;
-use App\Core\RBAC\Models\Role;
-use App\Core\Security\Audit\Models\AuditLog;
-use App\Core\Settings\SettingManager;
-use App\Models\User;
+use Core\RBAC\Models\Permission;
+use Core\RBAC\Models\Role;
+use Core\Security\Audit\Models\AuditLog;
+use Core\Settings\SettingManager;
+use Core\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

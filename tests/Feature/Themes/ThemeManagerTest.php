@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Themes;
 
-use App\Core\PluginManager\PluginManager;
-use App\Core\Themes\DTO\DiscoveredTheme;
-use App\Core\Themes\Models\ThemeRecord;
-use App\Core\Themes\ThemeManager;
+use Core\PluginManager\PluginManager;
+use Core\Themes\DTO\DiscoveredTheme;
+use Core\Themes\Models\ThemeRecord;
+use Core\Themes\ThemeManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;

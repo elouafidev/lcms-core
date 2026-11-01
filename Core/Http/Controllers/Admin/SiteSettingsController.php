@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\Recovery\SafeModeManager;
-use App\Core\Security\Audit\AuditLogger;
-use App\Core\Settings\Services\MailTesterService;
-use App\Core\Settings\SettingManager;
-use App\Http\Controllers\Controller;
+use Core\Recovery\SafeModeManager;
+use Core\Security\Audit\AuditLogger;
+use Core\Settings\Services\MailTesterService;
+use Core\Settings\SettingManager;
+use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

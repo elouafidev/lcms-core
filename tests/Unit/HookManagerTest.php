@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\Contracts\HookSubscriberInterface;
-use App\Core\Hooks\Facades\Hook;
-use App\Core\Hooks\HookManager;
+use Core\Contracts\HookSubscriberInterface;
+use Core\Hooks\Facades\Hook;
+use Core\Hooks\HookManager;
 use Tests\TestCase;
 
 class TestHookSubscriber implements HookSubscriberInterface

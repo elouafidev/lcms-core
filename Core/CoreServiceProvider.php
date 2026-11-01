@@ -2,44 +2,44 @@
 
 declare(strict_types=1);
 
-namespace App\Core;
+namespace Core;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Assets\PluginAssetManager;
-use App\Core\Console\Commands\DisableTwoFactorCommand;
-use App\Core\Console\Commands\EnableTwoFactorCommand;
-use App\Core\Console\Commands\PluginDisableCommand;
-use App\Core\Console\Commands\PluginEnableCommand;
-use App\Core\Console\Commands\PluginListCommand;
-use App\Core\Console\Commands\PluginPublishAssetsCommand;
-use App\Core\Console\Commands\PluginSeedCommand;
-use App\Core\Console\Commands\SafeModeCommand;
-use App\Core\Console\Commands\ThemeActivateCommand;
-use App\Core\Console\Commands\ThemeListCommand;
-use App\Core\Console\Commands\ThemePublishAssetsCommand;
-use App\Core\DependencyResolver\DependencyResolver;
-use App\Core\Hooks\HookManager;
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\Lifecycle\PluginSeederManager;
-use App\Core\Permissions\PermissionRegistry;
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\ManifestValidator;
-use App\Core\PluginDiscovery\PluginDiscovery;
-use App\Core\PluginDiscovery\PluginZipInstaller;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Core\RBAC\Services\RbacManager;
-use App\Core\Recovery\PluginQuarantineHandler;
-use App\Core\Recovery\SafeModeManager;
-use App\Core\Security\Audit\AuditLogger;
-use App\Core\Security\Services\RecoveryCodeService;
-use App\Core\Security\Services\TotpService;
-use App\Core\Settings\Services\MailTesterService;
-use App\Core\Settings\SettingManager;
-use App\Core\Themes\ThemeAssetManager;
-use App\Core\Themes\ThemeDiscovery;
-use App\Core\Themes\ThemeManager;
-use App\Core\Themes\ThemeZipInstaller;
+use Core\Admin\NavigationRegistry;
+use Core\Assets\PluginAssetManager;
+use Core\Console\Commands\DisableTwoFactorCommand;
+use Core\Console\Commands\EnableTwoFactorCommand;
+use Core\Console\Commands\PluginDisableCommand;
+use Core\Console\Commands\PluginEnableCommand;
+use Core\Console\Commands\PluginListCommand;
+use Core\Console\Commands\PluginPublishAssetsCommand;
+use Core\Console\Commands\PluginSeedCommand;
+use Core\Console\Commands\SafeModeCommand;
+use Core\Console\Commands\ThemeActivateCommand;
+use Core\Console\Commands\ThemeListCommand;
+use Core\Console\Commands\ThemePublishAssetsCommand;
+use Core\DependencyResolver\DependencyResolver;
+use Core\Hooks\HookManager;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\Lifecycle\PluginSeederManager;
+use Core\Permissions\PermissionRegistry;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\ManifestValidator;
+use Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginDiscovery\PluginZipInstaller;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
+use Core\RBAC\Services\RbacManager;
+use Core\Recovery\PluginQuarantineHandler;
+use Core\Recovery\SafeModeManager;
+use Core\Security\Audit\AuditLogger;
+use Core\Security\Services\RecoveryCodeService;
+use Core\Security\Services\TotpService;
+use Core\Settings\Services\MailTesterService;
+use Core\Settings\SettingManager;
+use Core\Themes\ThemeAssetManager;
+use Core\Themes\ThemeDiscovery;
+use Core\Themes\ThemeManager;
+use Core\Themes\ThemeZipInstaller;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -53,6 +53,21 @@ class CoreServiceProvider extends ServiceProvider
             base_path('config/cms.php'),
             'cms'
         );
+
+        $legacyAliases = [
+            \Core\Models\User::class => 'App\Models\User',
+            \Core\Http\Controllers\Auth\LoginController::class => 'App\Http\Controllers\Auth\LoginController',
+            \Core\Http\Controllers\Auth\RegisterController::class => 'App\Http\Controllers\Auth\RegisterController',
+            \Core\Http\Controllers\Auth\ForgotPasswordController::class => 'App\Http\Controllers\Auth\ForgotPasswordController',
+            \Core\Http\Controllers\Auth\ResetPasswordController::class => 'App\Http\Controllers\Auth\ResetPasswordController',
+            \Core\Http\Controllers\Auth\ConfirmPasswordController::class => 'App\Http\Controllers\Auth\ConfirmPasswordController',
+            \Core\Http\Controllers\Auth\VerificationController::class => 'App\Http\Controllers\Auth\VerificationController',
+        ];
+        foreach ($legacyAliases as $target => $alias) {
+            if (! class_exists($alias, false)) {
+                class_alias($target, $alias);
+            }
+        }
 
         $this->app->singleton(ManifestValidator::class);
         $this->app->singleton(PluginClassLoader::class);

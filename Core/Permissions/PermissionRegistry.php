@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Permissions;
+namespace Core\Permissions;
 
-use App\Core\Contracts\PluginManifestInterface;
+use Core\Contracts\PluginManifestInterface;
 
 class PermissionRegistry
 {

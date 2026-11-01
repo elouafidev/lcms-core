@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\Lifecycle\Exceptions\InvalidStateTransitionException;
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\ManifestValidator;
-use App\Core\PluginDiscovery\PluginDiscovery;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\Models\PluginRecord;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Lifecycle\Exceptions\InvalidStateTransitionException;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\Lifecycle\PluginState;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\ManifestValidator;
+use Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\Models\PluginRecord;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;

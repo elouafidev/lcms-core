@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace Core\Http\Controllers;
 
 class HomeController extends Controller
 {

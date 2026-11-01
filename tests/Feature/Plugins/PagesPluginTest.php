@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Plugins;
 
-use App\Core\Admin\NavigationRegistry;
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Models\User;
+use Core\Admin\NavigationRegistry;
+use Core\Lifecycle\PluginState;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Plugins\Pages\Models\Page;

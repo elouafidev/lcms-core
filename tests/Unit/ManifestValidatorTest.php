@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\Contracts\PluginManifestInterface;
-use App\Core\PluginDiscovery\DTO\PluginManifest;
-use App\Core\PluginDiscovery\Exceptions\InvalidManifestException;
-use App\Core\PluginDiscovery\ManifestValidator;
+use Core\Contracts\PluginManifestInterface;
+use Core\PluginDiscovery\DTO\PluginManifest;
+use Core\PluginDiscovery\Exceptions\InvalidManifestException;
+use Core\PluginDiscovery\ManifestValidator;
 use Tests\TestCase;
 
 class ManifestValidatorTest extends TestCase

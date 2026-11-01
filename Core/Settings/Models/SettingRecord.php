@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Settings\Models;
+namespace Core\Settings\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;

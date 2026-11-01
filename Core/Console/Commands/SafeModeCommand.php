@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\Recovery\SafeModeManager;
+use Core\Recovery\SafeModeManager;
 use Illuminate\Console\Command;
 
 class SafeModeCommand extends Command

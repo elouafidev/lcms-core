@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Security\Services;
+namespace Core\Security\Services;
 
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Lifecycle;
+namespace Core\Lifecycle;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\Container;

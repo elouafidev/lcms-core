@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery;
+namespace Core\PluginDiscovery;
 
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\DTO\DiscoveredPlugin;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\DTO\DiscoveredPlugin;
 use DirectoryIterator;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;

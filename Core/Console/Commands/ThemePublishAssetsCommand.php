@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\Themes\ThemeAssetManager;
-use App\Core\Themes\ThemeDiscovery;
-use App\Core\Themes\ThemeManager;
+use Core\Themes\ThemeAssetManager;
+use Core\Themes\ThemeDiscovery;
+use Core\Themes\ThemeManager;
 use Illuminate\Console\Command;
 use Throwable;
 

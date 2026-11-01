@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes;
+namespace Core\Themes;
 
-use App\Core\Themes\DTO\ThemeManifest;
-use App\Core\Themes\Exceptions\InvalidThemeArchiveException;
+use Core\Themes\DTO\ThemeManifest;
+use Core\Themes\Exceptions\InvalidThemeArchiveException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use InvalidArgumentException;

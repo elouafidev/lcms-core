@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Security\Audit;
+namespace Core\Security\Audit;
 
-use App\Core\Security\Audit\Models\AuditLog;
-use App\Models\User;
+use Core\Security\Audit\Models\AuditLog;
+use Core\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuditLogger

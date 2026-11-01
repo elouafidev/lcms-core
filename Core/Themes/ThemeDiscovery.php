@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes;
+namespace Core\Themes;
 
-use App\Core\Contracts\ThemeInterface;
-use App\Core\Themes\DTO\DiscoveredTheme;
-use App\Core\Themes\DTO\ThemeManifest;
+use Core\Contracts\ThemeInterface;
+use Core\Themes\DTO\DiscoveredTheme;
+use Core\Themes\DTO\ThemeManifest;
 use DirectoryIterator;
 use InvalidArgumentException;
 use JsonException;

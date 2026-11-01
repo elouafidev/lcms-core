@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Themes;
 
-use App\Core\Themes\ThemeAssetManager;
-use App\Core\Themes\ThemeDiscovery;
-use App\Core\Themes\ThemeManager;
+use Core\Themes\ThemeAssetManager;
+use Core\Themes\ThemeDiscovery;
+use Core\Themes\ThemeManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;

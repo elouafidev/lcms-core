@@ -47,7 +47,7 @@ class CoreBoundariesTest extends TestCase
             $this->assertIsString($content);
 
             $this->assertStringNotContainsString(
-                'use Platform\\Core\\',
+                'use Core\\',
                 $content,
                 "Core file {$file->getFilename()} must never depend on the Platform\\Core admin layer."
             );

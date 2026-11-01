@@ -1,4 +1,4 @@
-@inject('safeModeManager', 'App\Core\Recovery\SafeModeManager')
+@inject('safeModeManager', 'Core\Recovery\SafeModeManager')
 
 <nav class="app-header navbar navbar-expand bg-body shadow-sm">
     <div class="container-fluid">

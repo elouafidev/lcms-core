@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Hooks;
+namespace Core\Hooks;
 
-use App\Core\Contracts\HookSubscriberInterface;
+use Core\Contracts\HookSubscriberInterface;
 
 class HookManager
 {

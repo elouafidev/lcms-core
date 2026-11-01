@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\PluginDiscovery\Exceptions;
+namespace Core\PluginDiscovery\Exceptions;
 
 use RuntimeException;
 

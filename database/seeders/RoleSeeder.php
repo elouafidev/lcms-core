@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Core\RBAC\Models\Permission;
-use App\Core\RBAC\Models\Role;
+use Core\Models\User;
+use Core\RBAC\Models\Permission;
+use Core\RBAC\Models\Role;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder

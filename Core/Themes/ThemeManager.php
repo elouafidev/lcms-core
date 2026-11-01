@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes;
+namespace Core\Themes;
 
-use App\Core\Contracts\ThemeInterface;
-use App\Core\Themes\DTO\DiscoveredTheme;
-use App\Core\Themes\Models\ThemeRecord;
+use Core\Contracts\ThemeInterface;
+use Core\Themes\DTO\DiscoveredTheme;
+use Core\Themes\Models\ThemeRecord;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\Factory as ViewFactory;
 use Illuminate\View\FileViewFinder;

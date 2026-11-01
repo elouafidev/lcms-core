@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes\DTO;
+namespace Core\Themes\DTO;
 
-use App\Core\Contracts\ThemeInterface;
-use App\Core\Contracts\ThemeManifestInterface;
+use Core\Contracts\ThemeInterface;
+use Core\Contracts\ThemeManifestInterface;
 
 class DiscoveredTheme implements ThemeInterface
 {

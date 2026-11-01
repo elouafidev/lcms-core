@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Settings\Services;
+namespace Core\Settings\Services;
 
-use App\Core\Settings\Mail\SmtpTestMail;
+use Core\Settings\Mail\SmtpTestMail;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
 

@@ -1,4 +1,4 @@
-@inject('navigationRegistry', 'App\Core\Admin\NavigationRegistry')
+@inject('navigationRegistry', 'Core\Admin\NavigationRegistry')
 
 @php
     $navItems = $navigationRegistry->getItems();

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Core\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Core\RBAC\Models\Permission;
-use App\Core\RBAC\Models\Role;
+use Core\RBAC\Models\Permission;
+use Core\RBAC\Models\Role;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -140,5 +140,13 @@ class User extends Authenticatable
     public function hasTwoFactorEnabled(): bool
     {
         return $this->two_factor_secret !== null && $this->two_factor_confirmed_at !== null;
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }

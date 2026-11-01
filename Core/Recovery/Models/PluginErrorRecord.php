@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Recovery\Models;
+namespace Core\Recovery\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;

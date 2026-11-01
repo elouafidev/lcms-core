@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Settings\Mail\SmtpTestMail;
-use App\Core\Settings\SettingManager;
-use App\Models\User;
+use Core\Settings\Mail\SmtpTestMail;
+use Core\Settings\SettingManager;
+use Core\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;

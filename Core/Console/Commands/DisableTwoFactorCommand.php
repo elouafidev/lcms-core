@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\Security\Audit\AuditLogger;
-use App\Models\User;
+use Core\Security\Audit\AuditLogger;
+use Core\Models\User;
 use Illuminate\Console\Command;
 
 class DisableTwoFactorCommand extends Command

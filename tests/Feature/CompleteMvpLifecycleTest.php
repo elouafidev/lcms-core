@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
-use App\Models\User;
+use Core\Lifecycle\PluginState;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
+use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

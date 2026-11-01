@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Assets\PluginAssetManager;
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Assets\PluginAssetManager;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

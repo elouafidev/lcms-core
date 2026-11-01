@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Auth\TwoFactorAuthenticatedController;
-use App\Http\Controllers\HomeController;
+use Core\Http\Controllers\Auth\TwoFactorAuthenticatedController;
+use Core\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

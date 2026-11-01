@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Platform\Core\Http\Controllers\Admin;
+namespace Core\Http\Controllers\Admin;
 
-use App\Core\PluginDiscovery\PluginZipInstaller;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\PluginDiscovery\PluginZipInstaller;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

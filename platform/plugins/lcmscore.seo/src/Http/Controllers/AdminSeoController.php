@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Plugins\Seo\Http\Controllers;
 
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\PluginRegistry\PluginRegistry;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;

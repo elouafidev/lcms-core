@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\Themes\ThemeManager;
+use Core\Themes\ThemeManager;
 use Illuminate\Console\Command;
 use Throwable;
 

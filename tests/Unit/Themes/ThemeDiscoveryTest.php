@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Themes;
 
-use App\Core\Contracts\ThemeInterface;
-use App\Core\Contracts\ThemeManifestInterface;
-use App\Core\Themes\DTO\DiscoveredTheme;
-use App\Core\Themes\DTO\ThemeManifest;
-use App\Core\Themes\ThemeDiscovery;
+use Core\Contracts\ThemeInterface;
+use Core\Contracts\ThemeManifestInterface;
+use Core\Themes\DTO\DiscoveredTheme;
+use Core\Themes\DTO\ThemeManifest;
+use Core\Themes\ThemeDiscovery;
 use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
 use Tests\TestCase;

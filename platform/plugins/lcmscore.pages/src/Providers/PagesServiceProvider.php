@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Plugins\Pages\Providers;
 
-use App\Core\Admin\NavigationRegistry;
+use Core\Admin\NavigationRegistry;
 use Illuminate\Support\ServiceProvider;
 
 class PagesServiceProvider extends ServiceProvider

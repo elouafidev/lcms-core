@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\Security\Audit\AuditLogger;
-use App\Core\Security\Services\RecoveryCodeService;
-use App\Core\Security\Services\TotpService;
-use App\Models\User;
+use Core\Security\Audit\AuditLogger;
+use Core\Security\Services\RecoveryCodeService;
+use Core\Security\Services\TotpService;
+use Core\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 

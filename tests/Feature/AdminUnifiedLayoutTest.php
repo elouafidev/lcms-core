@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\PluginManager\PluginManager;
-use App\Models\User;
+use Core\PluginManager\PluginManager;
+use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

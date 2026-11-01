@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\ManifestValidator;
-use App\Core\PluginDiscovery\PluginDiscovery;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\ManifestValidator;
+use Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

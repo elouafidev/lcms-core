@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Console\Commands;
+namespace Core\Console\Commands;
 
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Console\Command;
 
 class PluginListCommand extends Command

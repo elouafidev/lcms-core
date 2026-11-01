@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Core\Contracts\PluginInterface;
-use App\Core\DependencyResolver\DependencyResolver;
-use App\Core\DependencyResolver\Exceptions\CircularDependencyException;
-use App\Core\DependencyResolver\Exceptions\MissingDependencyException;
-use App\Core\Lifecycle\PluginMigrationManager;
-use App\Core\Lifecycle\PluginState;
-use App\Core\PluginDiscovery\Autoload\PluginClassLoader;
-use App\Core\PluginDiscovery\DTO\DiscoveredPlugin;
-use App\Core\PluginDiscovery\DTO\PluginManifest;
-use App\Core\PluginDiscovery\ManifestValidator;
-use App\Core\PluginDiscovery\PluginDiscovery;
-use App\Core\PluginManager\PluginManager;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Contracts\PluginInterface;
+use Core\DependencyResolver\DependencyResolver;
+use Core\DependencyResolver\Exceptions\CircularDependencyException;
+use Core\DependencyResolver\Exceptions\MissingDependencyException;
+use Core\Lifecycle\PluginMigrationManager;
+use Core\Lifecycle\PluginState;
+use Core\PluginDiscovery\Autoload\PluginClassLoader;
+use Core\PluginDiscovery\DTO\DiscoveredPlugin;
+use Core\PluginDiscovery\DTO\PluginManifest;
+use Core\PluginDiscovery\ManifestValidator;
+use Core\PluginDiscovery\PluginDiscovery;
+use Core\PluginManager\PluginManager;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

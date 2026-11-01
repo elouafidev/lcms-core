@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Themes\Exceptions;
+namespace Core\Themes\Exceptions;
 
 use RuntimeException;
 

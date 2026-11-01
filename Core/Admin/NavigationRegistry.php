@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Admin;
+namespace Core\Admin;
 
-use App\Core\Contracts\NavigationItemContract;
-use App\Core\PluginRegistry\PluginRegistry;
+use Core\Contracts\NavigationItemContract;
+use Core\PluginRegistry\PluginRegistry;
 
 class NavigationRegistry
 {
