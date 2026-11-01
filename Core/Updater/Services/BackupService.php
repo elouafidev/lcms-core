@@ -33,11 +33,16 @@ class BackupService
             throw new \RuntimeException("Impossible d'initialiser l'archive de sauvegarde : {$backupPath}");
         }
 
-        // Add app/Core
-        $this->addDirectoryToZip($zip, base_path('app/Core'), 'app/Core');
+        // Add Core directory
+        if (is_dir(base_path('Core'))) {
+            $this->addDirectoryToZip($zip, base_path('Core'), 'Core');
+        } elseif (is_dir(base_path('app/Core'))) {
+            $this->addDirectoryToZip($zip, base_path('app/Core'), 'app/Core');
+        }
 
-        // Add platform/core
-        $this->addDirectoryToZip($zip, base_path('platform/core'), 'platform/core');
+        if (is_dir(base_path('platform/core'))) {
+            $this->addDirectoryToZip($zip, base_path('platform/core'), 'platform/core');
+        }
 
         // Add config/cms.php
         $cmsConfig = config_path('cms.php');

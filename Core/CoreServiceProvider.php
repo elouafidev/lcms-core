@@ -50,7 +50,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__, 2).'/config/cms.php',
+            base_path('config/cms.php'),
             'cms'
         );
 
@@ -88,14 +88,14 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(dirname(__DIR__, 2).'/database/migrations');
+        $this->loadMigrationsFrom(base_path('database/migrations'));
 
-        $viewsPath = dirname(__DIR__, 2).'/platform/core/resources/views';
+        $viewsPath = __DIR__.'/resources/views';
         if (is_dir($viewsPath)) {
             $this->loadViewsFrom($viewsPath, 'core');
         }
 
-        $adminRoutes = dirname(__DIR__, 2).'/platform/core/routes/admin.php';
+        $adminRoutes = __DIR__.'/routes/admin.php';
         if (file_exists($adminRoutes)) {
             $this->loadRoutesFrom($adminRoutes);
         }

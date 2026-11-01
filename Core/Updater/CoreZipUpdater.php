@@ -22,6 +22,7 @@ class CoreZipUpdater
      * @var list<string>
      */
     private const ALLOWED_PREFIXES = [
+        'Core/',
         'app/Core/',
         'platform/core/',
         'config/cms.php',
