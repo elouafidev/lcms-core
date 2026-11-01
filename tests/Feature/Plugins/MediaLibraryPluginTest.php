@@ -267,4 +267,67 @@ class MediaLibraryPluginTest extends TestCase
         $this->assertFalse(Schema::hasTable('plugin_media_items'));
         $this->assertNull($this->pluginRegistry->find('lcmscore.media-library'));
     }
+
+    public function test_authenticated_user_can_update_media_metadata(): void
+    {
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        /** @var MediaStorageInterface $storage */
+        $storage = $this->app->make(MediaStorageInterface::class);
+        $metadata = $storage->store(UploadedFile::fake()->create('old_name.png', 50, 'image/png'), 'media');
+
+        $response = $this->actingAs($user)->putJson('/admin/media/'.$metadata['id'], [
+            'name' => 'renamed_file.png',
+            'alt_text' => 'New descriptive alt text',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('success', true);
+        $response->assertJsonPath('data.name', 'renamed_file.png');
+        $response->assertJsonPath('data.alt_text', 'New descriptive alt text');
+
+        $this->assertDatabaseHas('plugin_media_items', [
+            'id' => $metadata['id'],
+            'name' => 'renamed_file.png',
+            'alt_text' => 'New descriptive alt text',
+        ]);
+    }
+
+    public function test_user_can_search_and_filter_media_in_json(): void
+    {
+        $this->pluginManager->install('lcmscore.media-library');
+        $this->pluginManager->activate('lcmscore.media-library');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        /** @var MediaStorageInterface $storage */
+        $storage = $this->app->make(MediaStorageInterface::class);
+        $storage->store(UploadedFile::fake()->create('photo_montagne.jpg', 50, 'image/jpeg'), 'media');
+        $storage->store(UploadedFile::fake()->create('document_contrat.pdf', 80, 'application/pdf'), 'media');
+
+        // Test search query
+        $searchResponse = $this->actingAs($user)->getJson('/admin/media?search=montagne');
+        $searchResponse->assertOk();
+        $searchResponse->assertJsonCount(1, 'data');
+        $searchResponse->assertJsonPath('data.0.name', 'photo_montagne.jpg');
+        $searchResponse->assertJsonPath('data.0.is_image', true);
+
+        // Test filter by type = document
+        $docResponse = $this->actingAs($user)->getJson('/admin/media?type=document');
+        $docResponse->assertOk();
+        $docResponse->assertJsonCount(1, 'data');
+        $docResponse->assertJsonPath('data.0.name', 'document_contrat.pdf');
+        $docResponse->assertJsonPath('data.0.is_image', false);
+
+        // Test filter by type = image
+        $imgResponse = $this->actingAs($user)->getJson('/admin/media?type=image');
+        $imgResponse->assertOk();
+        $imgResponse->assertJsonCount(1, 'data');
+        $imgResponse->assertJsonPath('data.0.name', 'photo_montagne.jpg');
+    }
 }

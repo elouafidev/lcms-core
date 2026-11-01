@@ -1,8 +1,8 @@
 {
     "id": "lcmscore.media-library",
     "name": "Media Library",
-    "version": "1.0.0",
-    "description": "Autonomous media library plugin implementing MediaStorageInterface",
+    "version": "2.0.0",
+    "description": "Autonomous media library plugin implementing MediaStorageInterface with universal modal picker, live search, and metadata management",
     "author": {
         "name": "LCMS Core Team",
         "email": "dev@lcmscore.local"

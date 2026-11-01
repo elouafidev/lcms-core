@@ -240,4 +240,133 @@ class PagesPluginTest extends TestCase
         $this->assertFalse(Schema::hasTable('plugin_pages'));
         $this->assertNull($this->pluginRegistry->find('lcmscore.pages'));
     }
+
+    public function test_authenticated_user_can_access_create_and_edit_page_views(): void
+    {
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $createResponse = $this->actingAs($user)->get('/admin/pages/create');
+        $createResponse->assertOk();
+        $createResponse->assertSee('Créer une nouvelle page');
+
+        /** @var Page $page */
+        $page = Page::query()->create([
+            'title' => 'Page Test Edition',
+            'slug' => 'test-edition',
+            'content' => 'Contenu initial',
+            'status' => 'draft',
+            'template' => 'default',
+        ]);
+
+        $editResponse = $this->actingAs($user)->get('/admin/pages/'.$page->id.'/edit');
+        $editResponse->assertOk();
+        $editResponse->assertSee('Modifier la page');
+        $editResponse->assertSee('test-edition');
+    }
+
+    public function test_authenticated_user_can_update_page_with_v2_attributes(): void
+    {
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
+
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        /** @var Page $parent */
+        $parent = Page::query()->create([
+            'title' => 'Entreprise',
+            'slug' => 'entreprise',
+            'status' => 'published',
+            'is_published' => true,
+        ]);
+
+        /** @var Page $page */
+        $page = Page::query()->create([
+            'title' => 'Équipe',
+            'slug' => 'equipe',
+            'status' => 'draft',
+            'is_published' => false,
+        ]);
+
+        $response = $this->actingAs($user)->putJson('/admin/pages/'.$page->id, [
+            'title' => 'Notre Équipe de Direction',
+            'slug' => 'notre-equipe',
+            'content' => 'Présentation de l\'équipe',
+            'status' => 'published',
+            'is_published' => true,
+            'parent_id' => $parent->id,
+            'template' => 'full-width',
+            'featured_image' => 'https://example.com/team.jpg',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('success', true);
+        $response->assertJsonPath('data.title', 'Notre Équipe de Direction');
+        $response->assertJsonPath('data.slug', 'notre-equipe');
+        $response->assertJsonPath('data.template', 'full-width');
+        $response->assertJsonPath('data.parent_id', $parent->id);
+        $response->assertJsonPath('data.featured_image', 'https://example.com/team.jpg');
+
+        $this->assertDatabaseHas('plugin_pages', [
+            'id' => $page->id,
+            'parent_id' => $parent->id,
+            'template' => 'full-width',
+            'featured_image' => 'https://example.com/team.jpg',
+        ]);
+    }
+
+    public function test_page_hierarchy_and_scheduled_publishing(): void
+    {
+        $this->pluginManager->install('lcmscore.pages');
+        $this->pluginManager->activate('lcmscore.pages');
+
+        /** @var Page $parent */
+        $parent = Page::query()->create([
+            'title' => 'Services',
+            'slug' => 'services',
+            'status' => 'published',
+            'is_published' => true,
+        ]);
+
+        /** @var Page $child */
+        $child = Page::query()->create([
+            'parent_id' => $parent->id,
+            'title' => 'Conseil',
+            'slug' => 'conseil',
+            'status' => 'published',
+            'is_published' => true,
+            'featured_image' => 'https://example.com/banner.jpg',
+        ]);
+
+        $this->assertSame('services/conseil', $child->getFullPath());
+        $this->assertSame($parent->id, $child->parent?->id);
+        $this->assertTrue($parent->children->contains('id', $child->id));
+
+        // Public front view should display parent link and featured image
+        $response = $this->get('/page/conseil');
+        $response->assertOk();
+        $response->assertSee('Services');
+        $response->assertSee('https://example.com/banner.jpg');
+
+        // Test scheduled date in the future (should be 404 for visitors)
+        $futurePage = Page::query()->create([
+            'title' => 'Futur Événement',
+            'slug' => 'futur-event',
+            'status' => 'published',
+            'is_published' => true,
+            'published_at' => now()->addDays(5),
+        ]);
+
+        $this->get('/page/futur-event')->assertNotFound();
+
+        // When date is in the past, it should be visible
+        $futurePage->published_at = now()->subMinute();
+        $futurePage->save();
+
+        $this->get('/page/futur-event')->assertOk();
+    }
 }

@@ -10,5 +10,6 @@ Route::middleware(['web', 'auth'])->prefix('admin/media')->group(function (): vo
     Route::post('/', [MediaController::class, 'upload'])->name('admin.media.store');
     Route::post('/upload', [MediaController::class, 'upload'])->name('admin.media.upload');
     Route::get('/{id}', [MediaController::class, 'show'])->name('admin.media.show');
+    Route::put('/{id}', [MediaController::class, 'update'])->name('admin.media.update');
     Route::delete('/{id}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
 });

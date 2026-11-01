@@ -21,17 +21,53 @@ class MediaController extends Controller
 
     public function index(Request $request): View|JsonResponse
     {
-        $items = $this->mediaStorage->all();
+        $search = $request->query('search');
+        $type = $request->query('type');
+        $perPageRaw = $request->query('per_page');
+        $perPage = is_numeric($perPageRaw) ? (int) $perPageRaw : 24;
+
+        $query = MediaItem::query()->latest('id');
+
+        if (is_string($search) && trim($search) !== '') {
+            $clean = '%'.trim($search).'%';
+            $query->where(function (\Illuminate\Database\Eloquent\Builder $q) use ($clean): void {
+                $q->where('name', 'LIKE', $clean)
+                    ->orWhere('alt_text', 'LIKE', $clean);
+            });
+        }
+
+        if (is_string($type) && $type !== '' && $type !== 'all') {
+            if ($type === 'image') {
+                $query->where('mime_type', 'LIKE', 'image/%');
+            } elseif ($type === 'document') {
+                $query->where('mime_type', 'NOT LIKE', 'image/%');
+            } else {
+                $query->where('mime_type', 'LIKE', '%'.$type.'%');
+            }
+        }
 
         if ($request->wantsJson()) {
+            $paginated = $query->paginate($perPage > 0 ? $perPage : 24);
+            $data = array_values($paginated->getCollection()->map(fn (MediaItem $item): array => $item->toMetadataArray())->all());
+
             return response()->json([
                 'success' => true,
-                'data' => $items,
+                'data' => $data,
+                'meta' => [
+                    'current_page' => $paginated->currentPage(),
+                    'last_page' => $paginated->lastPage(),
+                    'per_page' => $paginated->perPage(),
+                    'total' => $paginated->total(),
+                ],
             ]);
         }
 
+        $items = $query->paginate($perPage > 0 ? $perPage : 24);
+
         return view('media-library::index', [
             'items' => $items,
+            'search' => is_string($search) ? $search : '',
+            'type' => is_string($type) ? $type : 'all',
         ]);
     }
 
@@ -84,6 +120,52 @@ class MediaController extends Controller
             'success' => true,
             'data' => $metadata,
         ]);
+    }
+
+    public function update(Request $request, int|string $id): JsonResponse|RedirectResponse
+    {
+        /** @var MediaItem|null $item */
+        $item = is_numeric($id)
+            ? MediaItem::query()->find((int) $id)
+            : MediaItem::query()->where('file_path', (string) $id)->first();
+
+        if ($item === null) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Media item not found.',
+                ], 404);
+            }
+
+            return redirect()->back()->withErrors(__('Media item not found.'));
+        }
+
+        $validated = $request->validate([
+            'name' => ['nullable', 'string', 'max:255'],
+            'alt_text' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        if (isset($validated['name']) && is_string($validated['name']) && trim($validated['name']) !== '') {
+            $item->name = trim($validated['name']);
+        }
+
+        if (array_key_exists('alt_text', $validated)) {
+            $item->alt_text = is_string($validated['alt_text']) && trim($validated['alt_text']) !== ''
+                ? trim($validated['alt_text'])
+                : null;
+        }
+
+        $item->save();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Media metadata updated successfully.',
+                'data' => $item->toMetadataArray(),
+            ]);
+        }
+
+        return redirect()->back()->with('success', __('Media item updated successfully.'));
     }
 
     public function destroy(Request $request, int|string $id): JsonResponse|RedirectResponse

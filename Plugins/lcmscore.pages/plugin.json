@@ -1,8 +1,8 @@
 {
     "id": "lcmscore.pages",
     "name": "Static Pages",
-    "version": "1.0.0",
-    "description": "Fundamental static and dynamic pages management plugin",
+    "version": "2.0.0",
+    "description": "Static and dynamic pages management plugin with rich editor, page templates, parent-child hierarchy, scheduled publishing and featured images",
     "author": {
         "name": "LCMS Core Team",
         "email": "dev@lcmscore.local"

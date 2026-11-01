@@ -7,7 +7,6 @@ namespace Plugins\Pages\Http\Controllers;
 use Core\Http\Controllers\Controller;
 use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Plugins\Pages\Models\Page;
 
 class PageController extends Controller
@@ -23,16 +22,17 @@ class PageController extends Controller
         }
 
         /** @var Page|null $page */
-        $page = Page::query()
+        $page = Page::published()
             ->where('slug', $slug)
-            ->where(function (Builder $query): void {
-                $query->where('status', 'published')
-                    ->orWhere('is_published', true);
-            })
             ->first();
 
         if ($page === null) {
             abort(404, "Page '{$slug}' not found or not published.");
+        }
+
+        $templateView = 'pages::templates.'.$page->template;
+        if (view()->exists($templateView)) {
+            return view($templateView, ['page' => $page]);
         }
 
         return view('pages::page', [
