@@ -303,23 +303,23 @@ php artisan serve</code></pre>
 
                 <div class="space-y-3 text-xs">
                     <div class="border-l-2 border-blue-500 pl-4 py-1">
-                        <h4 class="text-white font-bold text-sm">1. Le Noyau Minimal (Lean Core — <code>app/Core/</code>)</h4>
-                        <p class="text-slate-400 mt-1">Démarrage système, injection de dépendances IoC, validation stricte de manifestes JSON, tri topologique des dépendances, registre dynamique de navigation, tolérance aux crashs et bus d'interception (Hooks).</p>
-                    </div>
-                    <div class="border-l-2 border-indigo-500 pl-4 py-1">
-                        <h4 class="text-white font-bold text-sm">2. Le Panneau d'Administration Système (<code>platform/core/</code>)</h4>
-                        <p class="text-slate-400 mt-1">Layout d'administration unifié sous AdminLTE 4 et Tailwind CSS (<code>core::admin.layouts.app</code>), persistance inaltérable de la barre latérale sombre, contrôle d'authentification et gestion visuelle du cycle de vie des extensions et thèmes.</p>
+                        <h4 class="text-white font-bold text-sm">1. Le Noyau Minimal Unifié (Lean Core — <code>Core/</code>)</h4>
+                        <p class="text-slate-400 mt-1">Démarrage système, injection de dépendances IoC, validation stricte de manifestes JSON, tri topologique des dépendances, registre dynamique de navigation, tolérance aux crashs, bus d'interception (Hooks), contrôleurs d'administration et vues unifiées sous AdminLTE 4.</p>
                     </div>
                     <div class="border-l-2 border-emerald-500 pl-4 py-1">
-                        <h4 class="text-white font-bold text-sm">3. Les Extensions Autonomes (<code>platform/plugins/*</code>)</h4>
+                        <h4 class="text-white font-bold text-sm">2. Les Extensions Autonomes (<code>Plugins/*</code>)</h4>
                         <p class="text-slate-400 mt-1">Unités fonctionnelles étanches possédant leur propre espace de noms PSR-4, migrations isolées, modèles Eloquent, routes, contrôleurs et seeders dédiés.</p>
+                    </div>
+                    <div class="border-l-2 border-indigo-500 pl-4 py-1">
+                        <h4 class="text-white font-bold text-sm">3. Les Thèmes Découplés (<code>themes/*</code>)</h4>
+                        <p class="text-slate-400 mt-1">Système de présentation autonome assurant l'habillage front-end et la surcharge dynamique des templates Blade d'extensions.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Section: Contrats Publics Stricts -->
             <section id="contracts" class="space-y-6 pt-8 border-t border-slate-800/80">
-                <h2 class="text-2xl font-bold text-white tracking-tight">Contrats Publics Stricts (`app/Core/Contracts`)</h2>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Contrats Publics Stricts (`Core/Contracts`)</h2>
                 <p class="text-sm text-slate-300 leading-relaxed">
                     Pour préserver l'isolation logique, <strong>deux plugins ne communiquent jamais directement entre leurs implémentations privées</strong>. Tout échange de service s'opère via les interfaces publiques définies dans le Core :
                 </p>
@@ -442,11 +442,11 @@ Hook::addAction('cms.page.published', function ($page) {
                 </h2>
 
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Chaque extension réside dans un sous-répertoire isolé sous <code>platform/plugins/{vendor}.{nom}/</code> et suit une structure de type package Laravel PSR-4 :
+                    Chaque extension réside dans un sous-répertoire isolé sous <code>Plugins/{vendor}.{nom}/</code> et suit une structure de type package Laravel PSR-4 :
                 </p>
 
                 <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
-<pre><code>platform/plugins/lcmscore.mon-plugin/
+<pre><code>Plugins/lcmscore.mon-plugin/
 ├── plugin.json                 # Manifeste JSON validé obligatoirement
 ├── database/
 │   ├── migrations/             # Migrations isolées (table cms_plugin_migrations)
@@ -618,7 +618,7 @@ php artisan cms:plugin:seed --all</code></pre>
                 </p>
 
                 <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
-<pre><code>platform/themes/default-modern/
+<pre><code>themes/default-modern/
 ├── theme.json                  # Manifeste du thème
 ├── resources/
 │   ├── assets/css/theme.css    # Styles compilés publiés vers public/vendor/themes/{id}/
@@ -631,7 +631,7 @@ php artisan cms:plugin:seed --all</code></pre>
 
                 <div id="view-overriding" class="bg-indigo-950/30 border border-indigo-800/50 rounded-xl p-4 text-xs text-indigo-200 leading-relaxed">
                     <strong class="font-semibold text-white">Hiérarchie de Résolution Blade :</strong>
-                    Lorsqu'une vue est appelée, <code>ThemeManager</code> inspecte en priorité le dossier <code>platform/themes/{theme-actif}/views/plugins/{plugin-id}/*</code>. Si aucune surcharge n'est définie, la vue originale de l'extension est utilisée en repli transparent.
+                    Lorsqu'une vue est appelée, <code>ThemeManager</code> inspecte en priorité le dossier <code>themes/{theme-actif}/views/plugins/{plugin-id}/*</code>. Si aucune surcharge n'est définie, la vue originale de l'extension est utilisée en repli transparent.
                 </div>
 
                 <!-- 5.1 Publication Directe des Assets & Modals -->
@@ -838,15 +838,14 @@ $settings->set('site_name', 'Mon Portail LCMS');</code></pre>
 update-v1.1.0.zip
 ├── update.json                 # Manifeste de validation de version et checksums
 └── files/                      # Fichiers de remplacement confinés au noyau
-    ├── app/Core/
-    ├── resources/
+    ├── Core/
     └── database/migrations/</code></pre>
                     </div>
 
                     <div class="grid sm:grid-cols-3 gap-3 text-xs">
                         <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
                             <span class="font-bold text-rose-400 block mb-1">1. Confinement Strict</span>
-                            <span class="text-slate-400 leading-relaxed">Interdiction absolue de modifier <code>.env</code>, <code>platform/plugins/</code>, <code>platform/themes/</code>, <code>storage/</code> ou <code>database/database.sqlite</code>. Rejet immédiat de tout chemin relatif suspect (Zip Slip).</span>
+                            <span class="text-slate-400 leading-relaxed">Interdiction absolue de modifier <code>.env</code>, <code>Plugins/</code>, <code>themes/</code>, <code>storage/</code> ou <code>database/database.sqlite</code>. Rejet immédiat de tout chemin relatif suspect (Zip Slip).</span>
                         </div>
                         <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5">
                             <span class="font-bold text-amber-400 block mb-1">2. Sauvegarde Préventive</span>

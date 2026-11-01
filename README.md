@@ -24,10 +24,10 @@
 
 Contrairement aux CMS traditionnels qui intègrent nativement des modèles de données rigides (pages, articles, médiathèque, formulaires ou commerce électronique en dur dans le noyau), **LCMS Core** implémente une séparation architecturale radicale :
 
-1. **Noyau Minimal (*Lean Core*) :** Le noyau (`app/Core/`) ne contient **aucune logique métier**. Il assure exclusivement les services d'infrastructure : authentification racine, découverte d'extensions, validation de manifestes, résolution topologique des dépendances, bus d'interception (Hooks), tolérance aux crashs et layout d'administration unifié.
-2. **Contrats Publics Stricts (`app/Core/Contracts/`) :** Les extensions ne communiquent jamais directement entre leurs implémentations privées. Tout échange s'opère via des contrats immuables et le conteneur IoC de Laravel.
-3. **Écosystème de Plugins Autonomes (`platform/plugins/`) :** Chaque fonctionnalité métier (pages statiques, arborescences de navigation, médiathèque, méta-tags SEO) est portée par une extension indépendante possédant ses propres routes, contrôleurs, vues Blade, permissions et migrations isolées.
-4. **Moteur de Thèmes Découplé (`platform/themes/`) :** Système de présentation autonome capable de surcharger dynamiquement (*View Overriding*) les templates des plugins sans toucher à leur code source.
+1. **Noyau Minimal (*Lean Core*) :** Le noyau unifié (`Core/`) ne contient **aucune logique métier**. Il assure exclusivement les services d'infrastructure : authentification racine, découverte d'extensions, validation de manifestes, résolution topologique des dépendances, bus d'interception (Hooks), tolérance aux crashs et layout d'administration unifié.
+2. **Contrats Publics Stricts (`Core/Contracts/`) :** Les extensions ne communiquent jamais directement entre leurs implémentations privées. Tout échange s'opère via des contrats immuables et le conteneur IoC de Laravel.
+3. **Écosystème de Plugins Autonomes (`Plugins/`) :** Chaque fonctionnalité métier (pages statiques, arborescences de navigation, médiathèque, méta-tags SEO) est portée par une extension indépendante possédant ses propres routes, contrôleurs, vues Blade, permissions et migrations isolées.
+4. **Moteur de Thèmes Découplé (`themes/`) :** Système de présentation autonome capable de surcharger dynamiquement (*View Overriding*) les templates des plugins sans toucher à leur code source.
 
 ---
 
@@ -125,11 +125,11 @@ flowchart TD
 
 | Identifiant | Rôle & Fonctionnalités | Contrats & Hooks |
 |---|---|---|
-| [`lcmscore.pages`](platform/plugins/lcmscore.pages) | Gestion des pages statiques avec slugs personnalisés, publication/brouillon et routes dynamiques `/page/{slug}`. | `PluginInterface` |
-| [`lcmscore.menus`](platform/plugins/lcmscore.menus) | Gestion hiérarchique des éléments de navigation, directive Blade `@menu('main-nav')` et filtre `cms.menu`. | `PluginInterface`, `HookSubscriberInterface` |
-| [`lcmscore.media-library`](platform/plugins/lcmscore.media-library) | Stockage et organisation des fichiers médias avec upload sécurisé et gestion des métadonnées. | `MediaStorageInterface` |
-| [`lcmscore.seo`](platform/plugins/lcmscore.seo) | Optimisation pour moteurs de recherche, liens canoniques et métadonnées OpenGraph injectées via le filtre `cms.head`. | `HookSubscriberInterface` |
-| [`default-modern`](platform/themes/default-modern) | Thème responsive moderne avec typographie soignée, intégration fluide des menus, des pages et surcharge de templates de plugins. | `ThemeInterface` |
+| [`lcmscore.pages`](Plugins/lcmscore.pages) | Gestion des pages statiques avec slugs personnalisés, publication/brouillon et routes dynamiques `/page/{slug}`. | `PluginInterface` |
+| [`lcmscore.menus`](Plugins/lcmscore.menus) | Gestion hiérarchique des éléments de navigation, directive Blade `@menu('main-nav')` et filtre `cms.menu`. | `PluginInterface`, `HookSubscriberInterface` |
+| [`lcmscore.media-library`](Plugins/lcmscore.media-library) | Stockage et organisation des fichiers médias avec upload sécurisé et gestion des métadonnées. | `MediaStorageInterface` |
+| [`lcmscore.seo`](Plugins/lcmscore.seo) | Optimisation pour moteurs de recherche, liens canoniques et métadonnées OpenGraph injectées via le filtre `cms.head`. | `HookSubscriberInterface` |
+| [`default-modern`](themes/default-modern) | Thème responsive moderne avec typographie soignée, intégration fluide des menus, des pages et surcharge de templates de plugins. | `ThemeInterface` |
 
 ---
 
