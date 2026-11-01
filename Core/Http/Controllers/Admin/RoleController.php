@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Core\Http\Controllers\Admin;
 
 use Core\Http\Controllers\Controller;
+use Core\Permissions\Services\PluginPermissionSynchronizer;
 use Core\RBAC\Models\Role;
 use Core\RBAC\Services\RbacManager;
 use Core\Security\Audit\AuditLogger;
@@ -30,8 +31,9 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new role.
      */
-    public function create(RbacManager $rbacManager): View
+    public function create(RbacManager $rbacManager, PluginPermissionSynchronizer $permissionSynchronizer): View
     {
+        $permissionSynchronizer->cleanOrphans();
         $permissionsGrouped = $rbacManager->getPermissionsByGroup();
 
         return view('core::admin.roles.create', [
@@ -75,8 +77,9 @@ class RoleController extends Controller
     /**
      * Show the form for editing an existing role.
      */
-    public function edit(Role $role, RbacManager $rbacManager): View
+    public function edit(Role $role, RbacManager $rbacManager, PluginPermissionSynchronizer $permissionSynchronizer): View
     {
+        $permissionSynchronizer->cleanOrphans();
         $role->load('permissions');
         $permissionsGrouped = $rbacManager->getPermissionsByGroup();
 

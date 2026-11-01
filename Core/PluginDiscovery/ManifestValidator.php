@@ -72,7 +72,7 @@ class ManifestValidator
         /** @var list<string> $conflicts */
         $conflicts = isset($data['conflicts']) && is_array($data['conflicts']) ? array_values(array_filter($data['conflicts'], 'is_string')) : [];
 
-        /** @var list<array{key: string, label: string}> $permissions */
+        /** @var list<array{key: string, label: string, description?: ?string, group?: ?string}> $permissions */
         $permissions = isset($data['permissions']) && is_array($data['permissions']) ? array_values($data['permissions']) : [];
 
         /** @var array{web?: ?string, api?: ?string} $routes */

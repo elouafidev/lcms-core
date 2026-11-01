@@ -64,7 +64,7 @@ interface PluginManifestInterface
     /**
      * Get permissions declared by this plugin.
      *
-     * @return list<array{key: string, label: string}>
+     * @return list<array{key: string, label: string, description?: ?string, group?: ?string}>
      */
     public function getPermissions(): array;
 

@@ -22,6 +22,7 @@ use Core\Hooks\HookManager;
 use Core\Lifecycle\PluginMigrationManager;
 use Core\Lifecycle\PluginSeederManager;
 use Core\Permissions\PermissionRegistry;
+use Core\Permissions\Services\PluginPermissionSynchronizer;
 use Core\PluginDiscovery\Autoload\PluginClassLoader;
 use Core\PluginDiscovery\ManifestValidator;
 use Core\PluginDiscovery\PluginDiscovery;
@@ -87,6 +88,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(PluginSeederManager::class);
         $this->app->singleton(PluginRegistry::class);
         $this->app->singleton(PermissionRegistry::class);
+        $this->app->singleton(PluginPermissionSynchronizer::class);
         $this->app->singleton(NavigationRegistry::class);
         $this->app->singleton(SafeModeManager::class);
         $this->app->singleton(PluginQuarantineHandler::class);

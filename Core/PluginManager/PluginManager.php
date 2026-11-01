@@ -12,6 +12,7 @@ use Core\Lifecycle\Exceptions\InvalidStateTransitionException;
 use Core\Lifecycle\PluginMigrationManager;
 use Core\Lifecycle\PluginState;
 use Core\Permissions\PermissionRegistry;
+use Core\Permissions\Services\PluginPermissionSynchronizer;
 use Core\PluginRegistry\Models\PluginRecord;
 use Core\PluginRegistry\PluginRegistry;
 use Core\Recovery\PluginQuarantineHandler;
@@ -35,6 +36,8 @@ class PluginManager
 
     private PermissionRegistry $permissionRegistry;
 
+    private PluginPermissionSynchronizer $permissionSynchronizer;
+
     private PluginAssetManager $assetManager;
 
     public function __construct(
@@ -47,13 +50,15 @@ class PluginManager
         ?PluginQuarantineHandler $quarantineHandler = null,
         ?NavigationRegistry $navigationRegistry = null,
         ?PermissionRegistry $permissionRegistry = null,
-        ?PluginAssetManager $assetManager = null
+        ?PluginAssetManager $assetManager = null,
+        ?PluginPermissionSynchronizer $permissionSynchronizer = null
     ) {
         $this->dependencyResolver = $dependencyResolver ?? new DependencyResolver;
         $this->safeModeManager = $safeModeManager ?? new SafeModeManager;
         $this->quarantineHandler = $quarantineHandler ?? new PluginQuarantineHandler($this->registry, $this->logger);
         $this->navigationRegistry = $navigationRegistry ?? new NavigationRegistry($this->registry);
         $this->permissionRegistry = $permissionRegistry ?? new PermissionRegistry;
+        $this->permissionSynchronizer = $permissionSynchronizer ?? new PluginPermissionSynchronizer($this->registry, $this->logger);
         $this->assetManager = $assetManager ?? new PluginAssetManager;
     }
 
@@ -143,6 +148,7 @@ class PluginManager
         $record->save();
 
         $this->permissionRegistry->registerFromManifest($record->getManifest());
+        $this->permissionSynchronizer->syncPlugin($record->getManifest());
 
         $discovered = $this->registry->getDiscovered($pluginId);
         $pluginPath = $discovered !== null ? $discovered->getPath() : $record->getPath();
@@ -207,6 +213,7 @@ class PluginManager
 
         $this->navigationRegistry->unregisterByPlugin($pluginId);
         $this->permissionRegistry->unregisterByPlugin($pluginId);
+        $this->permissionSynchronizer->revokePlugin($pluginId);
 
         return $record;
     }
@@ -282,6 +289,8 @@ class PluginManager
                     $this->bootPlugin($plugin);
                 }
             }
+
+            $this->permissionSynchronizer->syncAllActive();
         } catch (Throwable $e) {
             $this->logger?->warning('PluginManager boot skipped: Database not ready or unreachable ('.$e->getMessage().').');
         }
@@ -331,6 +340,7 @@ class PluginManager
 
         $this->navigationRegistry->unregisterByPlugin($pluginId);
         $this->permissionRegistry->unregisterByPlugin($pluginId);
+        $this->permissionSynchronizer->revokePlugin($pluginId);
 
         if ($purgeData) {
             $discovered = $this->registry->getDiscovered($pluginId);
@@ -377,10 +387,16 @@ class PluginManager
 
         $this->deleteDirectoryRecursively($realPath);
         $this->assetManager->clean($pluginId);
+        $this->permissionSynchronizer->revokePlugin($pluginId);
 
         $this->registry->getDiscovery()->discover();
 
         $this->logger?->info("Plugin '{$pluginId}' supprimé définitivement du système de fichiers.");
+    }
+
+    public function getPermissionSynchronizer(): PluginPermissionSynchronizer
+    {
+        return $this->permissionSynchronizer;
     }
 
     private function deleteDirectoryRecursively(string $dir): void

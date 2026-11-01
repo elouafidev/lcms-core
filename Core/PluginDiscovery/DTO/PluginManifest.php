@@ -14,7 +14,7 @@ readonly class PluginManifest implements PluginManifestInterface
      * @param  list<string>  $providers
      * @param  array<string, string>  $dependencies
      * @param  list<string>  $conflicts
-     * @param  list<array{key: string, label: string}>  $permissions
+     * @param  list<array{key: string, label: string, description?: ?string, group?: ?string}>  $permissions
      * @param  array{web?: ?string, api?: ?string}  $routes
      * @param array{psr-4?: array<string, string>} $autoload
      * @param  array<string, mixed>  $rawAttributes
@@ -96,7 +96,7 @@ readonly class PluginManifest implements PluginManifestInterface
     }
 
     /**
-     * @return list<array{key: string, label: string}>
+     * @return list<array{key: string, label: string, description?: ?string, group?: ?string}>
      */
     public function getPermissions(): array
     {
