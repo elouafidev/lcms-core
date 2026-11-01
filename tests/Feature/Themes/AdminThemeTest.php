@@ -26,7 +26,7 @@ class AdminThemeTest extends TestCase
         parent::setUp();
 
         config(['cms.plugins.path' => base_path('platform/plugins')]);
-        config(['cms.themes.path' => base_path('platform/themes')]);
+        config(['cms.themes.path' => base_path('themes')]);
 
         $this->themeManager = $this->app->make(ThemeManager::class);
         $this->discovery = $this->themeManager->getDiscovery();
@@ -41,7 +41,7 @@ class AdminThemeTest extends TestCase
 
         $this->assetManager->clean('default-modern');
 
-        $tempThemePath = base_path('platform/themes/temp-delete-theme');
+        $tempThemePath = base_path('themes/temp-delete-theme');
         if (is_dir($tempThemePath)) {
             $this->deleteDirectory($tempThemePath);
         }
@@ -175,7 +175,7 @@ class AdminThemeTest extends TestCase
         /** @var User $admin */
         $admin = User::factory()->create();
 
-        $tempThemePath = base_path('platform/themes/temp-delete-theme');
+        $tempThemePath = base_path('themes/temp-delete-theme');
         mkdir($tempThemePath, 0777, true);
         file_put_contents($tempThemePath.'/theme.json', (string) json_encode([
             'id' => 'temp-delete-theme',
@@ -203,7 +203,7 @@ class AdminThemeTest extends TestCase
         $this->themeManager->activate('default-modern');
         $this->assertSame('default-modern', $this->themeManager->getActiveThemeId());
 
-        $themePath = base_path('platform/themes/default-modern');
+        $themePath = base_path('themes/default-modern');
         $this->assertDirectoryExists($themePath);
 
         $response = $this->actingAs($admin)->post(route('admin.themes.delete', 'default-modern'));

@@ -6,9 +6,9 @@
     <title>@yield('title', config('app.name', 'LCMS Core') . ' — Plugin-First CMS')</title>
 
     <!-- Point d'ancrage Hook Core : injection de balises par lcmscore.seo -->
-    {!! \App\Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
+    {!! \Core\Hooks\Facades\Hook::filter('cms.head', '') !!}
 
-    <link rel="stylesheet" href="{{ \App\Core\Themes\ThemeAssetManager::url('default-modern', 'css/theme.css') }}">
+    <link rel="stylesheet" href="{{ \Core\Themes\ThemeAssetManager::url('default-modern', 'css/theme.css') }}">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,7 @@
     <header class="cms-header">
         <div class="cms-container cms-header-inner">
             <a href="/" class="cms-brand">
-                <img src="{{ \App\Core\Themes\ThemeAssetManager::url('default-modern', 'imgs/icon-dark.png') }}" alt="LCMS Core Logo" class="cms-logo-img">
+                <img src="{{ \Core\Themes\ThemeAssetManager::url('default-modern', 'imgs/icon-dark.png') }}" alt="LCMS Core Logo" class="cms-logo-img">
                 <span class="cms-brand-name">LCMS <span class="text-blue-500">Core</span></span>
             </a>
 
@@ -48,7 +48,7 @@
     <footer class="cms-footer">
         <div class="cms-container cms-footer-inner">
             <p class="cms-copyright">&copy; {{ date('Y') }} {{ config('app.name', 'LCMS Core') }} — Propulsé par LCMS Core.</p>
-            {!! \App\Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
+            {!! \Core\Hooks\Facades\Hook::filter('cms.footer', '') !!}
         </div>
     </footer>
 </body>

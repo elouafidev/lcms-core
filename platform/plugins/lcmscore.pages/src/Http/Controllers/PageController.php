@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Plugins\Pages\Http\Controllers;
 
 use Core\PluginRegistry\PluginRegistry;
-use App\Http\Controllers\Controller;
+use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Plugins\Pages\Models\Page;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Plugins\Menus\Http\Controllers;
 
 use Core\PluginRegistry\PluginRegistry;
-use App\Http\Controllers\Controller;
+use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

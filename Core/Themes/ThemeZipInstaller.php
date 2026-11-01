@@ -102,7 +102,7 @@ class ThemeZipInstaller
             $manifest = $this->parseAndValidateManifest($manifestPath);
             $themeId = $manifest->getId();
 
-            $themesBasePath = (string) config('cms.themes.path', base_path('platform/themes'));
+            $themesBasePath = (string) config('cms.themes.path', base_path('themes'));
             $targetDir = $themesBasePath.DIRECTORY_SEPARATOR.$themeId;
 
             if (is_dir($targetDir) && ! $overwrite) {

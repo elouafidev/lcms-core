@@ -383,7 +383,7 @@ class ThemeManager
         $path = $theme?->getPath();
 
         if ($path === null) {
-            $themesBasePath = (string) config('cms.themes.path', base_path('platform/themes'));
+            $themesBasePath = (string) config('cms.themes.path', base_path('themes'));
             $candidatePath = $themesBasePath.DIRECTORY_SEPARATOR.$themeId;
             if (is_dir($candidatePath)) {
                 $path = $candidatePath;
@@ -394,7 +394,7 @@ class ThemeManager
             throw new RuntimeException("Dossier introuvable sur le disque pour le thème '{$themeId}'.");
         }
 
-        $themesBasePath = realpath((string) config('cms.themes.path', base_path('platform/themes')));
+        $themesBasePath = realpath((string) config('cms.themes.path', base_path('themes')));
         $realPath = realpath($path);
 
         if ($realPath === false || $themesBasePath === false || ! str_starts_with($realPath, $themesBasePath.DIRECTORY_SEPARATOR)) {

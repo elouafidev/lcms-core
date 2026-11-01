@@ -19,7 +19,7 @@ class MenusServiceProvider extends ServiceProvider
     {
         $this->app->singleton(MenuRenderer::class, function ($app): MenuRenderer {
             return new MenuRenderer(
-                registry: $app->make(\App\Core\PluginRegistry\PluginRegistry::class),
+                registry: $app->make(\Core\PluginRegistry\PluginRegistry::class),
                 hookManager: $app->bound(HookManager::class) ? $app->make(HookManager::class) : null
             );
         });

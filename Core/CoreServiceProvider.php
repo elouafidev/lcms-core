@@ -56,6 +56,13 @@ class CoreServiceProvider extends ServiceProvider
 
         $legacyAliases = [
             \Core\Models\User::class => 'App\Models\User',
+            \Core\Http\Controllers\Controller::class => 'App\Http\Controllers\Controller',
+            \Core\Hooks\Facades\Hook::class => 'App\Core\Hooks\Facades\Hook',
+            \Core\Hooks\HookManager::class => 'App\Core\Hooks\HookManager',
+            \Core\PluginRegistry\PluginRegistry::class => 'App\Core\PluginRegistry\PluginRegistry',
+            \Core\Themes\ThemeAssetManager::class => 'App\Core\Themes\ThemeAssetManager',
+            \Core\Recovery\SafeModeManager::class => 'App\Core\Recovery\SafeModeManager',
+            \Core\Admin\NavigationRegistry::class => 'App\Core\Admin\NavigationRegistry',
             \Core\Http\Controllers\Auth\LoginController::class => 'App\Http\Controllers\Auth\LoginController',
             \Core\Http\Controllers\Auth\RegisterController::class => 'App\Http\Controllers\Auth\RegisterController',
             \Core\Http\Controllers\Auth\ForgotPasswordController::class => 'App\Http\Controllers\Auth\ForgotPasswordController',

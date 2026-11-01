@@ -25,7 +25,7 @@ class ThemeDiscovery
         private ?string $themesPath = null,
         private ?LoggerInterface $logger = null
     ) {
-        $this->themesPath = $themesPath ?? (string) config('cms.themes.path', base_path('platform/themes'));
+        $this->themesPath = $themesPath ?? (string) config('cms.themes.path', base_path('themes'));
     }
 
     /**

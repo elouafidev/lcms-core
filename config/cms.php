@@ -20,7 +20,7 @@ return [
     ],
 
     'themes' => [
-        'path' => env('CMS_THEMES_PATH', base_path('platform/themes')),
+        'path' => env('CMS_THEMES_PATH', base_path('themes')),
     ],
 
     'safe_mode' => [

@@ -22,7 +22,7 @@ class AdminUnifiedLayoutTest extends TestCase
         parent::setUp();
 
         config(['cms.plugins.path' => base_path('platform/plugins')]);
-        config(['cms.themes.path' => base_path('platform/themes')]);
+        config(['cms.themes.path' => base_path('themes')]);
 
         /** @var User $admin */
         $admin = User::factory()->create();
