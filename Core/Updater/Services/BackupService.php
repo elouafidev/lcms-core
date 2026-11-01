@@ -12,6 +12,42 @@ use ZipArchive;
 
 class BackupService
 {
+    private string $backupDir;
+
+    private string $sourceBasePath;
+
+    public function __construct(
+        ?string $backupDir = null,
+        ?string $sourceBasePath = null
+    ) {
+        $this->backupDir = $backupDir ?? storage_path('app/cms-backups');
+        $this->sourceBasePath = $sourceBasePath ?? base_path();
+    }
+
+    public function setBackupDir(string $dir): self
+    {
+        $this->backupDir = $dir;
+
+        return $this;
+    }
+
+    public function getBackupDir(): string
+    {
+        return $this->backupDir;
+    }
+
+    public function setSourceBasePath(string $path): self
+    {
+        $this->sourceBasePath = $path;
+
+        return $this;
+    }
+
+    public function getSourceBasePath(): string
+    {
+        return $this->sourceBasePath;
+    }
+
     /**
      * Create a pre-update snapshot backup of core files and database.
      *
@@ -19,7 +55,7 @@ class BackupService
      */
     public function createBackup(string $version): string
     {
-        $backupDir = storage_path('app/cms-backups');
+        $backupDir = $this->backupDir;
         if (! is_dir($backupDir)) {
             mkdir($backupDir, 0755, true);
         }
@@ -34,12 +70,16 @@ class BackupService
         }
 
         // Add Core directory
-        if (is_dir(base_path('Core'))) {
-            $this->addDirectoryToZip($zip, base_path('Core'), 'Core');
+        $coreDir = $this->sourceBasePath.DIRECTORY_SEPARATOR.'Core';
+        if (is_dir($coreDir)) {
+            $this->addDirectoryToZip($zip, $coreDir, 'Core');
         }
 
         // Add config/cms.php
-        $cmsConfig = config_path('cms.php');
+        $cmsConfig = $this->sourceBasePath.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'cms.php';
+        if (! file_exists($cmsConfig)) {
+            $cmsConfig = config_path('cms.php');
+        }
         if (file_exists($cmsConfig)) {
             $zip->addFile($cmsConfig, 'config/cms.php');
         }
@@ -70,7 +110,7 @@ class BackupService
         }
 
         try {
-            $zip->extractTo(base_path());
+            $zip->extractTo($this->sourceBasePath);
             $zip->close();
 
             return true;

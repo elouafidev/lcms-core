@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use Core\Models\User;
 use Core\Updater\CoreZipUpdater;
 use Core\Updater\Models\UpdateHistory;
+use Core\Updater\Services\BackupService;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -19,12 +20,26 @@ class CoreZipUpdaterTest extends TestCase
 
     private string $tempDir;
 
+    private string $fakeAppDir;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed(RoleSeeder::class);
         $this->tempDir = sys_get_temp_dir().'/cms_updater_test_'.uniqid();
-        mkdir($this->tempDir, 0777, true);
+        $this->fakeAppDir = $this->tempDir.'/fake_app';
+        mkdir($this->fakeAppDir.'/Core', 0777, true);
+
+        // Configure updater and backup service to operate within the test sandbox
+        /** @var BackupService $backupService */
+        $backupService = app(BackupService::class);
+        $backupService
+            ->setBackupDir($this->tempDir.'/backups')
+            ->setSourceBasePath($this->fakeAppDir);
+
+        /** @var CoreZipUpdater $updater */
+        $updater = app(CoreZipUpdater::class);
+        $updater->setTargetBasePath($this->fakeAppDir);
     }
 
     protected function tearDown(): void
@@ -167,12 +182,18 @@ class CoreZipUpdaterTest extends TestCase
         $this->assertSame('1.2.0', $history->to_version);
         $this->assertSame('SUCCESS', $history->status);
 
-        // Verify the updated file arrived in Core
-        $targetFile = base_path('Core/test_update_file.txt');
+        // Verify the updated file arrived in sandboxed Core
+        $targetFile = $this->fakeAppDir.'/Core/test_update_file.txt';
         $this->assertFileExists($targetFile);
-        $this->assertSame('Updated content v1.2.0', file_get_contents($targetFile));
+        $this->assertSame('Updated content v1.2.0', (string) file_get_contents($targetFile));
 
-        // Clean up created file
-        unlink($targetFile);
+        // Verify the real Core directory was NOT touched
+        $this->assertFileDoesNotExist(base_path('Core/test_update_file.txt'));
+        $this->assertDirectoryDoesNotExist(base_path('app'));
+
+        // Verify backup was generated in sandbox
+        $this->assertDirectoryExists($this->tempDir.'/backups');
+        $backups = glob($this->tempDir.'/backups/*.zip');
+        $this->assertNotEmpty($backups !== false ? $backups : []);
     }
 }

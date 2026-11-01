@@ -41,6 +41,8 @@ use Core\Themes\ThemeAssetManager;
 use Core\Themes\ThemeDiscovery;
 use Core\Themes\ThemeManager;
 use Core\Themes\ThemeZipInstaller;
+use Core\Updater\CoreZipUpdater;
+use Core\Updater\Services\BackupService;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -106,6 +108,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(AuditLogger::class);
         $this->app->singleton(RbacManager::class);
         $this->app->singleton(MailTesterService::class);
+
+        // Core Updater Services
+        $this->app->singleton(BackupService::class);
+        $this->app->singleton(CoreZipUpdater::class);
     }
 
     /**

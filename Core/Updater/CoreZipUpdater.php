@@ -27,10 +27,27 @@ class CoreZipUpdater
         'database/migrations/',
     ];
 
+    private string $targetBasePath;
+
     public function __construct(
         private BackupService $backupService,
-        private AuditLogger $auditLogger
-    ) {}
+        private AuditLogger $auditLogger,
+        ?string $targetBasePath = null
+    ) {
+        $this->targetBasePath = $targetBasePath ?? base_path();
+    }
+
+    public function setTargetBasePath(string $path): self
+    {
+        $this->targetBasePath = $path;
+
+        return $this;
+    }
+
+    public function getTargetBasePath(): string
+    {
+        return $this->targetBasePath;
+    }
 
     /**
      * Apply a verified update from a ZIP archive.
@@ -129,7 +146,7 @@ class CoreZipUpdater
             $zip->close();
 
             // Copy sandboxed files to actual destination
-            $this->copyDirectoryContents($sandboxDir, base_path());
+            $this->copyDirectoryContents($sandboxDir, $this->targetBasePath);
 
             // Run migrations
             Artisan::call('migrate', ['--force' => true]);
