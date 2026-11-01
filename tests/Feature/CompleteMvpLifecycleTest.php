@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Core\Lifecycle\PluginState;
+use Core\Models\User;
 use Core\PluginManager\PluginManager;
 use Core\PluginRegistry\PluginRegistry;
-use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

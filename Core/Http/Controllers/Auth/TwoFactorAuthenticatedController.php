@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Core\Http\Controllers\Auth;
 
+use Core\Http\Controllers\Controller;
+use Core\Models\User;
 use Core\Security\Audit\AuditLogger;
 use Core\Security\Services\RecoveryCodeService;
 use Core\Security\Services\TotpService;
-use Core\Http\Controllers\Controller;
-use Core\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

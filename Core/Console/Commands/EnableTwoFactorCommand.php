@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Console\Commands;
 
+use Core\Models\User;
 use Core\Security\Audit\AuditLogger;
 use Core\Security\Services\RecoveryCodeService;
 use Core\Security\Services\TotpService;
-use Core\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 

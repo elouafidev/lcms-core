@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Core\Lifecycle\PluginState;
+use Core\Models\User;
 use Core\PluginManager\PluginManager;
 use Core\PluginRegistry\Models\PluginRecord;
 use Core\PluginRegistry\PluginRegistry;
 use Core\Recovery\Models\PluginErrorRecord;
 use Core\Recovery\PluginQuarantineHandler;
 use Core\Recovery\SafeModeManager;
-use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;

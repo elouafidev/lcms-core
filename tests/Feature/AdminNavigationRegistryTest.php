@@ -7,12 +7,12 @@ namespace Tests\Feature;
 use Core\Admin\NavigationItem;
 use Core\Admin\NavigationRegistry;
 use Core\Lifecycle\PluginState;
+use Core\Models\User;
 use Core\Permissions\PermissionRegistry;
 use Core\PluginDiscovery\DTO\PluginManifest;
 use Core\PluginManager\PluginManager;
 use Core\PluginRegistry\Models\PluginRecord;
 use Core\PluginRegistry\PluginRegistry;
-use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

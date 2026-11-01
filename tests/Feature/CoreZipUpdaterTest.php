@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Core\Models\User;
 use Core\Updater\CoreZipUpdater;
 use Core\Updater\Models\UpdateHistory;
-use Core\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;

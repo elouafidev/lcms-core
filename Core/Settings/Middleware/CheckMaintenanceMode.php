@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Core\Settings\Middleware;
 
-use Core\Settings\SettingManager;
-use Core\Models\User;
 use Closure;
+use Core\Models\User;
+use Core\Settings\SettingManager;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 

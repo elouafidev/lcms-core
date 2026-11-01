@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Updater;
 
+use Core\Models\User;
 use Core\Security\Audit\AuditLogger;
 use Core\Updater\Models\UpdateHistory;
 use Core\Updater\Services\BackupService;
-use Core\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use RuntimeException;

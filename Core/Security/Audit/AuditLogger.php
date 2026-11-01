@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Security\Audit;
 
-use Core\Security\Audit\Models\AuditLog;
 use Core\Models\User;
+use Core\Security\Audit\Models\AuditLog;
 use Illuminate\Support\Facades\Auth;
 
 class AuditLogger

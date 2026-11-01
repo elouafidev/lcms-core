@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Core\Http\Controllers\Admin;
 
+use Core\Http\Controllers\Controller;
 use Core\Recovery\SafeModeManager;
 use Core\Security\Audit\AuditLogger;
 use Core\Settings\Services\MailTesterService;
 use Core\Settings\SettingManager;
-use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

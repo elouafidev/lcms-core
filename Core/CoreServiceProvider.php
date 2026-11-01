@@ -54,21 +54,22 @@ class CoreServiceProvider extends ServiceProvider
             'cms'
         );
 
+        /** @var array<class-string, string> $legacyAliases */
         $legacyAliases = [
-            \Core\Models\User::class => 'App\Models\User',
-            \Core\Http\Controllers\Controller::class => 'App\Http\Controllers\Controller',
-            \Core\Hooks\Facades\Hook::class => 'App\Core\Hooks\Facades\Hook',
-            \Core\Hooks\HookManager::class => 'App\Core\Hooks\HookManager',
-            \Core\PluginRegistry\PluginRegistry::class => 'App\Core\PluginRegistry\PluginRegistry',
-            \Core\Themes\ThemeAssetManager::class => 'App\Core\Themes\ThemeAssetManager',
-            \Core\Recovery\SafeModeManager::class => 'App\Core\Recovery\SafeModeManager',
-            \Core\Admin\NavigationRegistry::class => 'App\Core\Admin\NavigationRegistry',
-            \Core\Http\Controllers\Auth\LoginController::class => 'App\Http\Controllers\Auth\LoginController',
-            \Core\Http\Controllers\Auth\RegisterController::class => 'App\Http\Controllers\Auth\RegisterController',
-            \Core\Http\Controllers\Auth\ForgotPasswordController::class => 'App\Http\Controllers\Auth\ForgotPasswordController',
-            \Core\Http\Controllers\Auth\ResetPasswordController::class => 'App\Http\Controllers\Auth\ResetPasswordController',
-            \Core\Http\Controllers\Auth\ConfirmPasswordController::class => 'App\Http\Controllers\Auth\ConfirmPasswordController',
-            \Core\Http\Controllers\Auth\VerificationController::class => 'App\Http\Controllers\Auth\VerificationController',
+            Models\User::class => 'App\Models\User',
+            Http\Controllers\Controller::class => 'App\Http\Controllers\Controller',
+            Hooks\Facades\Hook::class => 'App\Core\Hooks\Facades\Hook',
+            HookManager::class => 'App\Core\Hooks\HookManager',
+            PluginRegistry::class => 'App\Core\PluginRegistry\PluginRegistry',
+            ThemeAssetManager::class => 'App\Core\Themes\ThemeAssetManager',
+            SafeModeManager::class => 'App\Core\Recovery\SafeModeManager',
+            NavigationRegistry::class => 'App\Core\Admin\NavigationRegistry',
+            Http\Controllers\Auth\LoginController::class => 'App\Http\Controllers\Auth\LoginController',
+            Http\Controllers\Auth\RegisterController::class => 'App\Http\Controllers\Auth\RegisterController',
+            Http\Controllers\Auth\ForgotPasswordController::class => 'App\Http\Controllers\Auth\ForgotPasswordController',
+            Http\Controllers\Auth\ResetPasswordController::class => 'App\Http\Controllers\Auth\ResetPasswordController',
+            Http\Controllers\Auth\ConfirmPasswordController::class => 'App\Http\Controllers\Auth\ConfirmPasswordController',
+            Http\Controllers\Auth\VerificationController::class => 'App\Http\Controllers\Auth\VerificationController',
         ];
         foreach ($legacyAliases as $target => $alias) {
             if (! class_exists($alias, false)) {

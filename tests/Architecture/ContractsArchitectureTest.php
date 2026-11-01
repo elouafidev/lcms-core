@@ -59,7 +59,7 @@ class ContractsArchitectureTest extends TestCase
 
     public function test_contracts_do_not_couple_to_concrete_core_or_plugin_classes(): void
     {
-        $contractsDir = app_path('Core/Contracts');
+        $contractsDir = base_path('Core/Contracts');
         $this->assertDirectoryExists($contractsDir);
 
         $iterator = new DirectoryIterator($contractsDir);
@@ -87,7 +87,7 @@ class ContractsArchitectureTest extends TestCase
 
             // Verify no coupling to concrete Core classes
             $this->assertDoesNotMatchRegularExpression(
-                '/use App\\\\Core\\\\(?!(Contracts\\\\)).*;/',
+                '/use Core\\\\(?!(Contracts\\\\)).*;/',
                 $content,
                 "Contract {$fileInfo->getFilename()} must only reference sibling Contracts, not concrete Core implementations."
             );

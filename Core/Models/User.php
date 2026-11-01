@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Core\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\CarbonInterface;
 use Core\RBAC\Models\Permission;
 use Core\RBAC\Models\Role;
-use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;

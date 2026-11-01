@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Route;
 use Core\Http\Controllers\Admin\AdminThemeController;
 use Core\Http\Controllers\Admin\AppearanceCustomizerController;
 use Core\Http\Controllers\Admin\CoreUpdateController;
@@ -11,6 +10,7 @@ use Core\Http\Controllers\Admin\PluginController;
 use Core\Http\Controllers\Admin\RoleController;
 use Core\Http\Controllers\Admin\SiteSettingsController;
 use Core\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'auth'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/', [PluginController::class, 'index'])->name('dashboard');

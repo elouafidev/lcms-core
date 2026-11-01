@@ -12,11 +12,11 @@ use Tests\TestCase;
 class CoreBoundariesTest extends TestCase
 {
     /**
-     * Ensure app/Core never imports classes from the Plugins namespace.
+     * Ensure Core never imports classes from the Plugins namespace.
      */
     public function test_core_never_imports_plugins_namespace(): void
     {
-        $coreDir = app_path('Core');
+        $coreDir = base_path('Core');
         $this->assertDirectoryExists($coreDir);
 
         $files = $this->getPhpFiles($coreDir);
@@ -35,11 +35,11 @@ class CoreBoundariesTest extends TestCase
     }
 
     /**
-     * Ensure app/Core never imports or couples directly to Platform\Core (Admin Panel).
+     * Ensure Core never imports obsolete Platform\ namespace.
      */
     public function test_core_never_depends_on_platform_admin_layer(): void
     {
-        $coreDir = app_path('Core');
+        $coreDir = base_path('Core');
         $files = $this->getPhpFiles($coreDir);
 
         foreach ($files as $file) {
@@ -47,19 +47,19 @@ class CoreBoundariesTest extends TestCase
             $this->assertIsString($content);
 
             $this->assertStringNotContainsString(
-                'use Core\\',
+                'use Platform\\',
                 $content,
-                "Core file {$file->getFilename()} must never depend on the Platform\\Core admin layer."
+                "Core file {$file->getFilename()} must never depend on the legacy Platform\\ namespace."
             );
         }
     }
 
     /**
-     * Ensure every PHP file in app/Core declares strict types.
+     * Ensure every PHP file in Core declares strict types.
      */
     public function test_all_core_files_declare_strict_types(): void
     {
-        $coreDir = app_path('Core');
+        $coreDir = base_path('Core');
         $files = $this->getPhpFiles($coreDir);
 
         foreach ($files as $file) {
@@ -75,16 +75,14 @@ class CoreBoundariesTest extends TestCase
     }
 
     /**
-     * Ensure platform/core (Admin Panel) does not directly import concrete Plugins classes.
+     * Ensure Core Admin Panel does not directly import concrete Plugins classes.
      */
     public function test_platform_admin_panel_never_imports_concrete_plugins_classes(): void
     {
-        $platformCoreDir = base_path('platform/core');
-        if (! is_dir($platformCoreDir)) {
-            $this->markTestSkipped('platform/core directory does not exist.');
-        }
+        $adminDir = base_path('Core/Http/Controllers/Admin');
+        $this->assertDirectoryExists($adminDir);
 
-        $files = $this->getPhpFiles($platformCoreDir);
+        $files = $this->getPhpFiles($adminDir);
 
         foreach ($files as $file) {
             $content = file_get_contents($file->getPathname());
@@ -93,7 +91,7 @@ class CoreBoundariesTest extends TestCase
             $this->assertStringNotContainsString(
                 'use Plugins\\',
                 $content,
-                "Platform admin file {$file->getFilename()} must not import concrete Plugins\\ classes."
+                "Admin controller {$file->getFilename()} must not import concrete Plugins\\ classes."
             );
         }
     }
@@ -134,6 +132,9 @@ class CoreBoundariesTest extends TestCase
 
         foreach ($iterator as $item) {
             if ($item instanceof SplFileInfo && $item->isFile() && $item->getExtension() === 'php') {
+                if (str_ends_with($item->getFilename(), '.blade.php')) {
+                    continue;
+                }
                 $files[] = $item;
             }
         }

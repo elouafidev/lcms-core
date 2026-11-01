@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Http\Controllers\Admin;
 
+use Core\Http\Controllers\Controller;
 use Core\RBAC\Models\Role;
 use Core\RBAC\Services\RbacManager;
 use Core\Security\Audit\AuditLogger;
-use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

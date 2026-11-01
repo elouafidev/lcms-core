@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Core\Models\User;
 use Core\Settings\Mail\SmtpTestMail;
 use Core\Settings\SettingManager;
-use Core\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -146,7 +146,7 @@ class SiteSettingsTest extends TestCase
 
         /** @var User $admin */
         $admin = User::factory()->create();
-        $superAdminRole = \App\Core\RBAC\Models\Role::where('slug', 'super_admin')->first();
+        $superAdminRole = \Core\RBAC\Models\Role::where('slug', 'super_admin')->first();
         if ($superAdminRole) {
             $admin->roles()->attach($superAdminRole->id);
         }

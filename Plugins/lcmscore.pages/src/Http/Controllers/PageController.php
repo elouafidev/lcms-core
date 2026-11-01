@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Plugins\Pages\Http\Controllers;
 
-use Core\PluginRegistry\PluginRegistry;
 use Core\Http\Controllers\Controller;
+use Core\PluginRegistry\PluginRegistry;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Plugins\Pages\Models\Page;

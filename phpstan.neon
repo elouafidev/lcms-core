@@ -1,9 +1,11 @@
 parameters:
     paths:
-        - app
+        - Core
+        - Plugins
         - bootstrap
         - config
-        - platform/core
-        - platform/plugins
+    excludePaths:
+        - Core/resources
+        - Core/routes
     level: 8
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Security\Audit\Models;
 
-use Core\Models\User;
 use Carbon\CarbonInterface;
+use Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

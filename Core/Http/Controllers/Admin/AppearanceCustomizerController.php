@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Http\Controllers\Admin;
 
+use Core\Http\Controllers\Controller;
 use Core\Security\Audit\AuditLogger;
 use Core\Settings\SettingManager;
 use Core\Themes\ThemeManager;
-use Core\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

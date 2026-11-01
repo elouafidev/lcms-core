@@ -6,9 +6,9 @@ namespace Tests\Feature\Plugins;
 
 use Core\Admin\NavigationRegistry;
 use Core\Lifecycle\PluginState;
+use Core\Models\User;
 use Core\PluginManager\PluginManager;
 use Core\PluginRegistry\PluginRegistry;
-use Core\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Plugins\Pages\Models\Page;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Http\Controllers\Admin;
 
-use Core\Updater\CoreZipUpdater;
-use Core\Updater\Models\UpdateHistory;
 use Core\Http\Controllers\Controller;
 use Core\Models\User;
+use Core\Updater\CoreZipUpdater;
+use Core\Updater\Models\UpdateHistory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
