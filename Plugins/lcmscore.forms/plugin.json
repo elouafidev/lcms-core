@@ -1,0 +1,39 @@
+{
+    "id": "lcmscore.forms",
+    "name": "Forms & Submissions",
+    "version": "1.0.0",
+    "description": "Autonomous dynamic form builder and submissions manager with spam protection and email notifications",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Forms\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Forms\\Providers\\FormsServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "forms.manage",
+            "label": "Gérer les formulaires"
+        },
+        {
+            "key": "forms.submissions.view",
+            "label": "Consulter les soumissions de formulaires"
+        },
+        {
+            "key": "forms.submissions.delete",
+            "label": "Supprimer les soumissions de formulaires"
+        }
+    ]
+}
