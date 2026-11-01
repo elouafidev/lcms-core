@@ -23,8 +23,6 @@ class CoreZipUpdater
      */
     private const ALLOWED_PREFIXES = [
         'Core/',
-        'app/Core/',
-        'platform/core/',
         'config/cms.php',
         'database/migrations/',
     ];
@@ -104,7 +102,7 @@ class CoreZipUpdater
 
             if (! $isAllowed) {
                 $zip->close();
-                throw new RuntimeException("Fichier non autorisé dans l'archive de mise à jour Core : {$normalized}. La mise à jour ne peut modifier que app/Core/, platform/core/, config/cms.php et les migrations.");
+                throw new RuntimeException("Fichier non autorisé dans l'archive de mise à jour Core : {$normalized}. La mise à jour ne peut modifier que Core/, config/cms.php et les migrations.");
             }
         }
 

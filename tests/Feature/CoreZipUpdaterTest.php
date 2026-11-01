@@ -86,7 +86,7 @@ class CoreZipUpdaterTest extends TestCase
     {
         $zipPath = $this->tempDir.'/no_manifest.zip';
         $this->createZipArchive($zipPath, [
-            'app/Core/test.txt' => 'dummy',
+            'Core/test.txt' => 'dummy',
         ]);
 
         /** @var CoreZipUpdater $updater */
@@ -147,7 +147,7 @@ class CoreZipUpdaterTest extends TestCase
                 'version' => '1.2.0',
                 'min_core_version' => '1.0.0',
             ]),
-            'app/Core/test_update_file.txt' => 'Updated content v1.2.0',
+            'Core/test_update_file.txt' => 'Updated content v1.2.0',
         ]);
 
         /** @var User $admin */
@@ -167,8 +167,8 @@ class CoreZipUpdaterTest extends TestCase
         $this->assertSame('1.2.0', $history->to_version);
         $this->assertSame('SUCCESS', $history->status);
 
-        // Verify the updated file arrived in app/Core
-        $targetFile = base_path('app/Core/test_update_file.txt');
+        // Verify the updated file arrived in Core
+        $targetFile = base_path('Core/test_update_file.txt');
         $this->assertFileExists($targetFile);
         $this->assertSame('Updated content v1.2.0', file_get_contents($targetFile));
 
