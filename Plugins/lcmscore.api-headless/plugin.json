@@ -1,0 +1,32 @@
+{
+    "id": "lcmscore.api-headless",
+    "name": "API REST & Mode Headless",
+    "version": "1.0.0",
+    "description": "Endpoints REST JSON pour pages, articles, menus et blocs, et gestionnaire de jetons d'accès API pour applications mobiles et frontends modernes",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\ApiHeadless\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\ApiHeadless\\Providers\\ApiHeadlessServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php",
+        "api": "routes/api.php"
+    },
+    "permissions": [
+        {
+            "key": "api.tokens.manage",
+            "label": "Gérer les jetons d'accès API REST"
+        }
+    ]
+}
