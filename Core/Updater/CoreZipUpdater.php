@@ -60,7 +60,7 @@ class CoreZipUpdater
             throw new RuntimeException("Le fichier d'archive ZIP est introuvable : {$zipFilePath}");
         }
 
-        $currentVersion = (string) config('cms.version', '1.1.0');
+        $currentVersion = (string) config('cms.version', '2.0.0');
         $zip = new ZipArchive;
 
         if ($zip->open($zipFilePath) !== true) {

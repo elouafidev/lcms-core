@@ -22,6 +22,7 @@ class CoreServiceProviderTest extends TestCase
         $this->assertEquals(base_path('Plugins'), config('cms.plugins.path'));
         $this->assertFalse(config('cms.safe_mode.enabled'));
         $this->assertEquals('cms_', config('cms.table_prefix'));
+        $this->assertEquals('2.0.0', config('cms.version'));
     }
 
     public function test_lean_core_does_not_contain_business_domain_directories(): void

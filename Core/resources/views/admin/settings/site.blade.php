@@ -228,7 +228,7 @@
                             <ul class="list-group list-group-flush border rounded">
                                 <li class="list-group-item d-flex justify-content-between align-items-center py-2.5">
                                     <span class="text-muted">{{ __('Version LCMS Core') }}</span>
-                                    <span class="badge bg-primary px-2.5 py-1.5">{{ config('cms.version', '1.1.0') }}</span>
+                                    <span class="badge bg-primary px-2.5 py-1.5">{{ config('cms.version', '2.0.0') }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center py-2.5">
                                     <span class="text-muted">{{ __('Version PHP') }}</span>

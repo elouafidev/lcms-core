@@ -27,7 +27,7 @@ return [
         'enabled' => env('CMS_SAFE_MODE', false),
     ],
 
-    'version' => env('CMS_VERSION', '1.1.0'),
+    'version' => env('CMS_VERSION', '2.0.0'),
 
     'table_prefix' => env('CMS_TABLE_PREFIX', 'cms_'),
 ];

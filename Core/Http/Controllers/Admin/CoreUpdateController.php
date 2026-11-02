@@ -22,7 +22,7 @@ class CoreUpdateController extends Controller
      */
     public function index(): View
     {
-        $currentVersion = (string) config('cms.version', '1.1.0');
+        $currentVersion = (string) config('cms.version', '2.0.0');
         $history = UpdateHistory::with('user')->orderBy('id', 'desc')->get();
 
         $checks = [
