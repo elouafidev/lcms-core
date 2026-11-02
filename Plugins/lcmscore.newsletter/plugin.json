@@ -1,0 +1,31 @@
+{
+    "id": "lcmscore.newsletter",
+    "name": "Capture d'Abonnés & E-mailing (Newsletter)",
+    "version": "1.0.0",
+    "description": "Système de capture d'abonnés e-mailing avec Double Opt-In RGPD, confirmation en un clic, gestion de listes et export CSV",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Newsletter\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Newsletter\\Providers\\NewsletterServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "newsletter.manage",
+            "label": "Gérer les abonnés et les exports newsletter"
+        }
+    ]
+}
