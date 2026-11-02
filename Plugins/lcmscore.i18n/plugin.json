@@ -1,0 +1,35 @@
+{
+    "id": "lcmscore.i18n",
+    "name": "Multilinguisme & i18n",
+    "version": "1.0.0",
+    "description": "Gestion des langues actives, sélecteur de langue, traductions de contenu par entité et balises SEO hreflang",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\I18n\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\I18n\\Providers\\I18nServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "i18n.languages.manage",
+            "label": "Gérer les langues du site"
+        },
+        {
+            "key": "i18n.translations.manage",
+            "label": "Gérer les dictionnaires et traductions de contenu"
+        }
+    ]
+}
