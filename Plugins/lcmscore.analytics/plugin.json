@@ -1,0 +1,35 @@
+{
+    "id": "lcmscore.analytics",
+    "name": "Statistiques & Audience RGPD",
+    "version": "1.0.0",
+    "description": "Mesure d'audience sans cookies conforme RGPD et CNIL, suivi des visiteurs uniques, des pages vues, des sources de trafic et des terminaux",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Analytics\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Analytics\\Providers\\AnalyticsServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "analytics.view",
+            "label": "Consulter les statistiques d'audience"
+        },
+        {
+            "key": "analytics.reset",
+            "label": "Purger l'historique des statistiques"
+        }
+    ]
+}
