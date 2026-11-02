@@ -10,7 +10,7 @@
         </a>
 
         <!-- Desktop Navigation via Menu Plugin Hook or Fallback -->
-        <nav class="d-none d-lg-flex align-items-center gap-1" aria-label="{{ __('Navigation principale') }}">
+        <div class="d-none d-lg-flex align-items-center gap-1">
             @php
                 $renderedMenu = \Core\Hooks\Facades\Hook::filter('cms.menu', '', 'main-nav');
             @endphp
@@ -18,13 +18,15 @@
             @if(!empty(trim($renderedMenu)))
                 {!! $renderedMenu !!}
             @else
-                <a href="{{ url('/') }}" class="lumina-nav-link {{ request()->is('/') ? 'active' : '' }}">{{ __('Accueil') }}</a>
-                <a href="{{ url('/shop') }}" class="lumina-nav-link {{ request()->is('shop*') ? 'active' : '' }}">{{ __('Boutique') }}</a>
-                <a href="{{ url('/blog') }}" class="lumina-nav-link {{ request()->is('blog*') ? 'active' : '' }}">{{ __('Le Journal') }}</a>
-                <a href="{{ url('/page/a-propos') }}" class="lumina-nav-link {{ request()->is('page/a-propos') ? 'active' : '' }}">{{ __('Notre Histoire') }}</a>
-                <a href="{{ url('/page/contact') }}" class="lumina-nav-link {{ request()->is('page/contact') ? 'active' : '' }}">{{ __('Contact') }}</a>
+                <nav class="d-flex align-items-center gap-1" aria-label="{{ __('Navigation principale') }}">
+                    <a href="{{ url('/') }}" class="lumina-nav-link {{ request()->is('/') ? 'active' : '' }}">{{ __('Accueil') }}</a>
+                    <a href="{{ url('/shop') }}" class="lumina-nav-link {{ request()->is('shop*') ? 'active' : '' }}">{{ __('Boutique') }}</a>
+                    <a href="{{ url('/blog') }}" class="lumina-nav-link {{ request()->is('blog*') ? 'active' : '' }}">{{ __('Le Journal') }}</a>
+                    <a href="{{ url('/page/a-propos') }}" class="lumina-nav-link {{ request()->is('page/a-propos') ? 'active' : '' }}">{{ __('Notre Histoire') }}</a>
+                    <a href="{{ url('/page/contact') }}" class="lumina-nav-link {{ request()->is('page/contact') ? 'active' : '' }}">{{ __('Contact') }}</a>
+                </nav>
             @endif
-        </nav>
+        </div>
 
         <!-- Right Quick Actions: Search, Cart, Mobile Toggle -->
         <div class="d-flex align-items-center gap-2">

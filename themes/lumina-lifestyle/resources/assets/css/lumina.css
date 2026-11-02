@@ -103,7 +103,52 @@ body.lumina-theme {
     color: var(--lumina-primary);
 }
 
+/* ==========================================================================
+   Navigation Menus (lcmscore.menus integration & Fallbacks)
+   ========================================================================== */
+
+/* Universal CMS Menu Reset */
+.menu-nav {
+    display: block;
+}
+.menu-nav .menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu-nav .menu-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Desktop Menu Navigation */
+.menu-nav.menu-main-nav,
+.lumina-header .menu-nav {
+    display: flex;
+    align-items: center;
+}
+.menu-nav.menu-main-nav .menu-list,
+.lumina-header .menu-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+}
+.menu-nav.menu-main-nav .menu-item,
+.lumina-header .menu-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.menu-nav.menu-main-nav .menu-item a,
+.lumina-header .menu-item a,
 .lumina-nav-link {
+    display: inline-flex;
+    align-items: center;
     font-weight: 500;
     font-size: 0.9375rem;
     color: var(--lumina-text);
@@ -112,10 +157,149 @@ body.lumina-theme {
     border-radius: var(--lumina-radius-sm);
     transition: var(--lumina-transition);
 }
+.menu-nav.menu-main-nav .menu-item a:hover,
+.lumina-header .menu-item a:hover,
+.menu-nav.menu-main-nav .menu-item.active a,
+.lumina-header .menu-item.active a,
 .lumina-nav-link:hover,
 .lumina-nav-link.active {
     color: var(--lumina-primary);
     background-color: var(--lumina-primary-soft);
+    text-decoration: none;
+}
+
+/* Sub-menus / Dropdowns */
+.menu-nav.menu-main-nav .has-children > a::after,
+.lumina-header .menu-nav .has-children > a::after {
+    content: '';
+    display: inline-block;
+    margin-left: 0.4rem;
+    vertical-align: 0.2em;
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+.menu-nav.menu-main-nav .sub-menu,
+.lumina-header .menu-nav .sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--lumina-surface);
+    border: 1px solid var(--lumina-border);
+    border-radius: var(--lumina-radius-sm);
+    box-shadow: var(--lumina-shadow);
+    padding: 0.5rem 0;
+    list-style: none;
+    min-width: 200px;
+    z-index: 1050;
+    margin: 0;
+}
+.menu-nav.menu-main-nav .menu-item:hover > .sub-menu,
+.lumina-header .menu-nav .menu-item:hover > .sub-menu,
+.menu-nav.menu-main-nav .menu-item:focus-within > .sub-menu,
+.lumina-header .menu-nav .menu-item:focus-within > .sub-menu {
+    display: block;
+}
+.menu-nav.menu-main-nav .sub-menu .menu-item,
+.lumina-header .menu-nav .sub-menu .menu-item {
+    display: block;
+    width: 100%;
+}
+.menu-nav.menu-main-nav .sub-menu .menu-item a,
+.lumina-header .menu-nav .sub-menu .menu-item a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0;
+    color: var(--lumina-text);
+}
+.menu-nav.menu-main-nav .sub-menu .menu-item a:hover,
+.lumina-header .menu-nav .sub-menu .menu-item a:hover {
+    background-color: var(--lumina-primary-soft);
+    color: var(--lumina-primary);
+}
+
+/* Footer Navigation Menu */
+.menu-nav.menu-footer-nav,
+.lumina-footer .menu-nav {
+    display: block;
+}
+.menu-nav.menu-footer-nav .menu-list,
+.lumina-footer .menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+.menu-nav.menu-footer-nav .menu-item,
+.lumina-footer .menu-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu-nav.menu-footer-nav .menu-item a,
+.lumina-footer .menu-item a {
+    color: #a8a29e;
+    text-decoration: none;
+    transition: var(--lumina-transition);
+}
+.menu-nav.menu-footer-nav .menu-item a:hover,
+.lumina-footer .menu-item a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Mobile Drawer Menu Navigation */
+#mobileNavDrawer .menu-nav {
+    display: block;
+    width: 100%;
+}
+#mobileNavDrawer .menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+#mobileNavDrawer .menu-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#mobileNavDrawer .menu-item a {
+    display: block;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--lumina-text);
+    text-decoration: none;
+    padding: 0.65rem 1rem;
+    border-radius: var(--lumina-radius-sm);
+    transition: var(--lumina-transition);
+}
+#mobileNavDrawer .menu-item a:hover {
+    color: var(--lumina-primary);
+    background-color: var(--lumina-primary-soft);
+    text-decoration: none;
+}
+#mobileNavDrawer .menu-item .sub-menu {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 0.25rem 0 0 0;
+}
+#mobileNavDrawer .menu-item .sub-menu .menu-item a {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.75rem;
+    color: var(--lumina-text-muted);
+}
+#mobileNavDrawer .menu-item .sub-menu .menu-item a:hover {
+    color: var(--lumina-primary);
 }
 
 /* Buttons */
