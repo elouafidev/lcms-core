@@ -1,0 +1,39 @@
+{
+    "id": "lcmscore.blog",
+    "name": "Blog & Actualités",
+    "version": "1.0.0",
+    "description": "Système complet de blog et publication d'actualités avec catégories, étiquettes, auteurs, flux RSS et intégration médias",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Blog\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Blog\\Providers\\BlogServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "blog.posts.manage",
+            "label": "Gérer les articles de blog"
+        },
+        {
+            "key": "blog.categories.manage",
+            "label": "Gérer les catégories de blog"
+        },
+        {
+            "key": "blog.tags.manage",
+            "label": "Gérer les étiquettes de blog"
+        }
+    ]
+}
