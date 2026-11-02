@@ -1,0 +1,327 @@
+/* ==========================================================================
+   Lumina Lifestyle Theme — Modern Magazine & Artisan Storefront
+   LCMS Core Premium Hybride Design System
+   ========================================================================== */
+
+:root {
+    --lumina-bg: #faf9f5;
+    --lumina-surface: #ffffff;
+    --lumina-surface-subtle: #f5f4ef;
+    --lumina-text: #1c1917;
+    --lumina-text-muted: #78716c;
+    --lumina-text-light: #a8a29e;
+    
+    --lumina-primary: #c25e38;
+    --lumina-primary-hover: #a84e2d;
+    --lumina-primary-soft: #fbf0ec;
+    
+    --lumina-secondary: #78866b;
+    --lumina-secondary-soft: #f2f4ef;
+    
+    --lumina-border: #e7e5e4;
+    --lumina-border-subtle: #f0eee9;
+    
+    --lumina-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --lumina-font-serif: 'Playfair Display', Georgia, serif;
+    --lumina-font-mono: 'JetBrains Mono', monospace;
+    
+    --lumina-radius-sm: 0.5rem;
+    --lumina-radius: 1rem;
+    --lumina-radius-lg: 1.5rem;
+    --lumina-radius-full: 9999px;
+    
+    --lumina-shadow-sm: 0 2px 8px -1px rgba(28, 25, 23, 0.04);
+    --lumina-shadow: 0 10px 30px -4px rgba(28, 25, 23, 0.06);
+    --lumina-shadow-lg: 0 20px 40px -8px rgba(28, 25, 23, 0.1);
+    
+    --lumina-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset & Typography */
+body.lumina-theme {
+    background-color: var(--lumina-bg);
+    color: var(--lumina-text);
+    font-family: var(--lumina-font-sans);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+.lumina-font-serif {
+    font-family: var(--lumina-font-serif);
+}
+
+.lumina-font-mono {
+    font-family: var(--lumina-font-mono);
+}
+
+/* Topbar Announcement */
+.lumina-topbar {
+    background: #1c1917;
+    color: #e7e5e4;
+    font-size: 0.8125rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lumina-topbar a {
+    color: #f5f4ef;
+    text-decoration: none;
+    transition: var(--lumina-transition);
+}
+.lumina-topbar a:hover {
+    color: var(--lumina-primary-soft);
+}
+
+/* Header & Glass Navigation */
+.lumina-header {
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+    background: rgba(250, 249, 245, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--lumina-border);
+    transition: var(--lumina-transition);
+}
+
+.lumina-brand {
+    font-family: var(--lumina-font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--lumina-text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.lumina-brand-accent {
+    color: var(--lumina-primary);
+}
+
+.lumina-nav-link {
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--lumina-text);
+    text-decoration: none;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--lumina-radius-sm);
+    transition: var(--lumina-transition);
+}
+.lumina-nav-link:hover,
+.lumina-nav-link.active {
+    color: var(--lumina-primary);
+    background-color: var(--lumina-primary-soft);
+}
+
+/* Buttons */
+.btn-lumina-primary {
+    background-color: var(--lumina-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--lumina-radius-full);
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    box-shadow: 0 4px 14px rgba(194, 94, 56, 0.28);
+    transition: var(--lumina-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-lumina-primary:hover {
+    background-color: var(--lumina-primary-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(194, 94, 56, 0.35);
+}
+
+.btn-lumina-secondary {
+    background-color: transparent;
+    color: var(--lumina-text);
+    border: 1px solid var(--lumina-border);
+    border-radius: var(--lumina-radius-full);
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: var(--lumina-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-lumina-secondary:hover {
+    background-color: var(--lumina-surface);
+    border-color: var(--lumina-text);
+    transform: translateY(-2px);
+}
+
+/* Magazine Cards (Blog) */
+.lumina-post-card {
+    background: var(--lumina-surface);
+    border: 1px solid var(--lumina-border-subtle);
+    border-radius: var(--lumina-radius);
+    overflow: hidden;
+    box-shadow: var(--lumina-shadow-sm);
+    transition: var(--lumina-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.lumina-post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lumina-shadow);
+    border-color: var(--lumina-border);
+}
+.lumina-post-img-wrap {
+    position: relative;
+    padding-top: 60%;
+    overflow: hidden;
+    background-color: var(--lumina-surface-subtle);
+}
+.lumina-post-img-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lumina-post-card:hover .lumina-post-img-wrap img {
+    transform: scale(1.05);
+}
+.lumina-post-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--lumina-radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--lumina-primary);
+}
+
+/* Product Cards (Commerce) */
+.lumina-product-card {
+    background: var(--lumina-surface);
+    border: 1px solid var(--lumina-border-subtle);
+    border-radius: var(--lumina-radius);
+    overflow: hidden;
+    box-shadow: var(--lumina-shadow-sm);
+    transition: var(--lumina-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+.lumina-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lumina-shadow);
+    border-color: var(--lumina-border);
+}
+.lumina-product-img-wrap {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+    background-color: var(--lumina-surface-subtle);
+}
+.lumina-product-img-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lumina-product-card:hover .lumina-product-img-wrap img {
+    transform: scale(1.06);
+}
+.lumina-stock-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--lumina-radius-full);
+}
+.lumina-stock-in {
+    background-color: var(--lumina-secondary-soft);
+    color: var(--lumina-secondary);
+}
+.lumina-stock-low {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+.lumina-stock-out {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Content Blocks & Hero */
+.lumina-hero {
+    background: linear-gradient(180deg, var(--lumina-surface-subtle) 0%, var(--lumina-bg) 100%);
+    border-bottom: 1px solid var(--lumina-border-subtle);
+    padding: 4.5rem 0;
+}
+
+.lumina-feature-box {
+    background: var(--lumina-surface);
+    border: 1px solid var(--lumina-border-subtle);
+    border-radius: var(--lumina-radius);
+    padding: 2rem;
+    height: 100%;
+    transition: var(--lumina-transition);
+}
+.lumina-feature-box:hover {
+    border-color: var(--lumina-border);
+    box-shadow: var(--lumina-shadow-sm);
+}
+
+/* Footer */
+.lumina-footer {
+    background: #1c1917;
+    color: #e7e5e4;
+    padding: 4.5rem 0 2rem 0;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lumina-footer h5, .lumina-footer h6 {
+    color: #ffffff;
+    font-family: var(--lumina-font-serif);
+}
+.lumina-footer a {
+    color: #a8a29e;
+    text-decoration: none;
+    transition: var(--lumina-transition);
+}
+.lumina-footer a:hover {
+    color: #ffffff;
+}
+
+/* Clean Forms */
+.lumina-input {
+    border: 1px solid var(--lumina-border);
+    border-radius: var(--lumina-radius-sm);
+    padding: 0.65rem 1rem;
+    font-size: 0.9375rem;
+    background-color: #ffffff;
+    color: var(--lumina-text);
+    transition: var(--lumina-transition);
+}
+.lumina-input:focus {
+    border-color: var(--lumina-primary);
+    box-shadow: 0 0 0 3px rgba(194, 94, 56, 0.15);
+    outline: none;
+}

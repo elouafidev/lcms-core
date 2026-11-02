@@ -1,0 +1,19 @@
+{
+    "id": "lumina-lifestyle",
+    "name": "Lumina Lifestyle",
+    "version": "1.0.0",
+    "description": "Thème hybride d'exception alliant Magazine Lifestyle (Slow Living) et Boutique en ligne Artisanale",
+    "author": {
+        "name": "LCMS Core Design Team",
+        "email": "design@lcmscore.local"
+    },
+    "assets": {
+        "css": "css/lumina.css"
+    },
+    "settings": {
+        "accent_color": "#c25e38",
+        "header_style": "glass",
+        "show_reading_time": true,
+        "show_stock_badge": true
+    }
+}
