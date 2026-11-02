@@ -1,0 +1,31 @@
+{
+    "id": "lcmscore.search",
+    "name": "Moteur de Recherche Global",
+    "version": "1.0.0",
+    "description": "Moteur de recherche unifié multi-entités (Pages, Blog, Blocs) avec recherche instantanée AJAX et statistiques de requêtes",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Search\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Search\\Providers\\SearchServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "search.manage",
+            "label": "Gérer le moteur de recherche et consulter les statistiques"
+        }
+    ]
+}
