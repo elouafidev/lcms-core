@@ -1,0 +1,31 @@
+{
+    "id": "lcmscore.redirects",
+    "name": "Gestionnaire de Redirections & 404",
+    "version": "1.0.0",
+    "description": "Gestion des redirections permanentes (301) et temporaires (302) et détection en direct des erreurs 404 avec conversion en 1 clic",
+    "author": {
+        "name": "LCMS Core Team",
+        "email": "dev@lcmscore.local"
+    },
+    "compatibility": {
+        "php": "^8.2",
+        "cms": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Redirects\\": "src/"
+        }
+    },
+    "providers": [
+        "Plugins\\Redirects\\Providers\\RedirectServiceProvider"
+    ],
+    "routes": {
+        "web": "routes/web.php"
+    },
+    "permissions": [
+        {
+            "key": "redirects.manage",
+            "label": "Gérer les redirections d'URL et les journaux d'erreurs 404"
+        }
+    ]
+}
