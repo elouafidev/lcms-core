@@ -373,6 +373,7 @@ La documentation technique interactive officielle au format HTML est disponible 
   - **👥 Contrôle d'Accès RBAC & Utilisateurs :** Matrice de permissions catégorisée, protection des rôles système et gestion avancée des sessions distantes.
   - **📦 Mises à Jour Core par Archive ZIP :** Moteur de déploiement sécurisé sans SSH, backups automatiques avec rétention et rollback instantané.
   - **💻 Référence Complète des Commandes Artisan :** Tableau exhaustif des commandes CLI `cms:*`.
+- 🛠️ **[Guide de Déploiement Mutualisé & Dépannage `public_html` (docs/TROUBLESHOOTING_PUBLIC_HTML.md)](docs/TROUBLESHOOTING_PUBLIC_HTML.md)** : Guide pratique et matrice de décision pour gérer l'arborescence séparée `public_html` (cPanel, Plesk) et corriger les erreurs 404 d'assets sans compromettre l'architecture du CMS.
 
 ---
 
