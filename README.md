@@ -13,7 +13,7 @@
   <a href="https://github.com/elouafidev/lcms-core/releases"><img src="https://img.shields.io/badge/version-2.0.0-blue.svg?style=flat" alt="Version 2.0.0"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?logo=php&logoColor=white" alt="PHP Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-FF2D20?logo=laravel&logoColor=white" alt="Laravel Version"></a>
-  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-424%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
+  <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Tests-425%20passed-success?logo=phpunit&logoColor=white" alt="Tests"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/PHPStan-Level%208-brightgreen?logo=php" alt="PHPStan Level 8"></a>
   <a href="https://github.com/elouafidev/lcms-core"><img src="https://img.shields.io/badge/Code%20Style-Laravel%20Pint-informational" alt="Code Style"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
@@ -48,6 +48,7 @@ Contrairement aux CMS monolithiques traditionnels qui intègrent nativement des 
   - **Mise en Quarantaine Automatique :** Si une extension déclenche une exception fatale au boot, elle est isolée en base (`cms_plugin_errors`) sans bloquer le reste de l'application.
   - **Mode de Secours (*Emergency Safe Mode*) :** Bypass immédiat de toutes les extensions tierces via commande CLI (`php artisan cms:recovery:safe-mode --on`) ou désactivation d'urgence du 2FA (`php artisan cms:recovery:disable-2fa`) pour restaurer l'accès administrateur en cas d'incident critique.
 - 📦 **Installation Sécurisée d'Extensions ZIP :** Import direct depuis le tableau de bord avec protection stricte contre le **Zip Slip**, rejet des extensions exécutables interdites (`.exe`, `.sh`, `.phar`, etc.), extraction sandboxée et validation de schéma JSON.
+- 📦 **Inspection & Détection des Dépendances Composer (`requirements.composer`) :** Prise en charge déclarative des packages PHP externes dans `plugin.json`, inspection visuelle directe dans l'administration (`/admin/plugins/{id}`) avec détection en temps réel (`Composer\InstalledVersions`), badges d'état (`Installed` / `Not Installed`) et commandes d'installation recommandées (`composer require`).
 - 🪝 **Bus de Hooks Extensible :** Système d'actions et de filtres priorisés (`Hook::action()`, `Hook::filter()`) pour personnaliser le comportement du CMS sans modifier le code source.
 - 🖥️ **Panneau d'Administration Unifié & Ergonomique :** Interface moderne basée sur AdminLTE 4 et Bootstrap 5.3 avec arborescences treeview pour les paramètres et l'apparence, barre latérale sombre (`#050914`), header épuré et badge `SuperAdmin`.
 - 🌐 **Internationalisation & Multilingue (i18n) :** Prise en charge native multilingue via le plugin `lcmscore.i18n` avec sélecteur `@langSwitcher`, détection automatique et hreflang SEO.
@@ -313,6 +314,11 @@ Chaque plugin est logé dans son propre sous-dossier au sein de `Plugins/{id}/` 
     "lcmscore.media-library": "^1.0"
   },
   "conflicts": [],
+  "requirements": {
+    "composer": {
+      "spatie/schema-org": "^4.0"
+    }
+  },
   "permissions": [
     {
       "key": "mon_plugin.manage",
@@ -342,7 +348,7 @@ Le projet applique les principes de défense en profondeur documentés dans nos 
 
 ## 🧪 Assurance Qualité & Tests
 
-Le projet est couvert par une suite rigoureuse de **424 tests automatisés** (**2 796 assertions**) sans aucun contournement :
+Le projet est couvert par une suite rigoureuse de **425 tests automatisés** (**2 802 assertions**) sans aucun contournement :
 
 ```bash
 # Exécuter l'intégralité de la suite de tests
@@ -362,18 +368,19 @@ php vendor/bin/pint
 
 ## 📚 Documentation Technique
 
-La documentation technique interactive officielle au format HTML est disponible dans le dossier [`docs/`](docs/) :
+L'ensemble de la documentation technique est centralisé dans le dossier [`docs/`](docs/) (voir également le sommaire Markdown [`docs/README.md`](docs/README.md)) :
 
 - 🌐 **[Portail de Documentation Technique Complète (docs/index.html)](docs/index.html)** :
   - **🚀 Installation & Démarrage Rapide :** Déploiement Packagist via `composer create-project`, configuration `.env`, gestion du compte Super Administrateur.
   - **🏛️ Architecture Globale :** Philosophie Lean Core, Contrats Publics Stricts, ordonnancement topologique (Kahn), Bus de Hooks et Mode de Secours.
-  - **🧩 Guide de Création de Plugins :** Anatomie, manifeste `plugin.json`, migrations isolées, seeders automatiques et publication d'assets.
+  - **🧩 Guide de Création de Plugins :** Anatomie, manifeste `plugin.json`, gestion des dépendances Composer (`requirements.composer`), migrations isolées, seeders automatiques et publication d'assets.
   - **🎨 Moteur de Thèmes & Personnalisation :** Système de présentation autonome, surcharge hiérarchique des vues Blade (*View Overriding*) et injection de CSS/JS/`<head>`.
   - **⚙️ Paramètres, Sécurité 2FA & Maintenance :** Double authentification TOTP sans API tierce, passerelle SMTP avec tests en direct, diagnostics serveur et mode maintenance HTTP 503.
   - **👥 Contrôle d'Accès RBAC & Utilisateurs :** Matrice de permissions catégorisée, protection des rôles système et gestion avancée des sessions distantes.
   - **📦 Mises à Jour Core par Archive ZIP :** Moteur de déploiement sécurisé sans SSH, backups automatiques avec rétention et rollback instantané.
   - **💻 Référence Complète des Commandes Artisan :** Tableau exhaustif des commandes CLI `cms:*`.
 - 🛠️ **[Guide de Déploiement Mutualisé & Dépannage `public_html` (docs/TROUBLESHOOTING_PUBLIC_HTML.md)](docs/TROUBLESHOOTING_PUBLIC_HTML.md)** : Guide pratique et matrice de décision pour gérer l'arborescence séparée `public_html` (cPanel, Plesk) et corriger les erreurs 404 d'assets sans compromettre l'architecture du CMS.
+- 📋 **[Index Markdown de la Documentation (docs/README.md)](docs/README.md)** : Navigation rapide et index complet de l'ensemble des guides et documents du projet.
 
 ---
 

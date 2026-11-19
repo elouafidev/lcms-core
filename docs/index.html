@@ -94,7 +94,7 @@
             <div class="flex items-center gap-4">
                 <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-lg">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>v1.1.0 • Laravel 11/12 • 291 Tests (100%)</span>
+                    <span>v2.0.0 • Laravel 11/12/13 • 425 Tests (100%)</span>
                 </div>
                 <a href="https://github.com/elouafidev/lcms-core" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -122,6 +122,7 @@
                         <li><a href="#overview" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Vue d'ensemble & Philosophie</a></li>
                         <li><a href="#installation" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Installation Rapide (Packagist)</a></li>
                         <li><a href="#prerequisites" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Prérequis & Démarrage</a></li>
+                        <li><a href="#plugin-ecosystem" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Écosystème Plugins & Thèmes</a></li>
                     </ul>
                 </div>
 
@@ -141,6 +142,7 @@
                     <ul class="space-y-1">
                         <li><a href="#plugin-anatomy" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Anatomie d'une Extension</a></li>
                         <li><a href="#plugin-manifest" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Manifeste `plugin.json`</a></li>
+                        <li><a href="#plugin-composer-requirements" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Dépendances Composer (`requirements`)</a></li>
                         <li><a href="#plugin-creation" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Créer un Plugin pas-à-pas</a></li>
                         <li><a href="#plugin-database" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Migrations & Seeders Isolés</a></li>
                         <li><a href="#plugin-assets" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Publication d'Assets & ZIP</a></li>
@@ -162,9 +164,17 @@
                     <ul class="space-y-1">
                         <li><a href="#settings-general-2fa" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Profil & Sécurité 2FA (TOTP)</a></li>
                         <li><a href="#settings-site-smtp" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Configuration Site, SMTP & Mode 503</a></li>
+                        <li><a href="#settings-storage-cache" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Stockage Public & Caches Système</a></li>
                         <li><a href="#settings-rbac" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Rôles & Permissions (RBAC)</a></li>
                         <li><a href="#settings-users" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Gestion des Comptes & Sessions</a></li>
                         <li><a href="#settings-core-update" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Mises à Jour Core par Archive ZIP</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-3">Déploiement & Hébergement</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#shared-hosting-troubleshooting" class="nav-link block px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 transition-colors">Dépannage Mutualisé (`public_html`)</a></li>
                     </ul>
                 </div>
 
@@ -290,6 +300,67 @@ php artisan serve</code></pre>
                 </div>
             </section>
 
+            <!-- Section: Écosystème des Extensions & Thèmes -->
+            <section id="plugin-ecosystem" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm font-bold">2.5</span>
+                    Écosystème des Extensions & Thèmes Officiels
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    LCMS Core v2.0.0 est fourni avec 15 extensions officielles découplées et 2 thèmes complets. Chaque extension est autonome, possède ses propres tables isolées et ne communique avec les autres qu'à travers des contrats stricts ou le bus d'interception.
+                </p>
+
+                <!-- Official Plugins Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-800 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Identifiant</th>
+                                <th class="p-3">Rôle & Fonctionnalités</th>
+                                <th class="p-3">Directives / Contrats</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-slate-400">
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.pages</td><td class="p-3">Gestion de pages hiérarchiques, éditeur riche, templates dynamiques et publication programmée.</td><td class="p-3 font-mono text-emerald-400">PluginInterface</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.menus</td><td class="p-3">Menus arborescents multi-niveaux, liens personnalisés et intégration réactive.</td><td class="p-3 font-mono text-emerald-400">@menu('slug'), Hook::filter('cms.menu')</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.media-library</td><td class="p-3">Médiathèque centrale v2.0, téléversement Drag & Drop, modal universel réutilisable.</td><td class="p-3 font-mono text-emerald-400">MediaStorageInterface, window.LcmsMediaPicker</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.seo</td><td class="p-3">Métadonnées SEO avancées, OpenGraph, Twitter Cards et balises canoniques automatiques.</td><td class="p-3 font-mono text-emerald-400">Hook::filter('cms.head')</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.blog</td><td class="p-3">Articles, catégories avec codes couleurs, étiquettes, temps de lecture et flux RSS 2.0.</td><td class="p-3 font-mono text-emerald-400">Routes /blog, /rss.xml</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.commerce-lite</td><td class="p-3">Boutique en ligne artisanale, prix stricts en centimes entiers, panier en session et tunnel d'achat.</td><td class="p-3 font-mono text-emerald-400">@cartButton, @price(cents)</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.forms</td><td class="p-3">Générateur de formulaires dynamiques, piège anti-spam Honeypot et boîte de réception avec export CSV.</td><td class="p-3 font-mono text-emerald-400">@renderForm('slug')</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.blocks</td><td class="p-3">Constructeur de sections modulaires réutilisables (Hero, Valeurs, FAQ, Avis, HTML sur-mesure).</td><td class="p-3 font-mono text-emerald-400">@renderBlock('slug')</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.i18n</td><td class="p-3">Gestion multilingue, dictionnaire de traductions, détection de locale et balises SEO hreflang.</td><td class="p-3 font-mono text-emerald-400">@langSwitcher, LocalizationMiddleware</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.search</td><td class="p-3">Moteur de recherche unifié multi-entités, autocomplétion AJAX en temps réel et logs de requêtes à 0 résultat.</td><td class="p-3 font-mono text-emerald-400">@searchBar, Route /search</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.newsletter</td><td class="p-3">Abonnements avec double opt-in RGPD, jetons sécurisés, anti-bot et export CSV Excel UTF-8.</td><td class="p-3 font-mono text-emerald-400">@newsletterForm</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.redirects</td><td class="p-3">Règles de redirections HTTP 301/302, détection en temps réel des erreurs 404 et conversion en 1 clic.</td><td class="p-3 font-mono text-emerald-400">RedirectMiddleware</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.analytics</td><td class="p-3">Mesure d'audience sans cookies 100% conforme RGPD, exclusion des robots et tableau de bord avec graphiques.</td><td class="p-3 font-mono text-emerald-400">Dashboard /admin/analytics</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.api-headless</td><td class="p-3">API REST v1 découplée pour front-ends externes (Next.js, Astro, Nuxt) avec jetons d'accès Bearer.</td><td class="p-3 font-mono text-emerald-400">Routes /api/v1/*</td></tr>
+                            <tr><td class="p-3 font-mono text-blue-400">lcmscore.demo-hello</td><td class="p-3">Plugin de référence minimal pour l'apprentissage du développement d'extensions sur LCMS Core.</td><td class="p-3 font-mono text-emerald-400">PluginInterface</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Themes Card & Demo Seeder -->
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-indigo-400 font-bold block mb-1">Thème « default-modern »</span>
+                        <p class="text-slate-400 leading-relaxed">Thème minimaliste épuré et clair, idéal pour les sites d'entreprise institutionnels et les landing pages.</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <span class="text-indigo-400 font-bold block mb-1">Thème Hybride « lumina-lifestyle »</span>
+                        <p class="text-slate-400 leading-relaxed">Thème vitrine premium combinant un Journal / Magazine Slow-Living et une Boutique en ligne artisanale avec typographie d'exception (Playfair Display) et surcharges complètes de vues.</p>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-950/30 border border-emerald-800/50 rounded-xl p-4 text-xs text-emerald-200 leading-relaxed flex gap-3">
+                    <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <div>
+                        <strong class="font-semibold text-white">Démonstration Clé en Main en 1 commande :</strong>
+                        Exécutez <code class="font-mono text-emerald-300">php artisan lcms:seed-demo</code> pour peupler automatiquement votre instance avec des articles de blog, des produits avec stocks et prix en centimes, des commandes d'exemple, des pages, des blocs modulaires, des abonnés et des statistiques d'audience.
+                    </div>
+                </div>
+            </section>
+
             <!-- Section: Architecture Globale -->
             <section id="lean-core" class="space-y-6 pt-8 border-t border-slate-800/80">
                 <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
@@ -339,7 +410,7 @@ php artisan serve</code></pre>
                             </tr>
                             <tr>
                                 <td class="p-3 font-mono text-blue-400">PluginManifestInterface</td>
-                                <td class="p-3">Contrat d'accès immuable aux métadonnées validées du fichier <code>plugin.json</code>.</td>
+                                <td class="p-3">Contrat d'accès immuable aux métadonnées validées du fichier <code>plugin.json</code> (routes, autoload, permissions, dépendances et exigences Composer <code>getComposerRequirements()</code>).</td>
                             </tr>
                             <tr>
                                 <td class="p-3 font-mono text-blue-400">HookSubscriberInterface</td>
@@ -484,7 +555,7 @@ Hook::addAction('cms.page.published', function ($page) {
     },
     "compatibility": {
         "php": "^8.2",
-        "cms": "^1.0"
+        "lcms": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -498,6 +569,11 @@ Hook::addAction('cms.page.published', function ($page) {
         "lcmscore.media-library": "^1.0"
     },
     "conflicts": [],
+    "requirements": {
+        "composer": {
+            "spatie/schema-org": "^4.0"
+        }
+    },
     "routes": {
         "web": "routes/web.php"
     },
@@ -508,6 +584,48 @@ Hook::addAction('cms.page.published', function ($page) {
         }
     ]
 }</code></pre>
+                </div>
+
+                <!-- Sous-section: Dépendances Composer Externes (requirements.composer) -->
+                <div id="plugin-composer-requirements" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                        Inspection & Détection des Dépendances Composer (`requirements.composer`)
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Lorsqu'une extension nécessite une bibliothèque PHP tierce via Composer (par exemple <code>spatie/schema-org</code> pour générer du balisage Schema.org JSON-LD), elle peut déclarer ses exigences externes dans la section <code>requirements.composer</code> du manifeste :
+                    </p>
+
+                    <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
+<pre><code>"requirements": {
+    "composer": {
+        "spatie/schema-org": "^4.0"
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs mt-3">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-blue-400 font-bold mb-1">1. Validation Stricte & Accès DTO</h4>
+                            <p class="text-slate-400 leading-relaxed">
+                                <code>ManifestValidator</code> extrait et valide le bloc <code>requirements</code>. Les méthodes <code>$manifest->getRequirements()</code> et <code>$manifest->getComposerRequirements()</code> fournissent un accès typé immuable aux contraintes de version requises.
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-emerald-400 font-bold mb-1">2. Inspection Visuelle dans l'Admin</h4>
+                            <p class="text-slate-400 leading-relaxed">
+                                Sur la page d'inspection d'une extension (<code>/admin/plugins/{id}</code>), un encadré dédié <strong>Composer Packages Requirements</strong> inspecte en direct la présence du package dans l'environnement LCMS Core via <code>\Composer\InstalledVersions::isInstalled($pkg)</code>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 text-xs text-slate-300 space-y-2">
+                        <strong class="font-semibold text-white block">Indicateurs d'état & Recommandations :</strong>
+                        <ul class="space-y-1.5 list-disc list-inside text-slate-400">
+                            <li><span class="text-emerald-400 font-semibold">Installed (Prêt) :</span> La bibliothèque est détectée dans le `vendor/` racine de LCMS Core et peut être instanciée sans risque par le plugin.</li>
+                            <li><span class="text-amber-400 font-semibold">Not Installed :</span> Le package est absent. L'interface affiche immédiatement la commande console exacte à exécuter (ex: <code class="text-rose-300">composer require spatie/schema-org</code>) pour résoudre la dépendance avant mise en production.</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -522,7 +640,7 @@ Hook::addAction('cms.page.published', function ($page) {
                         <div class="code-block rounded-lg p-3 font-mono text-slate-200">
 <pre><code>namespace Plugins\MonPlugin\Providers;
 
-use App\Core\Admin\NavigationRegistry;
+use Core\Admin\NavigationRegistry;
 use Illuminate\Support\ServiceProvider;
 
 class MonPluginServiceProvider extends ServiceProvider
@@ -729,7 +847,7 @@ php artisan cms:plugin:seed --all</code></pre>
 
                     <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
 <pre><code>// Injection de SettingManager dans les services ou contrôleurs
-$settings = app(\App\Core\Settings\Services\SettingManager::class);
+$settings = app(\Core\Settings\Services\SettingManager::class);
 
 // Lecture typée avec valeur par défaut de repli
 $siteName    = $settings->get('site_name', 'LCMS Core');
@@ -751,6 +869,32 @@ $settings->set('site_name', 'Mon Portail LCMS');</code></pre>
                             <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wider mb-2">Mode Maintenance & Admin Bypass</h4>
                             <p class="text-xs text-slate-400 leading-relaxed">
                                 Le middleware <code>CheckMaintenanceMode</code> intercepte toute requête publique avec une réponse HTTP 503 et la vue dédiée <code>resources/views/errors/503.blade.php</code>. Les administrateurs authentifiés ainsi que toutes les routes <code>/admin/*</code> bénéficient d'un contournement (Bypass) pour administrer et désactiver la maintenance sans interruption.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6.2.1 Stockage Public, Symlink & Caches Système -->
+                <div id="settings-storage-cache" class="space-y-4 pt-6 border-t border-slate-800/60">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        Stockage Public, Lien Symbolique & Caches Système
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        L'onglet <strong>Stockage & Cache</strong> dans les paramètres du site (<code>/admin/settings/site#storage-cache</code>) fournit des diagnostics complets et des outils de maintenance directe pilotés par le service <code>StorageCacheService</code> :
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-cyan-400 font-bold mb-1">Liaison Symbolique & Fallback de Secours</h4>
+                            <p class="text-slate-400 leading-relaxed">
+                                Diagnostic temps réel de <code>public/storage</code> pointant vers <code>storage/app/public</code>. Bouton de création forcée avec support multi-OS (Linux, Windows) et route de distribution directe sécurisée (<code>PublicStorageController</code> sous <code>/storage/{path}</code>) garantissant la disponibilité des médias même sur les hébergements où <code>symlink()</code> est désactivé.
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-blue-400 font-bold mb-1">Purge Granulaire des Caches</h4>
+                            <p class="text-slate-400 leading-relaxed">
+                                Actions directes en 1 clic pour vider l'ensemble des caches (<code>optimize:clear</code>) ou cibler spécifiquement les données d'application (<code>cache:clear</code>), les vues Blade compilées (<code>view:clear</code>), les routes (<code>route:clear</code>) ou la configuration système (<code>config:clear</code>).
                             </p>
                         </div>
                     </div>
@@ -835,7 +979,7 @@ $settings->set('site_name', 'Mon Portail LCMS');</code></pre>
 
                     <div class="code-block rounded-xl p-4 font-mono text-xs text-slate-200">
 <pre><code>// Structure attendue d'un package de mise à jour ZIP
-update-v1.1.0.zip
+update-v2.0.0.zip
 ├── update.json                 # Manifeste de validation de version et checksums
 └── files/                      # Fichiers de remplacement confinés au noyau
     ├── Core/
@@ -859,6 +1003,41 @@ update-v1.1.0.zip
                 </div>
             </section>
 
+            <!-- Section: Déploiement & Dépannage Hébergement Mutualisé -->
+            <section id="shared-hosting-troubleshooting" class="space-y-6 pt-8 border-t border-slate-800/80">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-amber-600/20 border border-amber-500/30 text-amber-400 flex items-center justify-center text-sm font-bold">6.5</span>
+                    Guide de Déploiement Mutualisé & Dépannage `public_html`
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Sur les hébergements mutualisés cPanel, Plesk ou DirectAdmin, le DocumentRoot du serveur Web pointe traditionnellement vers un dossier nommé <code>public_html</code> plutôt que <code>public</code>. Deux solutions officielles permettent de déployer LCMS Core en garantissant le fonctionnement optimal des assets, des thèmes et du stockage :
+                </p>
+
+                <div class="grid sm:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-emerald-400 font-bold mb-1">Solution 1 : Liaison Symbolique (Recommandée)</h4>
+                        <p class="text-slate-400 leading-relaxed mb-2">Remplacement du dossier <code>public_html</code> par un lien symbolique Linux pointant directement sur <code>lcms-core/public</code> :</p>
+                        <div class="code-block rounded-lg p-2 font-mono text-slate-200">
+<pre><code>rm -rf public_html
+ln -s lcms-core/public public_html</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                        <h4 class="text-blue-400 font-bold mb-1">Solution 2 : Configuration Applicative (.env)</h4>
+                        <p class="text-slate-400 leading-relaxed mb-2">Définition de <code>APP_PUBLIC_PATH</code> dans le fichier <code>.env</code> si les liens symboliques sont interdits :</p>
+                        <div class="code-block rounded-lg p-2 font-mono text-slate-200">
+<pre><code>APP_PUBLIC_PATH=/home/compte/public_html</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <span>Consultez le guide technique complet avec matrice de décision et checklist post-déploiement :</span>
+                    <a href="TROUBLESHOOTING_PUBLIC_HTML.md" class="text-amber-400 hover:text-amber-300 font-semibold underline">TROUBLESHOOTING_PUBLIC_HTML.md →</a>
+                </div>
+            </section>
+
             <!-- Section: Référence CLI -->
             <section id="cli-reference" class="space-y-6 pt-8 border-t border-slate-800/80 pb-16">
                 <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
@@ -876,6 +1055,11 @@ update-v1.1.0.zip
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800/60 font-mono text-slate-400">
+                            <tr>
+                                <td class="p-3 text-emerald-400">lcms:seed-demo</td>
+                                <td class="p-3 text-slate-500">—</td>
+                                <td class="p-3 font-sans text-slate-300">Peuple l'ensemble du contenu de démonstration (Articles de blog, Boutique artisanale, Panier, Formulaires, Pages, Menus, Blocs).</td>
+                            </tr>
                             <tr>
                                 <td class="p-3 text-blue-400">cms:plugin:list</td>
                                 <td class="p-3 text-slate-500">—</td>
@@ -913,8 +1097,8 @@ update-v1.1.0.zip
                             </tr>
                             <tr>
                                 <td class="p-3 text-blue-400">cms:theme:publish-assets</td>
-                                <td class="p-3 text-amber-300">{id} {--force}</td>
-                                <td class="p-3 font-sans text-slate-300">Publie les assets du thème vers <code>public/vendor/themes/</code>.</td>
+                                <td class="p-3 text-amber-300">{id?} {--all} {--force}</td>
+                                <td class="p-3 font-sans text-slate-300">Publie les assets statiques du thème ou de tous les thèmes (<code>--all</code>) vers <code>public/vendor/themes/</code>.</td>
                             </tr>
                             <tr>
                                 <td class="p-3 text-blue-400">cms:recovery:safe-mode</td>

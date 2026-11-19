@@ -17,7 +17,7 @@ readonly class PluginManifest implements PluginManifestInterface
      * @param  list<array{key: string, label: string, description?: ?string, group?: ?string}>  $permissions
      * @param  array{web?: ?string, api?: ?string}  $routes
      * @param array{psr-4?: array<string, string>} $autoload
-     * @param array<string, mixed> $requirements
+     * @param  array<string, mixed>  $requirements
      * @param  array<string, mixed>  $rawAttributes
      */
     public function __construct(
