@@ -81,6 +81,9 @@ class ManifestValidator
         /** @var array{psr-4?: array<string, string>} $autoload */
         $autoload = isset($data['autoload']) && is_array($data['autoload']) ? $data['autoload'] : [];
 
+        /** @var array<string, mixed> $requirements */
+        $requirements = isset($data['requirements']) && is_array($data['requirements']) ? $data['requirements'] : [];
+
         $this->assertSecurityPathIntegrity($routes, $autoload);
 
         return new PluginManifest(
@@ -96,6 +99,7 @@ class ManifestValidator
             permissions: $permissions,
             routes: $routes,
             autoload: $autoload,
+            requirements: $requirements,
             rawAttributes: $data
         );
     }

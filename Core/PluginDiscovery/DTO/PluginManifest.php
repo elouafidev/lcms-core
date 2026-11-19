@@ -17,6 +17,7 @@ readonly class PluginManifest implements PluginManifestInterface
      * @param  list<array{key: string, label: string, description?: ?string, group?: ?string}>  $permissions
      * @param  array{web?: ?string, api?: ?string}  $routes
      * @param array{psr-4?: array<string, string>} $autoload
+     * @param array<string, mixed> $requirements
      * @param  array<string, mixed>  $rawAttributes
      */
     public function __construct(
@@ -32,6 +33,7 @@ readonly class PluginManifest implements PluginManifestInterface
         private array $permissions = [],
         private array $routes = [],
         private array $autoload = [],
+        private array $requirements = [],
         private array $rawAttributes = []
     ) {}
 
@@ -122,6 +124,24 @@ readonly class PluginManifest implements PluginManifestInterface
     /**
      * @return array<string, mixed>
      */
+    public function getRequirements(): array
+    {
+        return $this->requirements;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getComposerRequirements(): array
+    {
+        return isset($this->requirements['composer']) && is_array($this->requirements['composer'])
+            ? $this->requirements['composer']
+            : [];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return array_merge($this->rawAttributes, [
@@ -137,6 +157,7 @@ readonly class PluginManifest implements PluginManifestInterface
             'permissions' => $this->permissions,
             'routes' => $this->routes,
             'autoload' => $this->autoload,
+            'requirements' => $this->requirements,
         ]);
     }
 }

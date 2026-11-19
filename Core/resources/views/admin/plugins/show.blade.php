@@ -427,6 +427,73 @@
         </div>
     </div>
 
+    <!-- Composer Packages Requirements -->
+    @php
+        $composerReqs = method_exists($manifest, 'getComposerRequirements') ? $manifest->getComposerRequirements() : ($manifest->toArray()['requirements']['composer'] ?? []);
+    @endphp
+    @if(!empty($composerReqs))
+    <div class="card card-outline card-info shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="card-title fw-bold fs-6 mb-0">
+                <i class="bi bi-box-seam me-1"></i> {{ __('Composer Packages Requirements') }}
+            </h5>
+            <small class="text-muted d-block mt-1">
+                {{ __('PHP library dependencies required via Composer at the application/core level') }}
+            </small>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light fs-7 text-uppercase text-muted">
+                        <tr>
+                            <th>{{ __('Package') }}</th>
+                            <th>{{ __('Required Version') }}</th>
+                            <th>{{ __('Status in LCMS Core') }}</th>
+                            <th class="text-end pe-3">{{ __('Recommendation') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($composerReqs as $pkg => $constraint)
+                            @php
+                                $isInstalled = false;
+                                if (class_exists(\Composer\InstalledVersions::class)) {
+                                    $isInstalled = \Composer\InstalledVersions::isInstalled($pkg);
+                                }
+                            @endphp
+                            <tr>
+                                <td>
+                                    <strong><code>{{ $pkg }}</code></strong>
+                                </td>
+                                <td><code>{{ $constraint }}</code></td>
+                                <td>
+                                    @if($isInstalled)
+                                        <span class="badge text-bg-success px-2 py-1">
+                                            <i class="bi bi-check-circle me-1"></i> {{ __('Installed') }}
+                                        </span>
+                                    @else
+                                        <span class="badge text-bg-warning px-2 py-1">
+                                            <i class="bi bi-exclamation-triangle me-1"></i> {{ __('Not Installed') }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="text-end pe-3">
+                                    @if($isInstalled)
+                                        <span class="text-success small fw-semibold">
+                                            <i class="bi bi-check2"></i> {{ __('Ready') }}
+                                        </span>
+                                    @else
+                                        <code class="small text-danger bg-light px-2 py-1 rounded">composer require {{ $pkg }}</code>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Reverse Dependents -->
     <div class="card card-outline card-secondary shadow-sm">
         <div class="card-header bg-white py-3">

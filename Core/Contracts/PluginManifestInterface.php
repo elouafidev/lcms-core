@@ -83,6 +83,20 @@ interface PluginManifestInterface
     public function getAutoload(): array;
 
     /**
+     * Get external requirements declared by this plugin (e.g. composer packages, php extensions).
+     *
+     * @return array<string, mixed>
+     */
+    public function getRequirements(): array;
+
+    /**
+     * Get required Composer packages mapped to version constraints.
+     *
+     * @return array<string, string>
+     */
+    public function getComposerRequirements(): array;
+
+    /**
      * Export manifest data as an associative array.
      *
      * @return array<string, mixed>

@@ -195,6 +195,27 @@ class ManifestValidatorTest extends TestCase
         $this->assertEquals(['Plugins\\DemoHello\\' => 'src/'], $manifest->getAutoload()['psr-4']);
     }
 
+    public function test_validates_and_extracts_composer_requirements(): void
+    {
+        $json = json_encode([
+            'id' => 'lcmscore.cv',
+            'name' => 'CV & Portfolio',
+            'version' => '1.2.0',
+            'requirements' => [
+                'composer' => [
+                    'spatie/schema-org' => '^4.0',
+                ],
+            ],
+        ]);
+
+        $this->assertIsString($json);
+        $manifest = $this->validator->validate($json);
+
+        $this->assertEquals(['composer' => ['spatie/schema-org' => '^4.0']], $manifest->getRequirements());
+        $this->assertEquals(['spatie/schema-org' => '^4.0'], $manifest->getComposerRequirements());
+        $this->assertArrayHasKey('requirements', $manifest->toArray());
+    }
+
     public function test_validates_manifest_file_from_disk(): void
     {
         $tempPath = sys_get_temp_dir().'/test_plugin_'.uniqid().'.json';
